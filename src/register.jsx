@@ -233,8 +233,10 @@ const Register = ({ setPage }) => {
                   <IconArrowRight size={20} className="arrow" />
                 </button>
 
-                <div className="text-[12px] text-fog text-center">
-                  Secured by Stripe · Refund policy: 14 days prior to camp
+                <div className="mt-1 text-[12px] text-fog flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center">
+                  <span>Secured by Stripe</span>
+                  <span aria-hidden="true" className="text-fog/50">•</span>
+                  <span>Refund policy: 14 days prior to camp</span>
                 </div>
               </form>
             )}

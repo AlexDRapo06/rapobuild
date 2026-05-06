@@ -192,7 +192,7 @@ const Footer = ({ setPage }) => {
 
       <div className="border-t border-white/10" />
 
-      <div className="px-5 lg:px-10 py-12 lg:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="px-5 lg:px-10 py-12 lg:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         <Col title="Contact">
           <li className="flex items-center gap-2"><IconMail size={14} /> camp@footyup.com</li>
           <li className="flex items-center gap-2"><IconPhone size={14} /> +1 (617) 555&#8209;0119</li>
@@ -210,16 +210,6 @@ const Footer = ({ setPage }) => {
           <li><NavBtn to="camp">Camp Schedule</NavBtn></li>
           <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
           <li><NavBtn to="camp">FAQ</NavBtn></li>
-        </Col>
-        <Col title="Built By">
-          <li>
-            <a href="https://ivy-dev.com" target="_blank" rel="noreferrer" className="hover:text-white inline-flex items-center gap-1">
-              Powered by Ivy Devs <IconArrowRight size={13} />
-            </a>
-          </li>
-          <li className="text-white/50 leading-relaxed pt-1">
-            Bespoke websites for athletes, brands, and people who care.
-          </li>
         </Col>
       </div>
 
@@ -255,39 +245,68 @@ const LabelRow = ({ label, value, dark = false, last = false }) => (
 const COACHES = [
   {
     n: "01",
-    name: "PEYTON MILLER",
-    school: "DUKE",
-    role: "Forward · NCAA D1 Starter · Ex-NER Academy",
-    bio: "Peyton plays forward at Duke and made his New England Revolution Academy debut at 16. He has been coaching youth players in the Boston area for three years and brings the technical detail of pro-level training to every session.", // SWAP: from Wix
-    chips: ["EX-NER", "D1 STARTER", "PRO DEBUT"],
-    img: "1577223625816-7546f13df25d",
+    name: "ALEXANDER RAPO",
+    first: "ALEXANDER",
+    last: "RAPO",
+    title: "Founder of Footy Up",
+    school: "BABSON",
+    level: "NCAA D1",
+    role: "Founder · Babson Men's Soccer",
+    bio: "Former New England Revolution Academy player and current Babson Men's Soccer player. Alexander founded Footy Up to bring the same training environment that shaped him to the next generation of Boston-area players.",
+    chips: ["EX-NER ACADEMY", "BABSON", "FOUNDER"],
+    src: "public/uploads/images/Alex Rapo.jpeg",
   },
   {
     n: "02",
-    name: "OLGER ESCOBAR",
-    school: "STANFORD",
-    role: "Midfielder · NCAA D1 Starter · Ex-NER Pro",
-    bio: "Olger spent his early career inside the New England Revolution system and now starts as an attacking midfielder at Stanford. He coaches the way he plays — precise, demanding, and fluent in the small details that separate good from great.", // SWAP: from Wix
-    chips: ["EX-NER", "D1 STARTER", "PRO DEBUT"],
-    img: "1571019613454-1cb2f99b2d8b",
+    name: "JAMIE KABUUSU",
+    first: "JAMIE",
+    last: "KABUUSU",
+    title: "Coach",
+    school: "DUKE",
+    level: "NCAA D1",
+    role: "Coach · Duke Men's Soccer",
+    bio: "Former New England Revolution Academy player and current Duke Men's Soccer player. Jamie brings ACC-level pace, composure, and tactical detail to every session.",
+    chips: ["EX-NER ACADEMY", "DUKE", "ACC"],
+    src: "public/uploads/images/Jamie Kabuusu.jpeg",
   },
   {
     n: "03",
-    name: "ERIC KLEIN",
-    school: "HARVARD",
-    role: "Defender · NCAA D1 Starter · Ex-NER Academy",
-    bio: "Eric anchors the back line at Harvard and came up through New England Revolution Academy. His sessions emphasize positional discipline, defensive shape, and reading the game two steps ahead.", // SWAP: from Wix
-    chips: ["EX-NER", "D1 STARTER", "DEFENDER"],
-    img: "1526232761682-d26e03ac148e",
+    name: "ANTHONY RAPO",
+    first: "ANTHONY",
+    last: "RAPO",
+    title: "Coach",
+    school: "NORTHEASTERN",
+    level: "NCAA D1",
+    role: "Coach · Northeastern Men's Soccer",
+    bio: "Former IFA MLS Next player and current Northeastern Men's Soccer player. Anthony's sessions blend pro-level technical structure with the energy that keeps young players locked in for the full day.",
+    chips: ["EX-MLS NEXT", "NORTHEASTERN", "D1"],
+    src: "public/uploads/images/Anthony Rap.jpeg",
   },
   {
     n: "04",
-    name: "CRISTIANO OLIVEIRA",
-    school: "BABSON",
-    role: "Winger · NCAA Starter · Ex-NER Academy",
-    bio: "Cristiano starts on the wing at Babson and trained inside the New England Revolution Academy. He focuses on first-touch quality, 1v1 attacking, and the kind of decision-making young players only learn around pros.", // SWAP: from Wix
-    chips: ["EX-NER", "STARTER", "WINGER"],
-    img: "1543326727-cf6c39e8f84c",
+    name: "BRYAN TORO",
+    first: "BRYAN",
+    last: "TORO",
+    title: "Coach",
+    school: "BOSTON COLLEGE",
+    level: "NCAA D1",
+    role: "Coach · Boston College Men's Soccer",
+    bio: "Former IFA MLS Next player and current Boston College Men's Soccer player. Bryan focuses on pressing patterns, off-ball movement, and the small habits young players need to compete at the next level.",
+    chips: ["EX-MLS NEXT", "BOSTON COLLEGE", "D1"],
+    src: "public/uploads/images/Brian Toro.jpeg",
+  },
+  {
+    n: "05",
+    name: "ANGEL ORTEZ",
+    first: "ANGEL",
+    last: "ORTEZ",
+    title: "Coach",
+    school: "PRO FUTSAL",
+    level: "Professional",
+    role: "Coach · Pro Futsal Player",
+    bio: "Former New England Revolution Academy player and current professional Futsal player. Angel runs the technical and 1v1 sessions — first touch, tight-space mastery, and the moves that translate from the cone to the game.",
+    chips: ["EX-NER ACADEMY", "PRO FUTSAL", "1V1"],
+    src: "public/uploads/images/angel1.jpeg",
   },
 ];
 
