@@ -4,6 +4,8 @@ const PrivateTraining = ({ setPage }) => {
     name: "", email: "", phone: "", ages: "", players: "", bundle: "", notes: "",
   });
   const [submitted, setSubmitted] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
   const cards = [
@@ -64,7 +66,37 @@ const PrivateTraining = ({ setPage }) => {
             </div>
           ) : (
             <form
-              onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
+              onSubmit={async (e) => {
+                e.preventDefault();
+                if (loading) return;
+                setLoading(true);
+                setError("");
+                try {
+                  const res = await fetch('/api/inquiry', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      name: form.name,
+                      email: form.email,
+                      phone: form.phone,
+                      players: form.players,
+                      bundle: form.bundle,
+                      ages: form.ages,
+                      notes: form.notes,
+                    }),
+                  });
+                  const data = await res.json();
+                  if (data.success) {
+                    setSubmitted(true);
+                  } else {
+                    setError(data.error || 'Something went wrong. Please try again.');
+                  }
+                } catch {
+                  setError('Something went wrong. Please try again.');
+                } finally {
+                  setLoading(false);
+                }
+              }}
               className="mt-10 flex flex-col gap-5"
             >
               <Field id="pt-name" label="Parent Name" required value={form.name} onChange={set("name")} />
@@ -87,10 +119,16 @@ const PrivateTraining = ({ setPage }) => {
               <button
                 type="submit"
                 className="btn-arrow w-full justify-center font-display text-[22px] bg-blood text-white hover:bg-blood-dark py-5 mt-2"
+                disabled={loading}
+                style={{ opacity: loading ? 0.6 : 1 }}
               >
-                <span>SEND INQUIRY</span>
+                <span>{loading ? "SENDING…" : "SEND INQUIRY"}</span>
                 <IconArrowRight size={20} className="arrow" />
               </button>
+
+              {error && (
+                <p className="text-[14px] text-center" style={{ color: "#D2122E" }}>{error}</p>
+              )}
             </form>
           )}
         </div>

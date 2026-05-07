@@ -77,11 +77,32 @@ const Register = ({ setPage }) => {
   });
   const [waiver, setWaiver] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (!waiver || loading) return;
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        setError(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const included = [
@@ -226,12 +247,16 @@ const Register = ({ setPage }) => {
                 <button
                   type="submit"
                   className="btn-arrow w-full justify-center font-display text-[22px] bg-blood text-white hover:bg-blood-dark py-5 mt-2"
-                  style={{ opacity: waiver ? 1 : 0.6 }}
-                  disabled={!waiver}
+                  style={{ opacity: waiver && !loading ? 1 : 0.6 }}
+                  disabled={!waiver || loading}
                 >
-                  <span>COMPLETE REGISTRATION — $415</span>
+                  <span>{loading ? "REDIRECTING TO CHECKOUT…" : "COMPLETE REGISTRATION — $415"}</span>
                   <IconArrowRight size={20} className="arrow" />
                 </button>
+
+                {error && (
+                  <p className="text-[14px] text-center" style={{ color: "#D2122E" }}>{error}</p>
+                )}
 
                 <div className="mt-1 text-[12px] text-fog flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center">
                   <span>Secured by Stripe</span>
