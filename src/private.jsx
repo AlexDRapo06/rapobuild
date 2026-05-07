@@ -72,7 +72,7 @@ const PrivateTraining = ({ setPage }) => {
                 setLoading(true);
                 setError("");
                 try {
-                  const res = await fetch('/api/inquiry', {
+                  const res = await fetch('/.netlify/functions/inquiry', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
