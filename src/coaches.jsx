@@ -30,7 +30,7 @@ const Coaches = ({ setPage }) => {
           {/* Quick stat strip */}
           <div className="mt-12 grid grid-cols-3 gap-3 max-w-[640px] mx-auto">
             {[
-              { n: "05", l: "Coaches" },
+              { n: String(COACHES.length).padStart(2, "0"), l: "Coaches" },
               { n: "D1", l: "Programs" },
               { n: "100%", l: "On Field" },
             ].map((s) => (
@@ -213,7 +213,7 @@ const Coaches = ({ setPage }) => {
             READY TO TRAIN <span className="coaches-cta__accent">WITH THEM</span>?
           </h2>
           <p className="mt-4 text-[16px]" style={{ color: "rgba(255,255,255,0.7)" }}>
-            Camp registration open. $415 per player. Spots are limited.
+            Camp registration open. $350 per player. Spots are limited.
           </p>
           <div className="mt-8 flex justify-center">
             <RedButton onClick={() => setPage("register")}>REGISTER NOW</RedButton>

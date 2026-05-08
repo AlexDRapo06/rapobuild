@@ -1,10 +1,11 @@
 // HOME page
 const HOME_COACH_PREVIEW = [
-  { name: "ALEXANDER RAPO",first: "ALEXANDER",last: "RAPO",   school: "BABSON",         role: "NCAA D1",      position: "Founder",   src: "public/uploads/images/Alex Rapo.jpeg" },
+  { name: "ALEXANDER RAPO",first: "ALEXANDER",last: "RAPO",   school: "BABSON",         role: "NCAA D3",      position: "Founder",   src: "public/uploads/images/Alex Rapo.jpeg" },
   { name: "JAMIE KABUUSU", first: "JAMIE",    last: "KABUUSU",school: "DUKE",           role: "NCAA D1",      position: "Coach",     src: "public/uploads/images/Jamie Kabuusu.jpeg" },
   { name: "ANTHONY RAPO",  first: "ANTHONY",  last: "RAPO",   school: "NORTHEASTERN",   role: "NCAA D1",      position: "Coach",     src: "public/uploads/images/Anthony Rap.jpeg" },
   { name: "BRYAN TORO",    first: "BRYAN",    last: "TORO",   school: "BOSTON COLLEGE", role: "NCAA D1",      position: "Coach",     src: "public/uploads/images/Brian Toro.jpeg" },
   { name: "ANGEL ORTEZ",   first: "ANGEL",    last: "ORTEZ",  school: "PRO FUTSAL",     role: "Professional", position: "Coach",     src: "public/uploads/images/angel1.jpeg" },
+  { name: "TJ KAHOLI",     first: "TJ",       last: "KAHOLI", school: "LOUISVILLE",     role: "NCAA D1",      position: "Coach",     src: "public/uploads/images/Tj Kaholi.jpeg" },
 ];
 
 const HOME_GUESTS = [
@@ -16,6 +17,14 @@ const HOME_GUESTS = [
 
 const Home = ({ setPage }) => {
   const [activeGuest, setActiveGuest] = React.useState(null);
+  const coachRailRef = React.useRef(null);
+  const scrollCoachRail = (dir) => {
+    const rail = coachRailRef.current;
+    if (!rail) return;
+    const card = rail.querySelector(".coach-tile");
+    const step = card ? card.getBoundingClientRect().width + 16 : 320;
+    rail.scrollBy({ left: dir * step, behavior: "smooth" });
+  };
   const guest = activeGuest != null ? HOME_GUESTS[activeGuest] : null;
 
   React.useEffect(() => {
@@ -55,26 +64,30 @@ const Home = ({ setPage }) => {
         <div className="hero-video__vignette" aria-hidden="true" />
 
         {/* Content */}
-        <div className="relative z-10 w-full px-6 sm:px-10 lg:px-20 py-20 lg:py-28">
-          <div className="max-w-[640px]">
-            <div className="eyebrow mb-6" style={{ color: "rgba(255,255,255,0.7)" }}>
-              <span className="inline-block w-2 h-2 rounded-full mr-2.5 align-middle" style={{ background: "#D2122E", boxShadow: "0 0 0 4px rgba(210,18,46,0.25)" }} />
-              Boston · Est. 2024 · Youth Soccer
+        <div className="hero-content-wrap relative z-10 w-full px-6 sm:px-10 lg:px-20 py-20 lg:py-28">
+          <div className="hero-content max-w-[640px]">
+            <div className="hero-content__top">
+              <div className="eyebrow mb-6" style={{ color: "rgba(255,255,255,0.7)" }}>
+                <span className="inline-block w-2 h-2 rounded-full mr-2.5 align-middle" style={{ background: "#D2122E", boxShadow: "0 0 0 4px rgba(210,18,46,0.25)" }} />
+                Boston · Est. 2024 · Youth Soccer
+              </div>
+              <h1
+                className="font-display text-white"
+                style={{ fontSize: "clamp(2.5rem, 6vw, 6rem)", lineHeight: 0.92, letterSpacing: "-0.01em", textShadow: "0 2px 24px rgba(0,0,0,0.35)" }}
+              >
+                TRAIN WITH<br />
+                THE PROS.<br />
+                <span style={{ color: "#D2122E" }}>REALLY.</span>
+              </h1>
             </div>
-            <h1
-              className="font-display text-white"
-              style={{ fontSize: "clamp(2.5rem, 6vw, 6rem)", lineHeight: 0.92, letterSpacing: "-0.01em", textShadow: "0 2px 24px rgba(0,0,0,0.35)" }}
-            >
-              TRAIN WITH<br />
-              THE PROS.<br />
-              <span style={{ color: "#D2122E" }}>REALLY.</span>
-            </h1>
-            <p className="mt-7 text-[18px] leading-[1.55]" style={{ maxWidth: 480, color: "rgba(255,255,255,0.88)", textShadow: "0 1px 12px rgba(0,0,0,0.35)" }}>
-              Coached by ex-New England Revolution players and NCAA Division I starters from Duke, Stanford, and Harvard. Summer camp registration open.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-3">
-              <RedButton onClick={() => setPage("register")}>REGISTER — $415</RedButton>
-              <OutlineButton onClick={() => setPage("coaches")} className="hero-outline-btn">MEET THE COACHES</OutlineButton>
+            <div className="hero-content__bottom">
+              <p className="hero-content__lead mt-7 text-[18px] leading-[1.55]" style={{ maxWidth: 480, color: "rgba(255,255,255,0.88)", textShadow: "0 1px 12px rgba(0,0,0,0.35)" }}>
+                Coached by ex-New England Revolution players and NCAA Division I starters from Duke, BC, and Northeastern. Summer camp registration open.
+              </p>
+              <div className="mt-10 flex flex-col sm:flex-row gap-3">
+                <RedButton onClick={() => setPage("register")}>REGISTER — $350</RedButton>
+                <OutlineButton onClick={() => setPage("coaches")} className="hero-outline-btn">MEET THE COACHES</OutlineButton>
+              </div>
             </div>
           </div>
         </div>
@@ -110,10 +123,42 @@ const Home = ({ setPage }) => {
             pointer-events: none;
           }
           @media (max-width: 768px) {
+            /* Darker top + bottom, lighter middle so the video is visible between text blocks */
             .hero-video__scrim {
               background:
-                linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 35%, rgba(0,0,0,0.55) 70%, rgba(0,0,0,0.85) 100%);
+                linear-gradient(180deg,
+                  rgba(0,0,0,0.88) 0%,
+                  rgba(0,0,0,0.78) 18%,
+                  rgba(0,0,0,0.32) 42%,
+                  rgba(0,0,0,0.32) 58%,
+                  rgba(0,0,0,0.78) 82%,
+                  rgba(0,0,0,0.92) 100%);
             }
+            .hero-video__media {
+              opacity: 0;
+              animation: heroVideoFadeIn 1.2s ease-out 0.15s forwards, heroVideoDrift 24s ease-in-out 1.2s infinite alternate;
+              filter: brightness(0.85) saturate(1);
+            }
+            /* Push title up under nav, push paragraph + buttons down — video plays in the middle */
+            .hero-video {
+              min-height: calc(100vh - 60px);
+              align-items: stretch;
+            }
+            .hero-content-wrap {
+              padding-top: 18px;
+              padding-bottom: 28px;
+              display: flex;
+              align-items: stretch;
+            }
+            .hero-content {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              min-height: calc(100vh - 60px - 46px);
+            }
+            .hero-content__top { padding-top: 4px; }
+            .hero-content__lead { margin-top: 0; }
           }
           /* Subtle vignette */
           .hero-video__vignette {
@@ -209,7 +254,23 @@ const Home = ({ setPage }) => {
 
           {/* Cards */}
           <div className="coach-rail-wrap">
-            <ul className="coach-rail" role="list">
+            <button
+              type="button"
+              onClick={() => scrollCoachRail(-1)}
+              className="coach-rail-nav coach-rail-nav--prev"
+              aria-label="Scroll coaches left"
+            >
+              <IconArrowRight size={18} className="coach-rail-nav__icon coach-rail-nav__icon--flip" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollCoachRail(1)}
+              className="coach-rail-nav coach-rail-nav--next"
+              aria-label="Scroll coaches right"
+            >
+              <IconArrowRight size={18} className="coach-rail-nav__icon" />
+            </button>
+            <ul ref={coachRailRef} className="coach-rail" role="list">
               {HOME_COACH_PREVIEW.map((c, i) => (
                 <li key={c.name} className="coach-tile">
                   <article className="coach-tile__inner group">
@@ -325,30 +386,62 @@ const Home = ({ setPage }) => {
           .coach-rail {
             display: grid;
             grid-auto-flow: column;
-            grid-auto-columns: 78%;
-            gap: 14px;
+            grid-auto-columns: calc((100% - 12px) / 2);
+            gap: 12px;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
             padding-bottom: 8px;
             scrollbar-width: none;
+            scroll-behavior: smooth;
           }
           .coach-rail::-webkit-scrollbar { display: none; }
           .coach-tile { scroll-snap-align: start; list-style: none; }
           @media (min-width: 640px) {
-            .coach-rail { grid-auto-columns: 46%; }
+            .coach-rail { grid-auto-columns: 46%; gap: 14px; }
           }
           @media (min-width: 1024px) {
             .coach-rail-wrap { margin: 0; padding: 0; }
             .coach-rail {
-              grid-auto-flow: initial;
-              grid-template-columns: repeat(5, minmax(0, 1fr));
-              grid-auto-columns: initial;
-              overflow: visible;
-              scroll-snap-type: none;
+              grid-auto-columns: calc((100% - 16px * 4) / 5);
               gap: 16px;
               padding-bottom: 0;
+              scroll-padding-left: 0;
             }
+          }
+          /* Scroll arrows */
+          .coach-rail-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 5;
+            width: 38px;
+            height: 38px;
+            border-radius: 9999px;
+            background: rgba(15,15,17,0.85);
+            border: 1px solid rgba(255,255,255,0.14);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+          }
+          .coach-rail-nav:hover {
+            background: #D2122E;
+            border-color: #D2122E;
+            transform: translateY(-50%) scale(1.05);
+          }
+          .coach-rail-nav--prev { left: 6px; }
+          .coach-rail-nav--next { right: 6px; }
+          .coach-rail-nav__icon--flip { transform: rotate(180deg); }
+          @media (min-width: 1024px) {
+            .coach-rail-nav { width: 44px; height: 44px; }
+            .coach-rail-nav--prev { left: -22px; }
+            .coach-rail-nav--next { right: -22px; }
           }
 
           /* Tile */
@@ -955,7 +1048,7 @@ const Home = ({ setPage }) => {
             </p>
 
             <div className="mt-8 max-w-[520px]">
-              <LabelRow label="Price" value="$415 per player" />
+              <LabelRow label="Price" value="$350 per player" />
               <LabelRow label="Guest Appearances" value="Peyton · Olger · Eric · Cristiano" />
               <LabelRow label="Included" value="Lunch, snacks, GOAT × Footy Up gear drop" last />
             </div>

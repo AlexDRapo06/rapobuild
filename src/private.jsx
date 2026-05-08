@@ -33,18 +33,32 @@ const PrivateTraining = ({ setPage }) => {
       {/* PRICING */}
       <section className="bg-white px-5 lg:px-10 pb-12">
         <div className="max-w-[1200px] mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bundle-grid grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4">
             {cards.map((c) => (
-              <div key={c.price} className="bg-smoke border border-ash p-10 flex flex-col">
-                <div className="eyebrow">{c.tag}</div>
-                <div className="font-display text-[24px] text-ink mt-3 leading-none">{c.count}</div>
-                <div className="font-display text-ink mt-6 leading-none" style={{ fontSize: "clamp(3rem, 7vw, 5rem)" }}>{c.price}</div>
-                <div className="border-t border-ash mt-7 pt-4">
-                  <div className="text-[13px] text-fog">Coordinated directly with coach. Inquire to book.</div>
+              <div key={c.price} className="bundle-card bg-smoke border border-ash p-5 sm:p-10 flex flex-col">
+                <div className="bundle-card__tag eyebrow">{c.tag}</div>
+                <div className="bundle-card__count font-display text-ink mt-2 sm:mt-3 leading-none">{c.count}</div>
+                <div className="bundle-card__price font-display text-ink mt-4 sm:mt-6 leading-none">{c.price}</div>
+                <div className="bundle-card__foot border-t border-ash mt-5 sm:mt-7 pt-3 sm:pt-4">
+                  <div className="bundle-card__note text-fog">Coordinated directly with coach. Inquire to book.</div>
                 </div>
               </div>
             ))}
           </div>
+          <style>{`
+            .bundle-card__count { font-size: 24px; }
+            .bundle-card__price { font-size: clamp(3rem, 7vw, 5rem); }
+            .bundle-card__note { font-size: 13px; }
+            @media (max-width: 639px) {
+              .bundle-card__tag {
+                font-size: 9px;
+                letter-spacing: 0.16em;
+              }
+              .bundle-card__count { font-size: 17px; }
+              .bundle-card__price { font-size: 38px; }
+              .bundle-card__note { font-size: 11px; line-height: 1.4; }
+            }
+          `}</style>
           <div className="mt-8 text-center font-cond uppercase tracking-[0.15em] text-[13px]" style={{ color: "#D2122E" }}>
             Inquiry only · No online payment
           </div>

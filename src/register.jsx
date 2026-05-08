@@ -132,7 +132,7 @@ const Register = ({ setPage }) => {
           <h1 className="font-display text-ink" style={{ fontSize: "clamp(2.25rem, 5.5vw, 5rem)" }}>
             LOCK YOUR PLAYER'S SPOT.
           </h1>
-          <div className="font-display mt-3" style={{ color: "#D2122E", fontSize: "clamp(2rem, 4vw, 3rem)" }}>$415.</div>
+          <div className="font-display mt-3" style={{ color: "#D2122E", fontSize: "clamp(2rem, 4vw, 3rem)" }}>$350.</div>
           <p className="mt-3 text-[16px] text-fog">Spots limited. Refund policy: 14 days prior to camp.</p>
         </div>
       </section>
@@ -155,7 +155,7 @@ const Register = ({ setPage }) => {
               <div className="mt-7 pt-6 border-t border-white/10">
                 <div className="eyebrow" style={{ color: "rgba(255,255,255,0.55)" }}>Coached by</div>
                 <div className="font-display text-[18px] mt-3 leading-tight">
-                  PEYTON MILLER · OLGER ESCOBAR · ERIC KLEIN · CRISTIANO OLIVEIRA
+                  {COACHES.map(c => c.name).join(" · ")}
                 </div>
               </div>
             </div>
@@ -225,7 +225,7 @@ const Register = ({ setPage }) => {
                   <Field id="playerAge" type="number" label="Player Age" required value={form.playerAge} onChange={set("playerAge")} />
                 </div>
                 <Textarea id="medical" label="Medical Concerns / Allergies" value={form.medical} onChange={set("medical")} />
-                <SelectField id="session" label="Camp Session" required value={form.session} onChange={set("session")} options={["Session 1", "Session 2", "TBD"]} />
+                <SelectField id="session" label="Camp Session" required value={form.session} onChange={set("session")} options={["Full Week"]} />
 
                 <label className="flex items-start gap-3 mt-2 cursor-pointer">
                   <span
@@ -250,7 +250,7 @@ const Register = ({ setPage }) => {
                   style={{ opacity: waiver && !loading ? 1 : 0.6 }}
                   disabled={!waiver || loading}
                 >
-                  <span>{loading ? "REDIRECTING TO CHECKOUT…" : "COMPLETE REGISTRATION — $415"}</span>
+                  <span>{loading ? "REDIRECTING TO CHECKOUT…" : "COMPLETE REGISTRATION — $350"}</span>
                   <IconArrowRight size={20} className="arrow" />
                 </button>
 

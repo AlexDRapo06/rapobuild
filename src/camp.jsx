@@ -32,7 +32,7 @@ const Camp = ({ setPage }) => {
               <LabelRow dark label="Location" value="Greater Boston, MA" /> {/* SWAP: camp address */}
               <LabelRow dark label="Dates" value="July 13 — 17, 2026" /> {/* SWAP: camp dates */}
               <LabelRow dark label="Ages" value="U10 — U16" /> {/* SWAP: age range */}
-              <LabelRow dark label="Price" value="$415 per player" />
+              <LabelRow dark label="Price" value="$350 per player" />
               <LabelRow dark label="Includes" value="Lunch, snacks, GOAT × Footy Up gear" />
               <LabelRow dark label="Guest Coaches" value="Peyton · Olger · Eric · Cristiano" last />
               <div className="mt-8">
@@ -125,7 +125,7 @@ const Camp = ({ setPage }) => {
           <h2 className="font-display text-ink" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>LOCK YOUR SPOT.</h2>
           <p className="mt-4 text-[16px] text-fog">Spots are limited. Once gone, gone.</p>
           <div className="mt-7 flex justify-center">
-            <RedButton onClick={() => setPage("register")}>REGISTER NOW — $415</RedButton>
+            <RedButton onClick={() => setPage("register")}>REGISTER NOW — $350</RedButton>
           </div>
         </div>
       </section>
