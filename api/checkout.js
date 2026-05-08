@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
             product_data: {
               name: 'Footy Up Soccer Camp Registration',
             },
-            unit_amount: 41500,
+            unit_amount: 35000,
           },
           quantity: 1,
         },
