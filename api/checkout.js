@@ -30,6 +30,7 @@ module.exports = async (req, res) => {
         },
       ],
       mode: 'payment',
+      allow_promotion_codes: true,
       success_url: `${origin}/success`,
       cancel_url: `${origin}/cancel`,
       metadata: {
