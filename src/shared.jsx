@@ -447,6 +447,19 @@ const COACHES = [
     chips: ["EX-NER ACADEMY", "LOUISVILLE", "CAPTAIN"],
     src: "public/uploads/images/Tj Kaholi.jpeg",
   },
+  {
+    n: "07",
+    name: "ENZO GONCALVES",
+    first: "ENZO",
+    last: "GONCALVES",
+    title: "Coach",
+    school: "REVOLUTION II",
+    level: "Professional",
+    role: "Coach · New England Revolution II",
+    bio: "Former New England Revolution Academy player who made his debut with Revolution II. Enzo brings pro-level technical detail and the standards of USL Championship environments to every session.",
+    chips: ["EX-NER ACADEMY", "REVOLUTION II", "USL"],
+    src: "public/uploads/images/Enzo Goncalves.png",
+  },
 ];
 
 Object.assign(window, {
