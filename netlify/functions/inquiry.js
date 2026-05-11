@@ -6,27 +6,28 @@ exports.handler = async (event) => {
   const { name, email, phone, players, bundle, ages, notes } = JSON.parse(event.body || '{}');
 
   const lines = [
-    `Parent: ${name}`,
-    `Email: ${email}`,
-    `Phone: ${phone}`,
-    `Players: ${players}`,
-    `Bundle: ${bundle}`,
-    ages  ? `Player Ages: ${ages}`  : null,
-    notes ? `Notes: ${notes}`       : null,
+    `🏐 *New Training Inquiry*`,
+    ``,
+    `*Parent:* ${name}`,
+    `*Email:* ${email}`,
+    `*Phone:* ${phone}`,
+    `*Players:* ${players}`,
+    `*Bundle:* ${bundle}`,
+    ages  ? `*Player Ages:* ${ages}`  : null,
+    notes ? `*Notes:* ${notes}`       : null,
   ].filter(Boolean);
 
+  const token  = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+
   try {
-    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
-      headers: {
-        'api-key': process.env.BREVO_API_KEY,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        sender: { name: 'Footy Up', email: process.env.SENDER_EMAIL },
-        to: [{ email: process.env.CLIENT_EMAIL }],
-        subject: `New Training Inquiry — ${name}`,
-        textContent: lines.join('\n'),
+        chat_id: chatId,
+        text: lines.join('\n'),
+        parse_mode: 'Markdown',
       }),
     });
 
@@ -34,7 +35,7 @@ exports.handler = async (event) => {
       const err = await response.json();
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: err.message || 'Failed to send email' }),
+        body: JSON.stringify({ error: err.description || 'Failed to send Telegram message' }),
       };
     }
 
