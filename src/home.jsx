@@ -1037,6 +1037,97 @@ const Home = ({ setPage }) => {
         </div>
       </section>
 
+      {/* FOOTY UP × US FOOTY PARTNERSHIP */}
+      <section className="bg-smoke text-ink px-5 lg:px-10 py-20 lg:py-24 border-t border-black/10">
+        <div className="max-w-[1200px] mx-auto">
+          {/* Header: logos + meta */}
+          <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6 sm:gap-10 justify-center text-center sm:text-left">
+            <img
+              src="assets/usfooty-logo.png"
+              alt="US Footy logo"
+              loading="lazy"
+              className="h-[68px] lg:h-[84px] w-auto object-contain"
+            />
+            <div className="hidden sm:block w-px self-stretch bg-black/15" />
+            <div>
+              <div className="font-display flex items-baseline gap-3 justify-center sm:justify-start" style={{ color: "rgba(0,0,0,0.55)" }}>
+                <span className="text-[22px] lg:text-[26px]">FOOTY UP ×</span>
+                <span className="text-[40px] lg:text-[52px] leading-none text-ink">US FOOTY.</span>
+              </div>
+              <div className="mt-3 font-cond uppercase tracking-[0.18em] text-[12px] text-ink/70">
+                @usfooty · 14,400+ followers · @footyup_
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 flex items-center justify-center gap-3">
+            <span className="h-px w-12 bg-black/20" />
+            <span className="font-cond font-bold uppercase tracking-[0.18em] text-[12px]">Official Media &amp; Training Partnership</span>
+            <span className="h-px w-12 bg-black/20" />
+          </div>
+
+          {/* Tagline */}
+          <div className="mt-10 text-center max-w-[820px] mx-auto">
+            <h2 className="font-display" style={{ fontSize: "clamp(2rem, 4.2vw, 3.6rem)", lineHeight: 0.98 }}>
+              YOUR KID WORKS HARD.<br />IT'S TIME PEOPLE SAW IT.
+            </h2>
+            <p className="mt-5 text-[16px] leading-[1.6]" style={{ color: "rgba(0,0,0,0.72)" }}>
+              Join the Footy Up × US Footy partnership — media exposure, elite training, collab gear, and real recruiting visibility for your young athlete.
+            </p>
+          </div>
+
+          {/* Three pillars */}
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-0 md:divide-x divide-black/15">
+            {[
+              { n: "01", t: "MEDIA EXPOSURE", d: "Featured on @usfooty to 14,400+ fans, recruiters & scouts." },
+              { n: "02", t: "ELITE TRAINING",  d: "Train with NCAA D1 + Academy players. Real coaching, real results." },
+              { n: "03", t: "COLLAB GEAR",     d: "Exclusive Footy Up × US Footy kit. Rep the brand on the pitch." },
+            ].map((p) => (
+              <div key={p.n} className="px-2 md:px-8 text-center">
+                <div className="font-display text-[18px]" style={{ color: "#C9A24A" }}>{p.n}</div>
+                <div className="mt-1 h-px w-10 mx-auto" style={{ background: "#C9A24A" }} />
+                <div className="mt-5 font-display text-[22px]">{p.t}</div>
+                <p className="mt-3 text-[15px] leading-[1.55]" style={{ color: "rgba(0,0,0,0.7)", maxWidth: 280, marginInline: "auto" }}>
+                  {p.d}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* How it works */}
+          <div className="mt-16">
+            <div className="text-center font-display tracking-wide text-[20px] lg:text-[24px]">HOW IT WORKS</div>
+            <div className="mt-6 max-w-[820px] mx-auto">
+              {[
+                { n: "01", t: "JOIN",         d: "Sign up at footyup.net and create your athlete's player profile." },
+                { n: "02", t: "TRAIN",        d: "Book sessions with D1 + Academy coaches. Develop real skills." },
+                { n: "03", t: "GET FEATURED", d: "Top performers get spotlighted on @usfooty — seen by 14,400+ fans." },
+                { n: "04", t: "GET RECRUITED",d: "Gain real exposure to scouts, fans, and the soccer community." },
+              ].map((s, i) => (
+                <div
+                  key={s.n}
+                  className="flex items-start gap-4 px-5 py-4 border-l-[3px]"
+                  style={{
+                    borderColor: "#C9A24A",
+                    background: i % 2 === 0 ? "rgba(0,0,0,0.04)" : "transparent",
+                  }}
+                >
+                  <div className="font-display text-[16px] tracking-wide text-ink/60 w-8 shrink-0">{s.n}</div>
+                  <div>
+                    <div className="font-display tracking-wide text-[16px]">{s.t}</div>
+                    <div className="text-[14px] leading-[1.55]" style={{ color: "rgba(0,0,0,0.72)" }}>{s.d}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-12 flex justify-center">
+            <RedButton onClick={() => setPage("register")}>READY TO GET YOUR ATHLETE NOTICED?</RedButton>
+          </div>
+        </div>
+      </section>
+
       {/* CAMP SUMMARY */}
       <section className="bg-smoke py-20 lg:py-24 px-5 lg:px-10">
         <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-start">
