@@ -15,14 +15,37 @@ const PrivateTraining = ({ setPage }) => {
   };
 
   const individual = [
-    { count: "5 Sessions",  price: "$550" },
-    { count: "7 Sessions",  price: "$640" },
-    { count: "10 Sessions", price: "$910" },
+    { count: "5 Sessions",  price: "$550",   packageId: "individual_5" },
+    { count: "7 Sessions",  price: "$640",   packageId: "individual_7" },
+    { count: "10 Sessions", price: "$910",   packageId: "individual_10" },
   ];
   const group2 = [
-    { count: "5 Sessions", price: "$850" },
-    { count: "7 Sessions", price: "$1,000" },
+    { count: "5 Sessions", price: "$850",   packageId: "group2_5" },
+    { count: "7 Sessions", price: "$1,000", packageId: "group2_7" },
   ];
+
+  const [buying, setBuying] = React.useState(null);
+  const buyPackage = async (packageId) => {
+    if (buying) return;
+    setBuying(packageId);
+    try {
+      const res = await fetch('/api/checkout-training', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ packageId }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || 'Could not start checkout. Please try again.');
+        setBuying(null);
+      }
+    } catch {
+      alert('Could not start checkout. Please try again.');
+      setBuying(null);
+    }
+  };
   const bundleOptions = [
     "Evaluation Session",
     "Recruitment Session (Year-long)",
@@ -34,16 +57,29 @@ const PrivateTraining = ({ setPage }) => {
     "Custom Group (3+ Players)",
   ];
 
-  const BundleCard = ({ tag, count, price }) => (
-    <div className="bundle-card bg-smoke border border-ash p-5 sm:p-10 flex flex-col">
-      <div className="bundle-card__tag eyebrow">{tag}</div>
-      <div className="bundle-card__count font-display text-ink mt-2 sm:mt-3 leading-none">{count}</div>
-      <div className="bundle-card__price font-display text-ink mt-4 sm:mt-6 leading-none">{price}</div>
-      <div className="bundle-card__foot border-t border-ash mt-5 sm:mt-7 pt-3 sm:pt-4">
-        <div className="bundle-card__note text-fog">Coordinated directly with coach. Inquire to book.</div>
+  const BundleCard = ({ tag, count, price, packageId }) => {
+    const isLoading = buying === packageId;
+    return (
+      <div className="bundle-card bg-smoke border border-ash p-5 sm:p-10 flex flex-col">
+        <div className="bundle-card__tag eyebrow">{tag}</div>
+        <div className="bundle-card__count font-display text-ink mt-2 sm:mt-3 leading-none">{count}</div>
+        <div className="bundle-card__price font-display text-ink mt-4 sm:mt-6 leading-none">{price}</div>
+        <div className="bundle-card__foot border-t border-ash mt-5 sm:mt-7 pt-3 sm:pt-4">
+          <button
+            type="button"
+            onClick={() => buyPackage(packageId)}
+            disabled={!!buying}
+            className="btn-arrow w-full justify-center font-display text-[16px] sm:text-[18px] bg-blood text-white hover:bg-blood-dark py-3"
+            style={{ opacity: buying && !isLoading ? 0.5 : 1 }}
+          >
+            <span>{isLoading ? "LOADING…" : "BUY NOW"}</span>
+            <IconArrowRight size={16} className="arrow" />
+          </button>
+          <div className="bundle-card__note text-fog mt-3 text-center">Schedule coordinated with coach after purchase.</div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const SectionDivider = ({ label }) => (
     <div className="flex items-center gap-4">
@@ -161,7 +197,7 @@ const PrivateTraining = ({ setPage }) => {
           <SubsectionLabel label="Individual" className="mt-8" />
           <div className="bundle-grid grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mt-5">
             {individual.map((c) => (
-              <BundleCard key={`ind-${c.count}`} tag="Individual" count={c.count} price={c.price} />
+              <BundleCard key={`ind-${c.count}`} tag="Individual" count={c.count} price={c.price} packageId={c.packageId} />
             ))}
           </div>
 
@@ -169,7 +205,7 @@ const PrivateTraining = ({ setPage }) => {
           <SubsectionLabel label="Group (2 Players)" className="mt-10" />
           <div className="bundle-grid grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-4 mt-5">
             {group2.map((c) => (
-              <BundleCard key={`g2-${c.count}`} tag="Group (2+ Players)" count={c.count} price={c.price} />
+              <BundleCard key={`g2-${c.count}`} tag="Group (2+ Players)" count={c.count} price={c.price} packageId={c.packageId} />
             ))}
           </div>
 
@@ -206,8 +242,8 @@ const PrivateTraining = ({ setPage }) => {
             }
           `}</style>
 
-          <div className="mt-10 text-center font-cond uppercase tracking-[0.15em] text-[13px]" style={{ color: "#D2122E" }}>
-            Inquiry only · No online payment
+          <div className="mt-10 text-center font-cond uppercase tracking-[0.15em] text-[13px] text-fog">
+            Packages bookable online · 3+ player groups inquire below
           </div>
         </div>
       </section>
