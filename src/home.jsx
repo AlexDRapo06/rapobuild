@@ -1123,7 +1123,7 @@ const Home = ({ setPage }) => {
           </div>
 
           <div className="mt-12 flex justify-center">
-            <RedButton onClick={() => setPage("register")}>READY TO GET YOUR ATHLETE NOTICED?</RedButton>
+            <RedButton onClick={() => setPage("privateTraining")}>READY TO GET YOUR ATHLETE NOTICED?</RedButton>
           </div>
         </div>
       </section>
