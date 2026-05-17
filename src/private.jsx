@@ -175,7 +175,7 @@ const PrivateTraining = ({ setPage }) => {
                 </div>
                 <div className="text-right whitespace-nowrap">
                   <div className="font-display text-ink leading-none" style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)" }}>
-                    $250
+                    $500
                   </div>
                   <div className="text-fog text-[13px] mt-1">/year</div>
                 </div>
