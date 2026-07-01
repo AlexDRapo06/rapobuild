@@ -1,5 +1,5 @@
 // APP — page-state router
-const VALID_PAGES = ["home", "coaches", "camp", "register", "privateTraining"];
+const VALID_PAGES = ["home", "coaches", "privateTraining"];
 
 function readHash() {
   const h = (window.location.hash || "").replace("#", "");
@@ -32,8 +32,6 @@ const App = () => {
   let Page;
   switch (page) {
     case "coaches": Page = window.Coaches; break;
-    case "camp": Page = window.Camp; break;
-    case "register": Page = window.Register; break;
     case "privateTraining": Page = window.PrivateTraining; break;
     default: Page = window.Home;
   }

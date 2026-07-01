@@ -213,10 +213,10 @@ const Coaches = ({ setPage }) => {
             READY TO TRAIN <span className="coaches-cta__accent">WITH THEM</span>?
           </h2>
           <p className="mt-4 text-[16px]" style={{ color: "rgba(255,255,255,0.7)" }}>
-            Camp registration open. $350 per player. Spots are limited.
+            Camps are returning soon — book private training now to work with them one-on-one.
           </p>
           <div className="mt-8 flex justify-center">
-            <RedButton onClick={() => setPage("register")}>REGISTER NOW</RedButton>
+            <RedButton onClick={() => setPage("privateTraining")}>BOOK PRIVATE TRAINING</RedButton>
           </div>
         </div>
       </section>

@@ -48,7 +48,7 @@ const PrivateTraining = ({ setPage }) => {
   };
   const bundleOptions = [
     "Evaluation Session",
-    "Recruitment Session (Year-long)",
+    "Recruitment / College Help / Game Analysis (Year-long)",
     "Individual — 5 Sessions",
     "Individual — 7 Sessions",
     "Individual — 10 Sessions",
@@ -153,10 +153,10 @@ const PrivateTraining = ({ setPage }) => {
             {/* Recruitment */}
             <button
               type="button"
-              onClick={() => scrollToInquiry("Recruitment Session (Year-long)")}
+              onClick={() => scrollToInquiry("Recruitment / College Help / Game Analysis (Year-long)")}
               className="text-left bg-smoke border-2 p-5 sm:p-8 hover:bg-white transition-colors block"
               style={{ borderColor: "#16A34A" }}
-              aria-label="Book Recruitment Session — scroll to inquiry form"
+              aria-label="Recruitment, college help & game analysis — scroll to inquiry form"
             >
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div className="flex-1 min-w-[200px]">
@@ -164,20 +164,21 @@ const PrivateTraining = ({ setPage }) => {
                     className="font-cond uppercase tracking-[0.15em] text-[11px] sm:text-[12px] text-white px-3 py-1 rounded-full inline-block"
                     style={{ backgroundColor: "#16A34A" }}
                   >
-                    Recruitment Package · Year-Long
+                    Recruitment · College Help · Game Analysis · Year-Long
                   </span>
                   <h3 className="font-display text-ink mt-3 leading-none" style={{ fontSize: "clamp(1.5rem, 3.5vw, 2.2rem)" }}>
-                    Recruitment Session
+                    Recruitment / College Help / Game Analysis
                   </h3>
                   <p className="mt-3 text-fog text-[14px] sm:text-[15px] leading-[1.55] max-w-[640px]">
-                    A dedicated year-long package focused on the full recruitment process — highlight preparation, outreach strategy, coach communication, and positioning your player for the right programs.
+                    Your player meets with a coach every three weeks to break down their games, with 24/7 access to a coach for feedback in between — full college-recruitment help and game analysis, all year long.
                   </p>
                 </div>
                 <div className="text-right whitespace-nowrap">
                   <div className="font-display text-ink leading-none" style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)" }}>
-                    $500
+                    $1,500
                   </div>
                   <div className="text-fog text-[13px] mt-1">/year</div>
+                  <div className="text-fog text-[12px] mt-1 leading-tight">or $500 deposit<br />+ $250/mo</div>
                 </div>
               </div>
             </button>

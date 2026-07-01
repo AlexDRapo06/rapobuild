@@ -1,11 +1,12 @@
 // HOME page
 const HOME_COACH_PREVIEW = [
-  { name: "ALEXANDER RAPO",first: "ALEXANDER",last: "RAPO",   school: "BABSON",         role: "NCAA D3",      position: "Founder",   src: "public/uploads/images/Alex Rapo.jpeg" },
-  { name: "JAMIE KABUUSU", first: "JAMIE",    last: "KABUUSU",school: "DUKE",           role: "NCAA D1",      position: "Coach",     src: "public/uploads/images/Jamie Kabuusu.jpeg" },
-  { name: "ANTHONY RAPO",  first: "ANTHONY",  last: "RAPO",   school: "NORTHEASTERN",   role: "NCAA D1",      position: "Coach",     src: "public/uploads/images/Anthony Rap.jpeg" },
-  { name: "BRYAN TORO",    first: "BRYAN",    last: "TORO",   school: "BOSTON COLLEGE", role: "NCAA D1",      position: "Coach",     src: "public/uploads/images/Brian Toro.jpeg" },
-  { name: "ANGEL ORTEZ",   first: "ANGEL",    last: "ORTEZ",  school: "PRO FUTSAL",     role: "Professional", position: "Coach",     src: "public/uploads/images/angel1.jpeg" },
-  { name: "TJ KAHOLI",     first: "TJ",       last: "KAHOLI", school: "LOUISVILLE",     role: "NCAA D1",      position: "Coach",     src: "public/uploads/images/Tj Kaholi.jpeg" },
+  { name: "ALEXANDER RAPO",first: "ALEXANDER",last: "RAPO",   school: "BABSON",         role: "NCAA D3",       position: "Co-Founder",        src: "public/uploads/images/Alex Rapo.jpeg" },
+  { name: "CHRIS",         first: "COACH",    last: "CHRIS",  school: "WATERTOWN HS",   role: "Varsity Coach", position: "Co-Founder",        src: "public/uploads/images/new cofounder.PNG" },
+  { name: "JAMIE KABUUSU", first: "JAMIE",    last: "KABUUSU",school: "DUKE",           role: "NCAA D1",       position: "Managing Director", src: "public/uploads/images/Jamie Kabuusu.jpeg" },
+  { name: "ANTHONY RAPO",  first: "ANTHONY",  last: "RAPO",   school: "NORTHEASTERN",   role: "NCAA D1",       position: "Coach",             src: "public/uploads/images/Anthony Rap.jpeg" },
+  { name: "BRYAN TORO",    first: "BRYAN",    last: "TORO",   school: "BOSTON COLLEGE", role: "NCAA D1",       position: "Coach",             src: "public/uploads/images/Brian Toro.jpeg" },
+  { name: "ANGEL ORTEZ",   first: "ANGEL",    last: "ORTEZ",  school: "PRO FUTSAL",     role: "Professional",  position: "Coach",             src: "public/uploads/images/angel1.jpeg" },
+  { name: "TJ KAHOLI",     first: "TJ",       last: "KAHOLI", school: "STANFORD",       role: "NCAA D1",       position: "Coach",             src: "public/uploads/images/Tj Kaholi.jpeg" },
 ];
 
 const HOME_GUESTS = [
@@ -82,10 +83,10 @@ const Home = ({ setPage }) => {
             </div>
             <div className="hero-content__bottom">
               <p className="hero-content__lead mt-7 text-[18px] leading-[1.55]" style={{ maxWidth: 480, color: "rgba(255,255,255,0.88)", textShadow: "0 1px 12px rgba(0,0,0,0.35)" }}>
-                Coached by ex-New England Revolution players and NCAA Division I starters from Duke, BC, and Northeastern. Summer camp registration open.
+                Coached by ex-New England Revolution players and NCAA Division I starters from Duke, BC, and Northeastern. Private training booking now — camps returning soon.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row gap-3">
-                <RedButton onClick={() => setPage("register")}>REGISTER — $350</RedButton>
+                <RedButton onClick={() => setPage("privateTraining")}>PRIVATE TRAINING</RedButton>
                 <OutlineButton onClick={() => setPage("coaches")} className="hero-outline-btn">MEET THE COACHES</OutlineButton>
               </div>
             </div>
@@ -986,57 +987,6 @@ const Home = ({ setPage }) => {
         `}</style>
       </section>
 
-      {/* FOOTY UP × GOAT MOMENT */}
-      <section className="bg-ink text-white px-0 lg:px-10 py-20 lg:py-24">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16">
-          {/* Image */}
-          <div className="relative order-2 lg:order-1 overflow-hidden">
-            <img
-              src="assets/footyup-goat-kit.jpeg"
-              alt="Footy Up × GOAT co-branded kit: jersey, socks, water bottle, and towel on a soccer field"
-              loading="lazy"
-              className="w-full h-auto object-cover"
-              style={{ aspectRatio: "3 / 2" }}
-            />
-            <div className="absolute top-4 left-4 font-cond font-bold uppercase tracking-[0.15em] text-[11px] px-2.5 py-1.5" style={{ background: "#D2122E", color: "#fff" }}>
-              Included with registration
-            </div>
-          </div>
-
-          {/* Copy */}
-          <div className="order-1 lg:order-2 px-6 lg:px-0">
-            <div className="font-display flex items-baseline gap-3" style={{ color: "rgba(255,255,255,0.55)" }}>
-              <span className="text-[22px] lg:text-[26px]">FOOTY UP ×</span>
-              <span className="text-[44px] lg:text-[56px] text-white leading-none" style={{ color: "#C9A24A" }}>GOAT.</span>
-            </div>
-            <h2 className="font-display mt-6" style={{ fontSize: "clamp(2rem, 4.5vw, 4rem)", lineHeight: 0.95 }}>
-              EVERY CAMPER<br />GETS THE DROP.
-            </h2>
-            <p className="mt-5 text-[16px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.82)", maxWidth: 480 }}>
-              Co-branded jersey, socks, bottle, and towel — included with every registration. Limited to camp participants. Sizes locked at signup. Drop reveals on Day 1.
-            </p>
-            <ul className="mt-7 grid grid-cols-2 gap-3 max-w-[420px]">
-              {["Jersey", "Socks", "Bottle", "Towel"].map((it) => (
-                <li key={it} className="flex items-center gap-2 text-[14px]" style={{ color: "rgba(255,255,255,0.9)" }}>
-                  <span style={{ color: "#D2122E" }}><IconCheck size={16} strokeWidth={3} /></span>
-                  <span className="font-cond font-semibold uppercase tracking-[0.08em]">{it}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-9 flex flex-col sm:flex-row gap-3">
-              <RedButton onClick={() => setPage("register")}>SIGN UP FOR THE CAMP</RedButton>
-              <button
-                onClick={() => setPage("camp")}
-                className="btn-arrow font-display tracking-wide border border-white/40 text-white hover:bg-white hover:text-ink px-5 py-3 text-[16px] transition-colors"
-              >
-                <span>SEE WHAT'S INSIDE</span>
-                <IconArrowRight size={18} className="arrow" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FOOTY UP × US FOOTY PARTNERSHIP */}
       <section className="bg-smoke text-ink px-5 lg:px-10 py-20 lg:py-24 border-t border-black/10">
         <div className="max-w-[1200px] mx-auto">
@@ -1128,37 +1078,123 @@ const Home = ({ setPage }) => {
         </div>
       </section>
 
-      {/* CAMP SUMMARY */}
-      <section className="bg-smoke py-20 lg:py-24 px-5 lg:px-10">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-start">
-          <div className="lg:col-span-3">
-            <div className="eyebrow mb-4">02 — Summer Camp 2026</div>
-            <h2 className="font-display text-ink" style={{ fontSize: "clamp(2rem, 4vw, 4rem)" }}>5 HOURS. ZERO WASTED.</h2>
-            <p className="mt-5 text-[16px] text-ink leading-[1.55]" style={{ maxWidth: 480 }}>
-              A full day of training run start to finish by D1 athletes. Technical work, ball progressions, scrimmages, and a parent recruitment session — all coached by the people your kid sees on TV someday.
+      {/* UPCOMING CAMPS — heads-up alert */}
+      <section className="upcoming relative overflow-hidden px-5 lg:px-10 py-20 lg:py-28">
+        <div className="upcoming__bg" aria-hidden="true" />
+        <div className="upcoming__grid" aria-hidden="true" />
+        <div className="upcoming__glow upcoming__glow--red" aria-hidden="true" />
+        <div className="upcoming__glow upcoming__glow--gold" aria-hidden="true" />
+
+        <div className="relative z-10 max-w-[1200px] mx-auto">
+          {/* Header */}
+          <div className="text-center max-w-[760px] mx-auto">
+            <div className="inline-flex items-center gap-2.5 mb-5 px-4 py-2 rounded-full" style={{ background: "rgba(210,18,46,0.10)", border: "1px solid rgba(210,18,46,0.35)" }}>
+              <span className="upcoming__pulse" aria-hidden="true" />
+              <span className="font-cond font-bold uppercase tracking-[0.2em] text-[11px]" style={{ color: "#ff6072" }}>
+                Heads up — camps returning
+              </span>
+            </div>
+            <h2 className="font-display text-white" style={{ fontSize: "clamp(2.25rem, 5vw, 4.5rem)", lineHeight: 0.95, letterSpacing: "-0.01em" }}>
+              UPCOMING <span className="upcoming__accent">CAMPS</span>.
+            </h2>
+            <p className="mt-6 text-[16px] lg:text-[17px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.72)" }}>
+              New camps are on the way. Keep an eye out — save the dates below. Full details and registration drop soon.
             </p>
-
-            <div className="mt-8 max-w-[520px]">
-              <LabelRow label="Price" value="$350 per player" />
-              <LabelRow label="Guest Appearances" value="Peyton · Olger · Eric · Cristiano" />
-              <LabelRow label="Included" value="Lunch, snacks, GOAT × Footy Up gear drop" last />
-            </div>
-
-            <div className="mt-8">
-              <RedButton onClick={() => setPage("camp")}>SEE FULL CAMP DETAILS</RedButton>
-            </div>
           </div>
 
-          <div className="lg:col-span-2 aspect-[4/5] overflow-hidden">
-            <UnsplashImg
-              id="1431324155629-1a6deb1dec8d"
-              w={1000}
-              alt="Players running a training drill"
-              className="coach-img-zoom"
-            />
-            {/* SWAP: real camp photo from Rappo */}
+          {/* Location cards */}
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5">
+            {[
+              { tag: "Winter Camp", place: "WALPOLE", region: "Massachusetts", note: "Dates TBA · Stay tuned", accent: "#D2122E" },
+              { tag: "Summer 2027", place: "BB&N", region: "Cambridge, MA", note: "Dates TBA · Stay tuned", accent: "#C9A24A" },
+              { tag: "Summer 2027 & Beyond", place: "DOVER", region: "Massachusetts · + more", note: "Locations expanding · Stay tuned", accent: "#D2122E" },
+            ].map((c) => (
+              <div key={c.place} className="upcoming__card">
+                <div className="flex items-center gap-2">
+                  <span className="upcoming__card-dot" style={{ background: c.accent }} aria-hidden="true" />
+                  <span className="font-cond font-bold uppercase tracking-[0.18em] text-[11px]" style={{ color: c.accent }}>{c.tag}</span>
+                </div>
+                <div className="font-display text-white mt-4 leading-none" style={{ fontSize: "clamp(2rem, 3.4vw, 2.75rem)" }}>{c.place}</div>
+                <div className="mt-2 font-cond uppercase tracking-[0.14em] text-[12px]" style={{ color: "rgba(255,255,255,0.6)" }}>{c.region}</div>
+                <div className="upcoming__card-note mt-5 pt-4 flex items-center gap-2 font-cond uppercase tracking-[0.12em] text-[11px]" style={{ color: "rgba(255,255,255,0.5)" }}>
+                  <IconMapPin size={13} /> {c.note}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Notify */}
+          <div className="mt-10 text-center font-cond uppercase tracking-[0.14em] text-[12px]" style={{ color: "rgba(255,255,255,0.55)" }}>
+            Want first dibs? Email{" "}
+            <a href="mailto:footyupp@outlook.com" className="upcoming__link">footyupp@outlook.com</a>
+            {" "}to get notified.
           </div>
         </div>
+
+        <style>{`
+          .upcoming { background: #0A0A0A; }
+          .upcoming__bg {
+            position: absolute; inset: 0; z-index: 0; pointer-events: none;
+            background:
+              radial-gradient(900px 500px at 50% 0%, rgba(210,18,46,0.18), transparent 60%),
+              radial-gradient(800px 500px at 100% 100%, rgba(201,162,74,0.12), transparent 60%),
+              linear-gradient(180deg, #0A0A0A 0%, #101013 100%);
+          }
+          .upcoming__grid {
+            position: absolute; inset: 0; z-index: 0; pointer-events: none;
+            background-image:
+              linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, transparent 80%);
+            opacity: 0.55;
+          }
+          .upcoming__glow {
+            position: absolute; z-index: 0;
+            width: 480px; height: 480px; border-radius: 9999px;
+            filter: blur(130px); pointer-events: none;
+          }
+          .upcoming__glow--red  { top: -160px; left: -120px; background: rgba(210,18,46,0.30); }
+          .upcoming__glow--gold { bottom: -180px; right: -120px; background: rgba(201,162,74,0.16); }
+          .upcoming__accent {
+            background: linear-gradient(90deg, #D2122E 0%, #ff5066 55%, #C9A24A 100%);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+          }
+          .upcoming__pulse {
+            display: inline-block; width: 7px; height: 7px; border-radius: 999px;
+            background: #D2122E; box-shadow: 0 0 0 3px rgba(210,18,46,0.20);
+            animation: upcoming-pulse 1.6s ease-in-out infinite;
+          }
+          @keyframes upcoming-pulse {
+            0%,100% { box-shadow: 0 0 0 3px rgba(210,18,46,0.20); }
+            50%     { box-shadow: 0 0 0 7px rgba(210,18,46,0.04); }
+          }
+          .upcoming__card {
+            padding: 24px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            text-align: left;
+            transition: border-color 300ms ease, background 300ms ease, transform 300ms ease;
+          }
+          .upcoming__card:hover {
+            border-color: rgba(210,18,46,0.45);
+            background: rgba(210,18,46,0.06);
+            transform: translateY(-3px);
+          }
+          .upcoming__card-dot {
+            width: 6px; height: 6px; border-radius: 999px;
+            box-shadow: 0 0 0 3px rgba(210,18,46,0.15);
+          }
+          .upcoming__card-note { border-top: 1px solid rgba(255,255,255,0.08); }
+          .upcoming__link { color: #ff6072; text-decoration: underline; }
+          .upcoming__link:hover { color: #fff; }
+          @media (prefers-reduced-motion: reduce) {
+            .upcoming__card, .upcoming__pulse { transition: none !important; animation: none !important; }
+          }
+        `}</style>
       </section>
 
       {/* GUEST DETAIL MODAL */}

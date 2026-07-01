@@ -3,7 +3,6 @@
 const NAV_ITEMS = [
   { key: "home", label: "Home" },
   { key: "coaches", label: "Coaches" },
-  { key: "camp", label: "Camp" },
   { key: "privateTraining", label: "Private Training" },
 ];
 
@@ -93,10 +92,10 @@ const TopNav = ({ page, setPage }) => {
         {/* Right CTA */}
         <div className="flex items-center gap-3">
           <button
-            onClick={() => go("register")}
+            onClick={() => go("privateTraining")}
             className="btn-arrow hidden sm:inline-flex font-display text-[16px] bg-blood text-white hover:bg-blood-dark px-4 py-2.5 lg:px-5 lg:py-3"
           >
-            <span>REGISTER</span>
+            <span>PRIVATE TRAINING</span>
             <IconArrowRight size={16} className="arrow" />
           </button>
           <button
@@ -151,10 +150,10 @@ const TopNav = ({ page, setPage }) => {
 
         <div className="relative z-10 px-5 pb-8 pt-6 border-t border-white/10">
           <button
-            onClick={() => go("register")}
+            onClick={() => go("privateTraining")}
             className="btn-arrow w-full justify-center font-display text-[22px] bg-blood text-white hover:bg-blood-dark py-4"
           >
-            <span>REGISTER — $350</span>
+            <span>PRIVATE TRAINING</span>
             <IconArrowRight size={20} className="arrow" />
           </button>
           <div className="mt-5 flex items-center justify-between text-[11px] text-white/45 font-cond uppercase tracking-[0.16em]">
@@ -302,15 +301,12 @@ const Footer = ({ setPage }) => {
         <Col title="Navigate">
           <li><NavBtn to="home">Home</NavBtn></li>
           <li><NavBtn to="coaches">Coaches</NavBtn></li>
-          <li><NavBtn to="camp">Camp</NavBtn></li>
-          <li><NavBtn to="register">Register</NavBtn></li>
           <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
         </Col>
         <Col title="Program">
           <li><NavBtn to="coaches">About the Coaches</NavBtn></li>
-          <li><NavBtn to="camp">Camp Schedule</NavBtn></li>
           <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
-          <li><NavBtn to="camp">FAQ</NavBtn></li>
+          <li><NavBtn to="home">Upcoming Camps</NavBtn></li>
         </Col>
       </div>
 
@@ -367,6 +363,78 @@ const LabelRow = ({ label, value, dark = false, last = false }) => (
   </div>
 );
 
+// ---- FORM PRIMITIVES ------------------------------------------------------
+// Shared across Private Training inquiry (and formerly Register).
+const Field = ({ label, id, type = "text", required, value, onChange, placeholder }) => (
+  <div className="flex flex-col gap-2">
+    <label htmlFor={id} className="font-cond font-bold uppercase tracking-[0.1em] text-[12px] text-ink">
+      {label}{required && " *"}
+    </label>
+    <input
+      id={id}
+      name={id}
+      type={type}
+      required={required}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className="border border-ink px-4 py-3.5 text-[16px] bg-white text-ink"
+      style={{ borderRadius: 0, transition: "border-color 200ms ease" }}
+    />
+  </div>
+);
+
+const Textarea = ({ label, id, rows = 4, required, value, onChange }) => (
+  <div className="flex flex-col gap-2">
+    <label htmlFor={id} className="font-cond font-bold uppercase tracking-[0.1em] text-[12px] text-ink">
+      {label}{required && " *"}
+    </label>
+    <textarea
+      id={id}
+      name={id}
+      rows={rows}
+      required={required}
+      value={value}
+      onChange={onChange}
+      className="border border-ink px-4 py-3.5 text-[16px] bg-white text-ink resize-none"
+      style={{ borderRadius: 0, transition: "border-color 200ms ease" }}
+    />
+  </div>
+);
+
+const SelectField = ({ label, id, required, value, onChange, options }) => (
+  <div className="flex flex-col gap-2">
+    <label htmlFor={id} className="font-cond font-bold uppercase tracking-[0.1em] text-[12px] text-ink">
+      {label}{required && " *"}
+    </label>
+    <select
+      id={id}
+      name={id}
+      required={required}
+      value={value}
+      onChange={onChange}
+      className="border border-ink px-4 py-3.5 text-[16px] bg-white text-ink"
+      style={{ borderRadius: 0, transition: "border-color 200ms ease" }}
+    >
+      <option value="" disabled>Select…</option>
+      {options.map((o) => <option key={o} value={o}>{o}</option>)}
+    </select>
+  </div>
+);
+
+const SuccessCard = ({ headline, sub }) => (
+  <div className="bg-ink text-white p-12 text-center max-w-[640px]">
+    <div
+      className="mx-auto w-14 h-14 flex items-center justify-center"
+      style={{ background: "#D2122E" }}
+    >
+      <IconCheck size={28} className="text-white" strokeWidth={3} />
+    </div>
+    <h3 className="font-display mt-6" style={{ fontSize: "clamp(1.75rem, 3vw, 2rem)" }}>{headline}</h3>
+    <p className="mt-3 text-[15px]" style={{ color: "rgba(255,255,255,0.75)" }}>{sub}</p>
+  </div>
+);
+
 // ---- COACH DATA -----------------------------------------------------------
 const COACHES = [
   {
@@ -374,29 +442,42 @@ const COACHES = [
     name: "ALEXANDER RAPO",
     first: "ALEXANDER",
     last: "RAPO",
-    title: "Founder of Footy Up",
+    title: "Co-Founder",
     school: "BABSON",
     level: "NCAA D3",
-    role: "Founder · Babson Men's Soccer",
-    bio: "Former New England Revolution Academy player and current Babson Men's Soccer player. Alexander founded Footy Up to bring the same training environment that shaped him to the next generation of Boston-area players.",
-    chips: ["EX-NER ACADEMY", "BABSON", "FOUNDER"],
+    role: "Co-Founder · Babson Men's Soccer",
+    bio: "Former New England Revolution Academy player and current Babson Men's Soccer player. Alexander co-founded Footy Up to bring the same training environment that shaped him to the next generation of Boston-area players.",
+    chips: ["EX-NER ACADEMY", "BABSON", "CO-FOUNDER"],
     src: "public/uploads/images/Alex Rapo.jpeg",
   },
   {
     n: "02",
+    name: "CHRIS",
+    first: "COACH",
+    last: "CHRIS",
+    title: "Co-Founder",
+    school: "WATERTOWN HS",
+    level: "Varsity Coach",
+    role: "Co-Founder · Former Watertown HS Assistant Coach",
+    bio: "Assistant Varsity Boys' Coach at Watertown High School (2011–2021), where he helped the program capture 5 Middlesex League titles, 3 North Championships, and an Eastern Conference Championship. A former standout defender at Watertown (Middlesex All-Star) and Fitchburg State University (All-Defensive Second Team), Chris pairs strong technical foundations with a player-centered approach — developing confident, well-rounded athletes who understand the game and love playing. Families can expect professionalism, passion, and proven success in every session.",
+    chips: ["5× LEAGUE TITLES", "FITCHBURG STATE", "CO-FOUNDER"],
+    src: "public/uploads/images/new cofounder.PNG",
+  },
+  {
+    n: "03",
     name: "JAMIE KABUUSU",
     first: "JAMIE",
     last: "KABUUSU",
-    title: "Coach",
+    title: "Managing Director",
     school: "DUKE",
     level: "NCAA D1",
-    role: "Coach · Duke Men's Soccer",
+    role: "Managing Director · Duke Men's Soccer",
     bio: "Former New England Revolution Academy player and current Duke Men's Soccer player. Jamie brings ACC-level pace, composure, and tactical detail to every session.",
     chips: ["EX-NER ACADEMY", "DUKE", "ACC"],
     src: "public/uploads/images/Jamie Kabuusu.jpeg",
   },
   {
-    n: "03",
+    n: "04",
     name: "ANTHONY RAPO",
     first: "ANTHONY",
     last: "RAPO",
@@ -409,7 +490,7 @@ const COACHES = [
     src: "public/uploads/images/Anthony Rap.jpeg",
   },
   {
-    n: "04",
+    n: "05",
     name: "BRYAN TORO",
     first: "BRYAN",
     last: "TORO",
@@ -422,7 +503,7 @@ const COACHES = [
     src: "public/uploads/images/Brian Toro.jpeg",
   },
   {
-    n: "05",
+    n: "06",
     name: "ANGEL ORTEZ",
     first: "ANGEL",
     last: "ORTEZ",
@@ -435,20 +516,20 @@ const COACHES = [
     src: "public/uploads/images/angel1.jpeg",
   },
   {
-    n: "06",
+    n: "07",
     name: "TJ KAHOLI",
     first: "TJ",
     last: "KAHOLI",
     title: "Coach",
-    school: "LOUISVILLE",
+    school: "STANFORD",
     level: "NCAA D1",
-    role: "Coach · Louisville Men's Soccer",
-    bio: "Former Boston Bolts MLS Next captain and three-year New England Revolution Academy player. Now a sophomore and current captain at Louisville Men's Soccer — bringing leadership, on-field communication, and ACC-level habits to every session.",
-    chips: ["EX-NER ACADEMY", "LOUISVILLE", "CAPTAIN"],
+    role: "Coach · Stanford Men's Soccer",
+    bio: "Former Boston Bolts MLS Next captain and three-year New England Revolution Academy player, now competing at Stanford Men's Soccer — bringing leadership, on-field communication, and ACC-level habits to every session.",
+    chips: ["EX-NER ACADEMY", "STANFORD", "CAPTAIN"],
     src: "public/uploads/images/Tj Kaholi.jpeg",
   },
   {
-    n: "07",
+    n: "08",
     name: "ENZO GONCALVES",
     first: "ENZO",
     last: "GONCALVES",
@@ -465,4 +546,5 @@ const COACHES = [
 Object.assign(window, {
   TopNav, Footer, AccentBanner, RedButton, OutlineButton,
   UnsplashImg, LabelRow, COACHES, NAV_ITEMS,
+  Field, Textarea, SelectField, SuccessCard,
 });
