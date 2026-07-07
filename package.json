@@ -2,7 +2,14 @@
   "name": "footy-up",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "dev": "vercel dev --listen 3000",
+    "dev:static": "serve -l 3000 ."
+  },
   "dependencies": {
     "stripe": "^17.7.0"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
   }
 }

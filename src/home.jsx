@@ -70,7 +70,7 @@ const Home = ({ setPage }) => {
             <div className="hero-content__top">
               <div className="eyebrow mb-6" style={{ color: "rgba(255,255,255,0.7)" }}>
                 <span className="inline-block w-2 h-2 rounded-full mr-2.5 align-middle" style={{ background: "#D2122E", boxShadow: "0 0 0 4px rgba(210,18,46,0.25)" }} />
-                Boston · Est. 2024 · Youth Soccer
+                Boston · Est. 2024 · Soccer &amp; Basketball
               </div>
               <h1
                 className="font-display text-white"
@@ -85,8 +85,16 @@ const Home = ({ setPage }) => {
               <p className="hero-content__lead mt-7 text-[18px] leading-[1.55]" style={{ maxWidth: 480, color: "rgba(255,255,255,0.88)", textShadow: "0 1px 12px rgba(0,0,0,0.35)" }}>
                 Coached by ex-New England Revolution players and NCAA Division I starters from Duke, BC, and Northeastern. Private training booking now — camps returning soon.
               </p>
-              <div className="mt-10 flex flex-col sm:flex-row gap-3">
+              <div className="mt-10 flex flex-col sm:flex-row sm:flex-wrap gap-3">
                 <RedButton onClick={() => setPage("privateTraining")}>PRIVATE TRAINING</RedButton>
+                <button
+                  type="button"
+                  onClick={() => setPage("basketball")}
+                  className="btn-arrow font-display tracking-wide text-white px-5 py-3 text-[16px] bg-[#F2662D] hover:bg-[#D8531F]"
+                >
+                  <span>BASKETBALL</span>
+                  <IconArrowRight size={18} className="arrow" />
+                </button>
                 <OutlineButton onClick={() => setPage("coaches")} className="hero-outline-btn">MEET THE COACHES</OutlineButton>
               </div>
             </div>
@@ -212,6 +220,253 @@ const Home = ({ setPage }) => {
         <style>{`@media (min-width: 1024px) {
           .home-cred-fix { display: none; }
         }`}</style>
+      </section>
+
+      {/* BASKETBALL PROMO — new vertical, top-of-page visibility */}
+      <section className="bball-promo relative overflow-hidden px-5 lg:px-10 py-20 lg:py-24">
+        <div className="bball-promo__bg" aria-hidden="true" />
+        <div className="bball-promo__grid" aria-hidden="true" />
+        <div className="bball-promo__glow" aria-hidden="true" />
+
+        <div className="relative z-10 max-w-[1200px] mx-auto">
+          <div className="bball-promo__inner">
+            <div className="bball-promo__copy">
+              <div className="inline-flex items-center gap-2.5 mb-5 px-4 py-2 rounded-full" style={{ background: "rgba(242,102,45,0.10)", border: "1px solid rgba(242,102,45,0.35)" }}>
+                <span className="bball-promo__pulse" aria-hidden="true" />
+                <span className="font-cond font-bold uppercase tracking-[0.2em] text-[11px]" style={{ color: "#ff8a4c" }}>
+                  New — now offering basketball
+                </span>
+              </div>
+              <h2 className="font-display text-white" style={{ fontSize: "clamp(2.25rem, 5vw, 4.5rem)", lineHeight: 0.95, letterSpacing: "-0.01em" }}>
+                BASKETBALL IS <span className="bball-promo__accent">HERE</span>.
+              </h2>
+              <p className="mt-5 text-[16px] lg:text-[17px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.72)", maxWidth: 560 }}>
+                Camps and private training led by Coach Mike — private sessions held in Walpole, MA. The same standards and energy you know from the pitch, now on the court.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => setPage("basketball")}
+                  className="bball-promo__cta btn-arrow font-display tracking-wide px-6 py-3.5 text-[18px]"
+                >
+                  <span>EXPLORE BASKETBALL</span>
+                  <IconArrowRight size={18} className="arrow" />
+                </button>
+              </div>
+
+              {/* Feature pills */}
+              <div className="mt-7 flex flex-wrap gap-2">
+                {["Basketball Camps", "Private Training", "Walpole, MA"].map((t) => (
+                  <span key={t} className="bball-promo__pill">{t}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Basketball glyph */}
+            <div className="bball-promo__aside" aria-hidden="true">
+              <div className="bball-promo__ball">
+                <svg viewBox="0 0 100 100" fill="none">
+                  <circle cx="50" cy="50" r="46" stroke="currentColor" strokeWidth="2.5" />
+                  <line x1="50" y1="4" x2="50" y2="96" stroke="currentColor" strokeWidth="2.5" />
+                  <line x1="4" y1="50" x2="96" y2="50" stroke="currentColor" strokeWidth="2.5" />
+                  <path d="M16 16 C40 40, 40 60, 16 84" stroke="currentColor" strokeWidth="2.5" />
+                  <path d="M84 16 C60 40, 60 60, 84 84" stroke="currentColor" strokeWidth="2.5" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          .bball-promo { background: #0B0B0E; }
+          .bball-promo__bg {
+            position: absolute; inset: 0; z-index: 0; pointer-events: none;
+            background:
+              radial-gradient(900px 500px at 12% 0%, rgba(242,102,45,0.16), transparent 60%),
+              radial-gradient(700px 500px at 100% 100%, rgba(255,140,66,0.10), transparent 60%),
+              linear-gradient(180deg, #0B0B0E 0%, #0A0A0A 100%);
+          }
+          .bball-promo__grid {
+            position: absolute; inset: 0; z-index: 0; pointer-events: none;
+            background-image:
+              linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, transparent 80%);
+            opacity: 0.5;
+          }
+          .bball-promo__glow {
+            position: absolute; z-index: 0;
+            width: 520px; height: 520px; border-radius: 9999px;
+            filter: blur(140px); pointer-events: none;
+            top: -160px; right: -120px; background: rgba(242,102,45,0.22);
+          }
+          .bball-promo__accent {
+            background: linear-gradient(90deg, #F2662D 0%, #FF8C42 55%, #FFB55C 100%);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+          }
+          .bball-promo__pulse {
+            display: inline-block; width: 7px; height: 7px; border-radius: 999px;
+            background: #F2662D; box-shadow: 0 0 0 3px rgba(242,102,45,0.20);
+            animation: bbp-pulse 1.6s ease-in-out infinite;
+          }
+          @keyframes bbp-pulse {
+            0%,100% { box-shadow: 0 0 0 3px rgba(242,102,45,0.20); }
+            50%     { box-shadow: 0 0 0 7px rgba(242,102,45,0.04); }
+          }
+          .bball-promo__cta {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #F2662D; color: #fff;
+            transition: background-color 200ms ease;
+          }
+          .bball-promo__cta:hover { background: #D8531F; }
+          .bball-promo__pill {
+            font-family: "Barlow Condensed", sans-serif; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.14em; font-size: 12px;
+            color: rgba(255,255,255,0.72);
+            padding: 6px 12px; border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.03);
+          }
+          .bball-promo__inner {
+            display: grid; grid-template-columns: 1fr; gap: 32px; align-items: center;
+          }
+          .bball-promo__aside { display: flex; justify-content: center; }
+          .bball-promo__ball {
+            width: min(280px, 62vw);
+            color: rgba(242,102,45,0.7);
+            filter: drop-shadow(0 24px 60px rgba(242,102,45,0.25));
+          }
+          .bball-promo__ball svg { width: 100%; height: auto; display: block; }
+          @media (min-width: 1024px) {
+            .bball-promo__inner { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 56px; }
+          }
+          @media (max-width: 1023px) {
+            .bball-promo__aside { display: none; }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .bball-promo__pulse { animation: none !important; }
+          }
+        `}</style>
+      </section>
+
+      {/* UPCOMING CAMPS — heads-up alert */}
+      <section className="upcoming relative overflow-hidden px-5 lg:px-10 py-20 lg:py-28">
+        <div className="upcoming__bg" aria-hidden="true" />
+        <div className="upcoming__grid" aria-hidden="true" />
+        <div className="upcoming__glow upcoming__glow--red" aria-hidden="true" />
+        <div className="upcoming__glow upcoming__glow--gold" aria-hidden="true" />
+
+        <div className="relative z-10 max-w-[1200px] mx-auto">
+          {/* Header */}
+          <div className="text-center max-w-[760px] mx-auto">
+            <div className="inline-flex items-center gap-2.5 mb-5 px-4 py-2 rounded-full" style={{ background: "rgba(210,18,46,0.10)", border: "1px solid rgba(210,18,46,0.35)" }}>
+              <span className="upcoming__pulse" aria-hidden="true" />
+              <span className="font-cond font-bold uppercase tracking-[0.2em] text-[11px]" style={{ color: "#ff6072" }}>
+                Heads up — camps returning
+              </span>
+            </div>
+            <h2 className="font-display text-white" style={{ fontSize: "clamp(2.25rem, 5vw, 4.5rem)", lineHeight: 0.95, letterSpacing: "-0.01em" }}>
+              UPCOMING <span className="upcoming__accent">CAMPS</span>.
+            </h2>
+            <p className="mt-6 text-[16px] lg:text-[17px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.72)" }}>
+              New camps are on the way. Keep an eye out — save the dates below. Full details and registration drop soon.
+            </p>
+          </div>
+
+          {/* Location cards */}
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5">
+            {[
+              { tag: "Winter Camp", place: "WALPOLE", region: "Massachusetts", note: "Dates TBA · Stay tuned", accent: "#D2122E" },
+              { tag: "Summer 2027", place: "BB&N", region: "Cambridge, MA", note: "Dates TBA · Stay tuned", accent: "#C9A24A" },
+              { tag: "Summer 2027 & Beyond", place: "DOVER", region: "Massachusetts · + more", note: "Locations expanding · Stay tuned", accent: "#D2122E" },
+            ].map((c) => (
+              <div key={c.place} className="upcoming__card">
+                <div className="flex items-center gap-2">
+                  <span className="upcoming__card-dot" style={{ background: c.accent }} aria-hidden="true" />
+                  <span className="font-cond font-bold uppercase tracking-[0.18em] text-[11px]" style={{ color: c.accent }}>{c.tag}</span>
+                </div>
+                <div className="font-display text-white mt-4 leading-none" style={{ fontSize: "clamp(2rem, 3.4vw, 2.75rem)" }}>{c.place}</div>
+                <div className="mt-2 font-cond uppercase tracking-[0.14em] text-[12px]" style={{ color: "rgba(255,255,255,0.6)" }}>{c.region}</div>
+                <div className="upcoming__card-note mt-5 pt-4 flex items-center gap-2 font-cond uppercase tracking-[0.12em] text-[11px]" style={{ color: "rgba(255,255,255,0.5)" }}>
+                  <IconMapPin size={13} /> {c.note}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Notify */}
+          <div className="mt-10 text-center font-cond uppercase tracking-[0.14em] text-[12px]" style={{ color: "rgba(255,255,255,0.55)" }}>
+            Want first dibs? Email{" "}
+            <a href="mailto:footyupp@outlook.com" className="upcoming__link">footyupp@outlook.com</a>
+            {" "}to get notified.
+          </div>
+        </div>
+
+        <style>{`
+          .upcoming { background: #0A0A0A; }
+          .upcoming__bg {
+            position: absolute; inset: 0; z-index: 0; pointer-events: none;
+            background:
+              radial-gradient(900px 500px at 50% 0%, rgba(210,18,46,0.18), transparent 60%),
+              radial-gradient(800px 500px at 100% 100%, rgba(201,162,74,0.12), transparent 60%),
+              linear-gradient(180deg, #0A0A0A 0%, #101013 100%);
+          }
+          .upcoming__grid {
+            position: absolute; inset: 0; z-index: 0; pointer-events: none;
+            background-image:
+              linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, transparent 80%);
+            opacity: 0.55;
+          }
+          .upcoming__glow {
+            position: absolute; z-index: 0;
+            width: 480px; height: 480px; border-radius: 9999px;
+            filter: blur(130px); pointer-events: none;
+          }
+          .upcoming__glow--red  { top: -160px; left: -120px; background: rgba(210,18,46,0.30); }
+          .upcoming__glow--gold { bottom: -180px; right: -120px; background: rgba(201,162,74,0.16); }
+          .upcoming__accent {
+            background: linear-gradient(90deg, #D2122E 0%, #ff5066 55%, #C9A24A 100%);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+          }
+          .upcoming__pulse {
+            display: inline-block; width: 7px; height: 7px; border-radius: 999px;
+            background: #D2122E; box-shadow: 0 0 0 3px rgba(210,18,46,0.20);
+            animation: upcoming-pulse 1.6s ease-in-out infinite;
+          }
+          @keyframes upcoming-pulse {
+            0%,100% { box-shadow: 0 0 0 3px rgba(210,18,46,0.20); }
+            50%     { box-shadow: 0 0 0 7px rgba(210,18,46,0.04); }
+          }
+          .upcoming__card {
+            padding: 24px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            text-align: left;
+            transition: border-color 300ms ease, background 300ms ease, transform 300ms ease;
+          }
+          .upcoming__card:hover {
+            border-color: rgba(210,18,46,0.45);
+            background: rgba(210,18,46,0.06);
+            transform: translateY(-3px);
+          }
+          .upcoming__card-dot {
+            width: 6px; height: 6px; border-radius: 999px;
+            box-shadow: 0 0 0 3px rgba(210,18,46,0.15);
+          }
+          .upcoming__card-note { border-top: 1px solid rgba(255,255,255,0.08); }
+          .upcoming__link { color: #ff6072; text-decoration: underline; }
+          .upcoming__link:hover { color: #fff; }
+          @media (prefers-reduced-motion: reduce) {
+            .upcoming__card, .upcoming__pulse { transition: none !important; animation: none !important; }
+          }
+        `}</style>
       </section>
 
       {/* COACH PREVIEW GRID — premium dark editorial */}
@@ -1076,125 +1331,6 @@ const Home = ({ setPage }) => {
             <RedButton onClick={() => setPage("privateTraining")}>READY TO GET YOUR ATHLETE NOTICED?</RedButton>
           </div>
         </div>
-      </section>
-
-      {/* UPCOMING CAMPS — heads-up alert */}
-      <section className="upcoming relative overflow-hidden px-5 lg:px-10 py-20 lg:py-28">
-        <div className="upcoming__bg" aria-hidden="true" />
-        <div className="upcoming__grid" aria-hidden="true" />
-        <div className="upcoming__glow upcoming__glow--red" aria-hidden="true" />
-        <div className="upcoming__glow upcoming__glow--gold" aria-hidden="true" />
-
-        <div className="relative z-10 max-w-[1200px] mx-auto">
-          {/* Header */}
-          <div className="text-center max-w-[760px] mx-auto">
-            <div className="inline-flex items-center gap-2.5 mb-5 px-4 py-2 rounded-full" style={{ background: "rgba(210,18,46,0.10)", border: "1px solid rgba(210,18,46,0.35)" }}>
-              <span className="upcoming__pulse" aria-hidden="true" />
-              <span className="font-cond font-bold uppercase tracking-[0.2em] text-[11px]" style={{ color: "#ff6072" }}>
-                Heads up — camps returning
-              </span>
-            </div>
-            <h2 className="font-display text-white" style={{ fontSize: "clamp(2.25rem, 5vw, 4.5rem)", lineHeight: 0.95, letterSpacing: "-0.01em" }}>
-              UPCOMING <span className="upcoming__accent">CAMPS</span>.
-            </h2>
-            <p className="mt-6 text-[16px] lg:text-[17px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.72)" }}>
-              New camps are on the way. Keep an eye out — save the dates below. Full details and registration drop soon.
-            </p>
-          </div>
-
-          {/* Location cards */}
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5">
-            {[
-              { tag: "Winter Camp", place: "WALPOLE", region: "Massachusetts", note: "Dates TBA · Stay tuned", accent: "#D2122E" },
-              { tag: "Summer 2027", place: "BB&N", region: "Cambridge, MA", note: "Dates TBA · Stay tuned", accent: "#C9A24A" },
-              { tag: "Summer 2027 & Beyond", place: "DOVER", region: "Massachusetts · + more", note: "Locations expanding · Stay tuned", accent: "#D2122E" },
-            ].map((c) => (
-              <div key={c.place} className="upcoming__card">
-                <div className="flex items-center gap-2">
-                  <span className="upcoming__card-dot" style={{ background: c.accent }} aria-hidden="true" />
-                  <span className="font-cond font-bold uppercase tracking-[0.18em] text-[11px]" style={{ color: c.accent }}>{c.tag}</span>
-                </div>
-                <div className="font-display text-white mt-4 leading-none" style={{ fontSize: "clamp(2rem, 3.4vw, 2.75rem)" }}>{c.place}</div>
-                <div className="mt-2 font-cond uppercase tracking-[0.14em] text-[12px]" style={{ color: "rgba(255,255,255,0.6)" }}>{c.region}</div>
-                <div className="upcoming__card-note mt-5 pt-4 flex items-center gap-2 font-cond uppercase tracking-[0.12em] text-[11px]" style={{ color: "rgba(255,255,255,0.5)" }}>
-                  <IconMapPin size={13} /> {c.note}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Notify */}
-          <div className="mt-10 text-center font-cond uppercase tracking-[0.14em] text-[12px]" style={{ color: "rgba(255,255,255,0.55)" }}>
-            Want first dibs? Email{" "}
-            <a href="mailto:footyupp@outlook.com" className="upcoming__link">footyupp@outlook.com</a>
-            {" "}to get notified.
-          </div>
-        </div>
-
-        <style>{`
-          .upcoming { background: #0A0A0A; }
-          .upcoming__bg {
-            position: absolute; inset: 0; z-index: 0; pointer-events: none;
-            background:
-              radial-gradient(900px 500px at 50% 0%, rgba(210,18,46,0.18), transparent 60%),
-              radial-gradient(800px 500px at 100% 100%, rgba(201,162,74,0.12), transparent 60%),
-              linear-gradient(180deg, #0A0A0A 0%, #101013 100%);
-          }
-          .upcoming__grid {
-            position: absolute; inset: 0; z-index: 0; pointer-events: none;
-            background-image:
-              linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
-            background-size: 80px 80px;
-            mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, transparent 80%);
-            -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, transparent 80%);
-            opacity: 0.55;
-          }
-          .upcoming__glow {
-            position: absolute; z-index: 0;
-            width: 480px; height: 480px; border-radius: 9999px;
-            filter: blur(130px); pointer-events: none;
-          }
-          .upcoming__glow--red  { top: -160px; left: -120px; background: rgba(210,18,46,0.30); }
-          .upcoming__glow--gold { bottom: -180px; right: -120px; background: rgba(201,162,74,0.16); }
-          .upcoming__accent {
-            background: linear-gradient(90deg, #D2122E 0%, #ff5066 55%, #C9A24A 100%);
-            -webkit-background-clip: text; background-clip: text; color: transparent;
-          }
-          .upcoming__pulse {
-            display: inline-block; width: 7px; height: 7px; border-radius: 999px;
-            background: #D2122E; box-shadow: 0 0 0 3px rgba(210,18,46,0.20);
-            animation: upcoming-pulse 1.6s ease-in-out infinite;
-          }
-          @keyframes upcoming-pulse {
-            0%,100% { box-shadow: 0 0 0 3px rgba(210,18,46,0.20); }
-            50%     { box-shadow: 0 0 0 7px rgba(210,18,46,0.04); }
-          }
-          .upcoming__card {
-            padding: 24px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.09);
-            border-radius: 16px;
-            backdrop-filter: blur(8px);
-            text-align: left;
-            transition: border-color 300ms ease, background 300ms ease, transform 300ms ease;
-          }
-          .upcoming__card:hover {
-            border-color: rgba(210,18,46,0.45);
-            background: rgba(210,18,46,0.06);
-            transform: translateY(-3px);
-          }
-          .upcoming__card-dot {
-            width: 6px; height: 6px; border-radius: 999px;
-            box-shadow: 0 0 0 3px rgba(210,18,46,0.15);
-          }
-          .upcoming__card-note { border-top: 1px solid rgba(255,255,255,0.08); }
-          .upcoming__link { color: #ff6072; text-decoration: underline; }
-          .upcoming__link:hover { color: #fff; }
-          @media (prefers-reduced-motion: reduce) {
-            .upcoming__card, .upcoming__pulse { transition: none !important; animation: none !important; }
-          }
-        `}</style>
       </section>
 
       {/* GUEST DETAIL MODAL */}

@@ -2,6 +2,7 @@
 
 const NAV_ITEMS = [
   { key: "home", label: "Home" },
+  { key: "basketball", label: "Basketball" },
   { key: "coaches", label: "Coaches" },
   { key: "privateTraining", label: "Private Training" },
 ];
@@ -300,12 +301,14 @@ const Footer = ({ setPage }) => {
         </Col>
         <Col title="Navigate">
           <li><NavBtn to="home">Home</NavBtn></li>
+          <li><NavBtn to="basketball">Basketball</NavBtn></li>
           <li><NavBtn to="coaches">Coaches</NavBtn></li>
           <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
         </Col>
         <Col title="Program">
           <li><NavBtn to="coaches">About the Coaches</NavBtn></li>
           <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
+          <li><NavBtn to="basketball">Basketball</NavBtn></li>
           <li><NavBtn to="home">Upcoming Camps</NavBtn></li>
         </Col>
       </div>
