@@ -86,7 +86,7 @@ const Home = ({ setPage }) => {
                 Coached by ex-New England Revolution players and NCAA Division I starters from Duke, BC, and Northeastern. Private training booking now — camps returning soon.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row sm:flex-wrap gap-3">
-                <RedButton onClick={() => setPage("privateTraining")}>PRIVATE TRAINING</RedButton>
+                <RedButton onClick={() => setPage("privateTraining")}>SOCCER PRIVATE TRAINING</RedButton>
                 <button
                   type="button"
                   onClick={() => setPage("basketball")}
