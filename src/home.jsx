@@ -1256,7 +1256,7 @@ const Home = ({ setPage }) => {
             <div className="hidden sm:block w-px self-stretch bg-black/15" />
             <div>
               <div className="font-display flex items-baseline gap-3 justify-center sm:justify-start" style={{ color: "rgba(0,0,0,0.55)" }}>
-                <span className="text-[22px] lg:text-[26px]">FOOTY UP ×</span>
+                <span className="text-[22px] lg:text-[26px]">FOOTYUP ×</span>
                 <span className="text-[40px] lg:text-[52px] leading-none text-ink">US FOOTY.</span>
               </div>
               <div className="mt-3 font-cond uppercase tracking-[0.18em] text-[12px] text-ink/70">

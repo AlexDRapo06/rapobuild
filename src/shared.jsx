@@ -67,9 +67,9 @@ const TopNav = ({ page, setPage }) => {
         <button
           onClick={() => go("home")}
           className="font-display text-[26px] lg:text-[28px] tracking-wide hover:opacity-80"
-          aria-label="Footy Up — Home"
+          aria-label="FOOTYUP — Home"
         >
-          FOOTY UP
+          FOOTYUP
         </button>
 
         {/* Center desktop */}
@@ -119,7 +119,7 @@ const TopNav = ({ page, setPage }) => {
         <div className="mobile-menu__grid" aria-hidden="true" />
 
         <div className="relative z-10 h-[60px] flex items-center justify-between px-5 border-b border-white/10">
-          <span className="font-display text-[26px] tracking-wide">FOOTY UP</span>
+          <span className="font-display text-[26px] tracking-wide">FOOTYUP</span>
           <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2 -mr-2 text-white/90 hover:text-white"><IconX size={24} /></button>
         </div>
 
@@ -287,7 +287,7 @@ const Footer = ({ setPage }) => {
             marginBottom: "-0.18em", // crop bottom slightly
           }}
         >
-          FOOTY UP
+          FOOTYUP
         </div>
       </div>
 
@@ -314,7 +314,7 @@ const Footer = ({ setPage }) => {
       </div>
 
       <div className="border-t border-white/10 px-5 lg:px-10 py-6 flex flex-col sm:flex-row justify-between gap-3 text-[12px] text-white/50 font-cond uppercase tracking-[0.1em]">
-        <div>© 2026 Footy Up · All Rights Reserved</div>
+        <div>© 2026 FOOTYUP · All Rights Reserved</div>
         <div>Built in collaboration with GOAT</div>
       </div>
 
