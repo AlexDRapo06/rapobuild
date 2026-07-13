@@ -1,6 +1,6 @@
 // HOME page
 const HOME_COACH_PREVIEW = [
-  { name: "ALEXANDER RAPO",first: "ALEXANDER",last: "RAPO",   school: "BABSON",         role: "NCAA D3",       position: "Co-Founder",        src: "public/uploads/images/Alex Rapo.jpeg" },
+  { name: "ALEXANDER RAPO",first: "ALEXANDER",last: "RAPO",   school: "BABSON",         role: "NCAA D3",       position: "Founder",           src: "public/uploads/images/Alex Rapo.jpeg" },
   { name: "CHRIS",         first: "COACH",    last: "CHRIS",  school: "WATERTOWN HS",   role: "Varsity Coach", position: "CEO",               src: "public/uploads/images/new cofounder.PNG" },
   { name: "JAMIE KABUUSU", first: "JAMIE",    last: "KABUUSU",school: "DUKE",           role: "NCAA D1",       position: "Managing Director", src: "public/uploads/images/Jamie Kabuusu.jpeg" },
   { name: "ANTHONY RAPO",  first: "ANTHONY",  last: "RAPO",   school: "NORTHEASTERN",   role: "NCAA D1",       position: "Coach",             src: "public/uploads/images/Anthony Rap.jpeg" },
