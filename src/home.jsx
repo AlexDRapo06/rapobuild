@@ -363,21 +363,21 @@ const Home = ({ setPage }) => {
             <div className="inline-flex items-center gap-2.5 mb-5 px-4 py-2 rounded-full" style={{ background: "rgba(210,18,46,0.10)", border: "1px solid rgba(210,18,46,0.35)" }}>
               <span className="upcoming__pulse" aria-hidden="true" />
               <span className="font-cond font-bold uppercase tracking-[0.2em] text-[11px]" style={{ color: "#ff6072" }}>
-                Heads up — camps returning
+                Now open — Winter Camp registration
               </span>
             </div>
             <h2 className="font-display text-white" style={{ fontSize: "clamp(2.25rem, 5vw, 4.5rem)", lineHeight: 0.95, letterSpacing: "-0.01em" }}>
               UPCOMING <span className="upcoming__accent">CAMPS</span>.
             </h2>
             <p className="mt-6 text-[16px] lg:text-[17px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.72)" }}>
-              New camps are on the way. Keep an eye out — save the dates below. Full details and registration drop soon.
+              Winter Camp registration is now open — 9 AM–1 PM in Walpole, MA, for $315 per player. More camps below are on the way; save the dates.
             </p>
           </div>
 
           {/* Location cards */}
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5">
             {[
-              { tag: "Winter Camp", place: "WALPOLE", region: "Massachusetts", note: "Dates TBA · Stay tuned", accent: "#D2122E" },
+              { tag: "Winter Camp", place: "WALPOLE", region: "Massachusetts", note: "9 AM–1 PM · Register now", accent: "#D2122E" },
               { tag: "Summer 2027", place: "BB&N", region: "Cambridge, MA", note: "Dates TBA · Stay tuned", accent: "#C9A24A" },
               { tag: "Summer 2027 & Beyond", place: "DOVER", region: "Massachusetts · + more", note: "Locations expanding · Stay tuned", accent: "#D2122E" },
             ].map((c) => (
@@ -393,6 +393,11 @@ const Home = ({ setPage }) => {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Winter Camp CTA */}
+          <div className="mt-12 flex justify-center">
+            <RedButton onClick={() => setPage("winterCamp")}>SIGN UP FOR WINTER CAMP — $315</RedButton>
           </div>
 
           {/* Notify */}

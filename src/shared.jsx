@@ -2,6 +2,7 @@
 
 const NAV_ITEMS = [
   { key: "home", label: "Home" },
+  { key: "winterCamp", label: "Winter Camp" },
   { key: "basketball", label: "Basketball" },
   { key: "coaches", label: "Coaches" },
   { key: "privateTraining", label: "Private Training" },
@@ -301,6 +302,7 @@ const Footer = ({ setPage }) => {
         </Col>
         <Col title="Navigate">
           <li><NavBtn to="home">Home</NavBtn></li>
+          <li><NavBtn to="winterCamp">Winter Camp</NavBtn></li>
           <li><NavBtn to="basketball">Basketball</NavBtn></li>
           <li><NavBtn to="coaches">Coaches</NavBtn></li>
           <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
@@ -309,7 +311,7 @@ const Footer = ({ setPage }) => {
           <li><NavBtn to="coaches">About the Coaches</NavBtn></li>
           <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
           <li><NavBtn to="basketball">Basketball</NavBtn></li>
-          <li><NavBtn to="home">Upcoming Camps</NavBtn></li>
+          <li><NavBtn to="winterCamp">Winter Camp</NavBtn></li>
         </Col>
       </div>
 
@@ -549,29 +551,16 @@ const COACHES = [
     name: "SEBASTIAN OTERO",
     first: "SEBASTIAN",
     last: "OTERO",
-    title: "Coach",
+    title: "Head of Florida",
     school: "BOSTON UNIVERSITY",
     level: "NCAA D1",
-    role: "Coach · Boston University Men's Soccer",
+    role: "Head of Florida · Boston University Men's Soccer",
     bio: "Inter Miami CF Academy product with five-plus years in the system, training with both the first and second teams, and a Puerto Rico national team call-up for CONCACAF Nations League and Gold Cup qualifiers. Now at Boston University, Sebastian led the Terriers with three game-winning goals as a freshman and cracked TopDrawerSoccer's top-100 freshman list.",
     chips: ["EX-INTER MIAMI ACADEMY", "BOSTON UNIVERSITY", "PUERTO RICO NT"],
     src: "public/uploads/images/Sebastian Otero.png",
   },
   {
     n: "10",
-    name: "MASON SULLIVAN",
-    first: "MASON",
-    last: "SULLIVAN",
-    title: "Coach",
-    school: "WAKE FOREST",
-    level: "NCAA D1",
-    role: "Coach · Wake Forest Men's Soccer",
-    bio: "Former New England Revolution Academy and Revolution II player, Boston Bolts alum, and 2022 MLS Next All-Star. Now at Wake Forest, Mason made 15 appearances as a freshman, earned Academic All-ACC, and helped anchor a back line that recorded six clean sheets — including a 3-0 shutout of Notre Dame.",
-    chips: ["EX-NER ACADEMY", "WAKE FOREST", "ACC"],
-    src: "public/uploads/images/Mason Sullivan.png",
-  },
-  {
-    n: "11",
     name: "IAN HECKER",
     first: "IAN",
     last: "HECKER",
@@ -584,7 +573,7 @@ const COACHES = [
     src: "public/uploads/images/Ian Hecker.png",
   },
   {
-    n: "12",
+    n: "11",
     name: "AIDEN REILLY",
     first: "AIDEN",
     last: "REILLY",
@@ -597,7 +586,7 @@ const COACHES = [
     src: "public/uploads/images/Aiden Reilly.png",
   },
   {
-    n: "13",
+    n: "12",
     name: "JOSH PARTAL",
     first: "JOSH",
     last: "PARTAL",
@@ -610,7 +599,7 @@ const COACHES = [
     src: "public/uploads/images/Josh Partal.png",
   },
   {
-    n: "14",
+    n: "13",
     name: "ALEJANDRO PALACIO",
     first: "ALEJANDRO",
     last: "PALACIO",
