@@ -1,7 +1,7 @@
 // HOME page
 const HOME_COACH_PREVIEW = [
   { name: "ALEXANDER RAPO",first: "ALEXANDER",last: "RAPO",   school: "BABSON",         role: "NCAA D3",       position: "Founder",           src: "public/uploads/images/Alex Rapo.jpeg" },
-  { name: "CHRIS",         first: "COACH",    last: "CHRIS",  school: "WATERTOWN HS",   role: "Varsity Coach", position: "CEO",               src: "public/uploads/images/new cofounder.PNG" },
+  { name: "CHRIS CALDEN",  first: "CHRIS",    last: "CALDEN", school: "WATERTOWN HS",   role: "Varsity Coach", position: "CEO",               src: "public/uploads/images/new cofounder.PNG" },
   { name: "JAMIE KABUUSU", first: "JAMIE",    last: "KABUUSU",school: "DUKE",           role: "NCAA D1",       position: "Managing Director", src: "public/uploads/images/Jamie Kabuusu.jpeg" },
   { name: "ANTHONY RAPO",  first: "ANTHONY",  last: "RAPO",   school: "NORTHEASTERN",   role: "NCAA D1",       position: "Coach",             src: "public/uploads/images/Anthony Rap.jpeg" },
   { name: "BRYAN TORO",    first: "BRYAN",    last: "TORO",   school: "BOSTON COLLEGE", role: "NCAA D1",       position: "Coach",             src: "public/uploads/images/Brian Toro.jpeg" },
@@ -363,41 +363,57 @@ const Home = ({ setPage }) => {
             <div className="inline-flex items-center gap-2.5 mb-5 px-4 py-2 rounded-full" style={{ background: "rgba(210,18,46,0.10)", border: "1px solid rgba(210,18,46,0.35)" }}>
               <span className="upcoming__pulse" aria-hidden="true" />
               <span className="font-cond font-bold uppercase tracking-[0.2em] text-[11px]" style={{ color: "#ff6072" }}>
-                Now open — Winter Camp registration
+                Now open — Winter & Summer camp registration
               </span>
             </div>
             <h2 className="font-display text-white" style={{ fontSize: "clamp(2.25rem, 5vw, 4.5rem)", lineHeight: 0.95, letterSpacing: "-0.01em" }}>
               UPCOMING <span className="upcoming__accent">CAMPS</span>.
             </h2>
             <p className="mt-6 text-[16px] lg:text-[17px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.72)" }}>
-              Winter Camp registration is now open — 9 AM–1 PM in Walpole, MA, for $315 per player. More camps below are on the way; save the dates.
+              Two camps are open for registration — Winter Camp in Walpole this December, and two summer weeks at Victory Field in Watertown. More locations below are on the way; save the dates.
             </p>
           </div>
 
           {/* Location cards */}
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5">
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
             {[
-              { tag: "Winter Camp", place: "WALPOLE", region: "Massachusetts", note: "9 AM–1 PM · Register now", accent: "#D2122E" },
+              { tag: "Winter Camp", place: "WALPOLE", region: "Massachusetts", note: "Dec 27–31 · 9 AM–1 PM", accent: "#D2122E", page: "winterCamp" },
+              { tag: "Summer 2027", place: "WATERTOWN", region: "Victory Field", note: "July 12–23 · 9 AM–2 PM", accent: "#C9A24A", page: "summerCamp" },
               { tag: "Summer 2027", place: "BB&N", region: "Cambridge, MA", note: "Dates TBA · Stay tuned", accent: "#C9A24A" },
               { tag: "Summer 2027 & Beyond", place: "DOVER", region: "Massachusetts · + more", note: "Locations expanding · Stay tuned", accent: "#D2122E" },
-            ].map((c) => (
-              <div key={c.place} className="upcoming__card">
-                <div className="flex items-center gap-2">
-                  <span className="upcoming__card-dot" style={{ background: c.accent }} aria-hidden="true" />
-                  <span className="font-cond font-bold uppercase tracking-[0.18em] text-[11px]" style={{ color: c.accent }}>{c.tag}</span>
-                </div>
-                <div className="font-display text-white mt-4 leading-none" style={{ fontSize: "clamp(2rem, 3.4vw, 2.75rem)" }}>{c.place}</div>
-                <div className="mt-2 font-cond uppercase tracking-[0.14em] text-[12px]" style={{ color: "rgba(255,255,255,0.6)" }}>{c.region}</div>
-                <div className="upcoming__card-note mt-5 pt-4 flex items-center gap-2 font-cond uppercase tracking-[0.12em] text-[11px]" style={{ color: "rgba(255,255,255,0.5)" }}>
-                  <IconMapPin size={13} /> {c.note}
-                </div>
-              </div>
-            ))}
+            ].map((c) => {
+              // Camps with a page are clickable; the rest are still just teasers.
+              const Card = c.page ? "button" : "div";
+              return (
+                <Card
+                  key={c.place}
+                  type={c.page ? "button" : undefined}
+                  onClick={c.page ? () => setPage(c.page) : undefined}
+                  className={`upcoming__card text-left ${c.page ? "upcoming__card--live" : ""}`}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="upcoming__card-dot" style={{ background: c.accent }} aria-hidden="true" />
+                    <span className="font-cond font-bold uppercase tracking-[0.18em] text-[11px]" style={{ color: c.accent }}>{c.tag}</span>
+                  </div>
+                  <div className="font-display text-white mt-4 leading-none" style={{ fontSize: "clamp(2rem, 3.4vw, 2.75rem)" }}>{c.place}</div>
+                  <div className="mt-2 font-cond uppercase tracking-[0.14em] text-[12px]" style={{ color: "rgba(255,255,255,0.6)" }}>{c.region}</div>
+                  <div className="upcoming__card-note mt-5 pt-4 flex items-center gap-2 font-cond uppercase tracking-[0.12em] text-[11px]" style={{ color: "rgba(255,255,255,0.5)" }}>
+                    <IconMapPin size={13} /> {c.note}
+                  </div>
+                  {c.page && (
+                    <div className="mt-3 flex items-center gap-2 font-cond font-bold uppercase tracking-[0.14em] text-[11px]" style={{ color: c.accent }}>
+                      Register now <IconArrowRight size={13} />
+                    </div>
+                  )}
+                </Card>
+              );
+            })}
           </div>
 
-          {/* Winter Camp CTA */}
-          <div className="mt-12 flex justify-center">
-            <RedButton onClick={() => setPage("winterCamp")}>SIGN UP FOR WINTER CAMP — $315</RedButton>
+          {/* Camp CTAs */}
+          <div className="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
+            <RedButton onClick={() => setPage("winterCamp")}>WINTER CAMP — $315</RedButton>
+            <RedButton onClick={() => setPage("summerCamp")}>SUMMER CAMP — $415/WEEK</RedButton>
           </div>
 
           {/* Notify */}
@@ -448,6 +464,8 @@ const Home = ({ setPage }) => {
             50%     { box-shadow: 0 0 0 7px rgba(210,18,46,0.04); }
           }
           .upcoming__card {
+            display: block;
+            width: 100%;
             padding: 24px;
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.09);
@@ -456,7 +474,9 @@ const Home = ({ setPage }) => {
             text-align: left;
             transition: border-color 300ms ease, background 300ms ease, transform 300ms ease;
           }
-          .upcoming__card:hover {
+          /* Only camps with a live page react to hover — the rest are teasers. */
+          .upcoming__card--live { cursor: pointer; }
+          .upcoming__card--live:hover {
             border-color: rgba(210,18,46,0.45);
             background: rgba(210,18,46,0.06);
             transform: translateY(-3px);

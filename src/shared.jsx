@@ -3,6 +3,7 @@
 const NAV_ITEMS = [
   { key: "home", label: "Home" },
   { key: "winterCamp", label: "Winter Camp" },
+  { key: "summerCamp", label: "Summer Camp" },
   { key: "basketball", label: "Basketball" },
   { key: "coaches", label: "Coaches" },
   { key: "privateTraining", label: "Private Training" },
@@ -74,7 +75,8 @@ const TopNav = ({ page, setPage }) => {
         </button>
 
         {/* Center desktop */}
-        <ul className="hidden lg:flex items-center gap-8">
+        {/* gap tightens at lg so six items still clear the wordmark and CTA */}
+        <ul className="hidden lg:flex items-center gap-5 xl:gap-8">
           {NAV_ITEMS.map((it) => {
             const active = page === it.key;
             return (
@@ -303,6 +305,7 @@ const Footer = ({ setPage }) => {
         <Col title="Navigate">
           <li><NavBtn to="home">Home</NavBtn></li>
           <li><NavBtn to="winterCamp">Winter Camp</NavBtn></li>
+          <li><NavBtn to="summerCamp">Summer Camp</NavBtn></li>
           <li><NavBtn to="basketball">Basketball</NavBtn></li>
           <li><NavBtn to="coaches">Coaches</NavBtn></li>
           <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
@@ -311,7 +314,8 @@ const Footer = ({ setPage }) => {
           <li><NavBtn to="coaches">About the Coaches</NavBtn></li>
           <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
           <li><NavBtn to="basketball">Basketball</NavBtn></li>
-          <li><NavBtn to="winterCamp">Winter Camp</NavBtn></li>
+          <li><NavBtn to="winterCamp">Winter Camp — Walpole</NavBtn></li>
+          <li><NavBtn to="summerCamp">Summer Camp — Watertown</NavBtn></li>
         </Col>
       </div>
 
@@ -370,7 +374,7 @@ const LabelRow = ({ label, value, dark = false, last = false }) => (
 
 // ---- FORM PRIMITIVES ------------------------------------------------------
 // Shared across Private Training inquiry (and formerly Register).
-const Field = ({ label, id, type = "text", required, value, onChange, placeholder }) => (
+const Field = ({ label, id, type = "text", required, value, onChange, placeholder, min, max }) => (
   <div className="flex flex-col gap-2">
     <label htmlFor={id} className="font-cond font-bold uppercase tracking-[0.1em] text-[12px] text-ink">
       {label}{required && " *"}
@@ -383,6 +387,8 @@ const Field = ({ label, id, type = "text", required, value, onChange, placeholde
       value={value}
       onChange={onChange}
       placeholder={placeholder}
+      min={min}
+      max={max}
       className="border border-ink px-4 py-3.5 text-[16px] bg-white text-ink"
       style={{ borderRadius: 0, transition: "border-color 200ms ease" }}
     />
@@ -422,7 +428,12 @@ const SelectField = ({ label, id, required, value, onChange, options }) => (
       style={{ borderRadius: 0, transition: "border-color 200ms ease" }}
     >
       <option value="" disabled>Select…</option>
-      {options.map((o) => <option key={o} value={o}>{o}</option>)}
+      {/* Accepts plain strings, or {value, label} when the two differ. */}
+      {options.map((o) => {
+        const val = typeof o === "string" ? o : o.value;
+        const text = typeof o === "string" ? o : o.label;
+        return <option key={val} value={val}>{text}</option>;
+      })}
     </select>
   </div>
 );
@@ -457,9 +468,9 @@ const COACHES = [
   },
   {
     n: "02",
-    name: "CHRIS",
-    first: "COACH",
-    last: "CHRIS",
+    name: "CHRIS CALDEN",
+    first: "CHRIS",
+    last: "CALDEN",
     title: "CEO",
     school: "WATERTOWN HS",
     level: "Varsity Coach",

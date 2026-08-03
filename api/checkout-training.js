@@ -6,7 +6,6 @@ const PACKAGES = {
   individual_10: { name: "Individual — 10 Sessions (1 hr 30 min each)", unit_amount: 91000 },
   group2_5:      { name: "Group of 2 — 5 Sessions (1 hr 30 min each)",  unit_amount: 85000 },
   group2_7:      { name: "Group of 2 — 7 Sessions (1 hr 30 min each)",  unit_amount: 100000 },
-  winter_camp:   { name: "Winter Camp — Walpole, MA (9 AM–1 PM)",       unit_amount: 31500 },
 };
 
 module.exports = async (req, res) => {
