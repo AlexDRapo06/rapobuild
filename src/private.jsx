@@ -181,6 +181,23 @@ const PrivateTraining = ({ setPage }) => {
                   <div className="text-fog text-[12px] mt-1 leading-tight">or $750 deposit<br />+ 3 × $350/mo</div>
                 </div>
               </div>
+
+              <div className="mt-5 pt-4 border-t border-ash flex items-start justify-between gap-4 flex-wrap">
+                <div className="flex-1 min-w-[200px]">
+                  <span className="font-cond uppercase tracking-[0.15em] text-[11px] sm:text-[12px] text-fog">
+                    Optional Add-On
+                  </span>
+                  <p className="mt-2 text-fog text-[14px] sm:text-[15px] leading-[1.55] max-w-[640px]">
+                    Add a highlight reel build, kept up to date with new game footage throughout the year.
+                  </p>
+                </div>
+                <div className="text-right whitespace-nowrap">
+                  <div className="font-display text-ink leading-none" style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}>
+                    +$500
+                  </div>
+                  <div className="text-fog text-[12px] mt-1">$2,300 total</div>
+                </div>
+              </div>
             </button>
           </div>
         </div>
