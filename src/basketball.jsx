@@ -412,15 +412,15 @@ const Basketball = ({ setPage }) => {
                     Recruitment / College Help / Game Analysis
                   </h3>
                   <p className="mt-3 text-fog text-[14px] sm:text-[15px] leading-[1.55] max-w-[640px]">
-                    Your player meets with a coach every three weeks to break down their games, with 24/7 access to a coach for feedback in between — full college-recruitment help and game analysis, all year long.
+                    Depending on the athlete's schools of interest, they're paired with a coach who has experience and connections relevant to their goals. Athletes meet with their coach once per week to review game film, identify key strengths and weaknesses, and discuss what they need to improve to compete at the college level. Throughout the entire year, athletes also have 24/7 access to their coach for college recruitment guidance — identifying suitable programs, communicating with college coaches, and making connections with schools across the country.
                   </p>
                 </div>
                 <div className="text-right whitespace-nowrap">
                   <div className="font-display text-ink leading-none" style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)" }}>
-                    $1,500
+                    $1,800
                   </div>
                   <div className="text-fog text-[13px] mt-1">/year</div>
-                  <div className="text-fog text-[12px] mt-1 leading-tight">or $500 deposit<br />+ $250/mo</div>
+                  <div className="text-fog text-[12px] mt-1 leading-tight">or $750 deposit<br />+ 3 × $350/mo</div>
                 </div>
               </div>
             </button>
