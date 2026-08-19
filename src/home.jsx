@@ -9,6 +9,14 @@ const HOME_COACH_PREVIEW = [
   { name: "TJ KAHOLI",     first: "TJ",       last: "KAHOLI", school: "STANFORD",       role: "NCAA D1",       position: "Coach",             src: "public/uploads/images/Tj Kaholi.jpeg" },
 ];
 
+const SPONSORS = [
+  { name: "elete Electrolytes", src: "public/uploads/images/sponsors/elete-logo.png" },
+  { name: "Molten", src: "public/uploads/images/sponsors/molten-logo.png" },
+  { name: "Ice Shaker", src: "public/uploads/images/sponsors/iceshaker-logo.png" },
+  { name: "QuickPlay", src: "public/uploads/images/sponsors/quickplay-logo.png", invert: true },
+  { name: "G2G Protein Bar", src: "public/uploads/images/sponsors/g2g-logo.png" },
+];
+
 const HOME_GUESTS = [
   { name: "PEYTON MILLER",      first: "PEYTON",    last: "MILLER",    school: "NER",        pos: "LEFT BACK",          posShort: "LB",   num: "09", color: "#012169", bio: "New England Revolution left back. The club's 12th Homegrown signing and youngest player in Revolution history to sign an MLS contract — already contributing with MLS starts, goals, and assists.", src: "public/uploads/images/peyton miller.jpeg" },
   { name: "OLGER ESCOBAR",      first: "OLGER",     last: "ESCOBAR",   school: "MONTRÉAL",   pos: "ATTACKING MID",      posShort: "AM",   num: "10", color: "#8C1515", bio: "Attacking midfielder / forward developed in the New England system. His MLS Homegrown Priority Rights were traded to CF Montréal, and he represents Guatemala on the senior international stage.", src: "public/uploads/images/Olger Escobar.png" },
@@ -200,7 +208,7 @@ const Home = ({ setPage }) => {
         <div className="grid grid-cols-2 lg:grid-cols-4">
           {[
             { n: "100+", l: "Private Clients" },
-            { n: "4", l: "College Programs" },
+            { n: "8", l: "College Programs" },
             { n: "D1", l: "Coaching Staff" },
             { n: "EX-NER", l: "Professional Roots" },
           ].map((c, i, arr) => (
@@ -1354,6 +1362,29 @@ const Home = ({ setPage }) => {
 
           <div className="mt-12 flex justify-center">
             <RedButton onClick={() => setPage("privateTraining")}>READY TO GET YOUR ATHLETE NOTICED?</RedButton>
+          </div>
+        </div>
+      </section>
+
+      {/* SPONSORS */}
+      <section className="bg-ink text-white px-5 lg:px-10 py-16 lg:py-20 border-t border-white/10">
+        <div className="max-w-[1100px] mx-auto text-center">
+          <span className="eyebrow" style={{ color: "rgba(255,255,255,0.55)" }}>Our Sponsors</span>
+          <h2 className="font-display mt-3" style={{ fontSize: "clamp(1.75rem, 3.6vw, 2.75rem)", lineHeight: 1 }}>
+            BACKED BY GEAR WE TRUST
+          </h2>
+          <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
+            {SPONSORS.map((s) => (
+              <div key={s.name} className="flex items-center justify-center bg-white px-6 py-8">
+                <img
+                  src={s.src}
+                  alt={s.name}
+                  loading="lazy"
+                  className="max-h-[38px] lg:max-h-[48px] w-auto object-contain"
+                  style={s.invert ? { filter: "invert(1)" } : undefined}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
