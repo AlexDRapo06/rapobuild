@@ -15,6 +15,7 @@ const SPONSORS = [
   { name: "Ice Shaker", src: "public/uploads/images/sponsors/iceshaker-logo.png" },
   { name: "QuickPlay", src: "public/uploads/images/sponsors/quickplay-logo.png", invert: true },
   { name: "G2G Protein Bar", src: "public/uploads/images/sponsors/g2g-logo.png" },
+  { name: "VALD Performance", src: "public/uploads/images/sponsors/vald-logo.svg" },
 ];
 
 const HOME_GUESTS = [
@@ -50,6 +51,32 @@ const Home = ({ setPage }) => {
 
   return (
     <main id="main">
+      {/* SPONSOR STRIP */}
+      <div className="bg-ink border-b border-white/10 px-5 lg:px-10 py-3">
+        <div className="max-w-[1100px] mx-auto flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+          <span
+            className="eyebrow shrink-0"
+            style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}
+          >
+            Backed by
+          </span>
+          {SPONSORS.map((s) => (
+            <div
+              key={s.name}
+              className="flex items-center justify-center shrink-0"
+            >
+              <img
+                src={s.src}
+                alt={s.name}
+                loading="lazy"
+                className="max-h-[18px] lg:max-h-[22px] w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-200"
+                style={{ filter: "grayscale(1) brightness(0) invert(1)" }}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* HERO */}
       <section className="hero-video relative overflow-hidden bg-ink min-h-[calc(100vh-72px)] flex items-center">
         {/* Background video */}
@@ -1362,29 +1389,6 @@ const Home = ({ setPage }) => {
 
           <div className="mt-12 flex justify-center">
             <RedButton onClick={() => setPage("privateTraining")}>READY TO GET YOUR ATHLETE NOTICED?</RedButton>
-          </div>
-        </div>
-      </section>
-
-      {/* SPONSORS */}
-      <section className="bg-ink text-white px-5 lg:px-10 py-16 lg:py-20 border-t border-white/10">
-        <div className="max-w-[1100px] mx-auto text-center">
-          <span className="eyebrow" style={{ color: "rgba(255,255,255,0.55)" }}>Our Sponsors</span>
-          <h2 className="font-display mt-3" style={{ fontSize: "clamp(1.75rem, 3.6vw, 2.75rem)", lineHeight: 1 }}>
-            BACKED BY GEAR WE TRUST
-          </h2>
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
-            {SPONSORS.map((s) => (
-              <div key={s.name} className="flex items-center justify-center bg-white px-6 py-8">
-                <img
-                  src={s.src}
-                  alt={s.name}
-                  loading="lazy"
-                  className="max-h-[38px] lg:max-h-[48px] w-auto object-contain"
-                  style={s.invert ? { filter: "invert(1)" } : undefined}
-                />
-              </div>
-            ))}
           </div>
         </div>
       </section>
