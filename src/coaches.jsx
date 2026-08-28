@@ -1,4 +1,104 @@
 // COACHES page — premium dark dossier
+const CoachProfile = ({ c, reverse, total }) => (
+  <article className={`coach-profile group relative ${reverse ? "coach-profile--reverse" : ""}`}>
+    <div className="coach-profile__inner">
+      {/* Image side */}
+      <div className="coach-profile__media">
+        <div className="coach-profile__frame">
+          <img
+            src={encodeURI(c.src)}
+            alt={`Portrait of coach ${c.name}`}
+            loading="lazy"
+          />
+          <div className="coach-profile__frame-wash" aria-hidden="true" />
+          <div className="coach-profile__frame-scrim" aria-hidden="true" />
+
+          {/* Top chip: index pill */}
+          <div className="coach-profile__indexpill">
+            <span className="coach-profile__dot" aria-hidden="true" />
+            <span>{c.n} / 0{total}</span>
+          </div>
+
+          {/* Bottom-left: school chip */}
+          {c.school && (
+            <div className="coach-profile__school-chip">{c.school}</div>
+          )}
+        </div>
+
+        {/* Frame tag-line under image */}
+        <div className="coach-profile__frame-tag">
+          <span style={{ color: "#D2122E" }}>●</span>
+          <span>Active · Summer 2026</span>
+        </div>
+      </div>
+
+      {/* Content side */}
+      <div className="coach-profile__content">
+        <div className="font-cond font-bold uppercase tracking-[0.18em] text-[12px]" style={{ color: "#D2122E" }}>
+          — Coach No. {c.n}
+        </div>
+
+        <h2 className="coach-profile__name">
+          <span className="coach-profile__name-first">{c.first}</span>
+          <span className="coach-profile__name-last">{c.last}</span>
+        </h2>
+
+        {c.school && (
+          <div
+            className="font-display mt-2"
+            style={{ color: "#D2122E", fontSize: "clamp(1.1rem, 1.8vw, 1.4rem)", lineHeight: 1 }}
+          >
+            {c.school}
+          </div>
+        )}
+
+        <div className="mt-4 font-cond font-semibold uppercase tracking-[0.14em] text-[13px]" style={{ color: "rgba(255,255,255,0.55)" }}>
+          {c.title}
+        </div>
+
+        <p className="coach-profile__bio">
+          {c.bio}
+        </p>
+
+        {/* Dossier stats row */}
+        <dl className="coach-profile__stats">
+          <div>
+            <dt>Level</dt>
+            <dd>{c.level}</dd>
+          </div>
+          <div>
+            <dt>Program</dt>
+            <dd>{c.school || "Independent"}</dd>
+          </div>
+          <div>
+            <dt>Role at Camp</dt>
+            <dd>{c.title}</dd>
+          </div>
+        </dl>
+
+        {/* Chips */}
+        <div className="mt-7 flex flex-wrap gap-2">
+          {c.chips.map((chip) => (
+            <span key={chip} className="coach-profile__chip">{chip}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </article>
+);
+
+const CoachDivider = ({ from, to }) => (
+  <div className="coach-divider" role="separator" aria-hidden="true">
+    <span className="coach-divider__line coach-divider__line--left" />
+    <span className="coach-divider__mark">
+      <span className="coach-divider__num coach-divider__num--from">{from}</span>
+      <span className="coach-divider__dot" />
+      <span className="coach-divider__num coach-divider__num--to">{to}</span>
+    </span>
+    <span className="coach-divider__line coach-divider__line--right" />
+  </div>
+);
+
 const Coaches = ({ setPage }) => {
   return (
     <main id="main" className="coaches-page">
@@ -55,105 +155,8 @@ const Coaches = ({ setPage }) => {
             const next = COACHES[i + 1];
             return (
               <React.Fragment key={c.name}>
-              <article
-                className={`coach-profile group relative ${reverse ? "coach-profile--reverse" : ""}`}
-              >
-                <div className="coach-profile__inner">
-                  {/* Image side */}
-                  <div className="coach-profile__media">
-                    <div className="coach-profile__frame">
-                      <img
-                        src={encodeURI(c.src)}
-                        alt={`Portrait of coach ${c.name}`}
-                        loading="lazy"
-                      />
-                      <div className="coach-profile__frame-wash" aria-hidden="true" />
-                      <div className="coach-profile__frame-scrim" aria-hidden="true" />
-
-                      {/* Top chip: index pill */}
-                      <div className="coach-profile__indexpill">
-                        <span className="coach-profile__dot" aria-hidden="true" />
-                        <span>{c.n} / 0{COACHES.length}</span>
-                      </div>
-
-                      {/* Bottom-left: school chip */}
-                      {c.school && (
-                        <div className="coach-profile__school-chip">{c.school}</div>
-                      )}
-                    </div>
-
-                    {/* Frame tag-line under image */}
-                    <div className="coach-profile__frame-tag">
-                      <span style={{ color: "#D2122E" }}>●</span>
-                      <span>Active · Summer 2026</span>
-                    </div>
-                  </div>
-
-                  {/* Content side */}
-                  <div className="coach-profile__content">
-                    <div className="font-cond font-bold uppercase tracking-[0.18em] text-[12px]" style={{ color: "#D2122E" }}>
-                      — Coach No. {c.n}
-                    </div>
-
-                    <h2 className="coach-profile__name">
-                      <span className="coach-profile__name-first">{c.first}</span>
-                      <span className="coach-profile__name-last">{c.last}</span>
-                    </h2>
-
-                    {c.school && (
-                      <div
-                        className="font-display mt-2"
-                        style={{ color: "#D2122E", fontSize: "clamp(1.1rem, 1.8vw, 1.4rem)", lineHeight: 1 }}
-                      >
-                        {c.school}
-                      </div>
-                    )}
-
-                    <div className="mt-4 font-cond font-semibold uppercase tracking-[0.14em] text-[13px]" style={{ color: "rgba(255,255,255,0.55)" }}>
-                      {c.title}
-                    </div>
-
-                    <p className="coach-profile__bio">
-                      {c.bio}
-                    </p>
-
-                    {/* Dossier stats row */}
-                    <dl className="coach-profile__stats">
-                      <div>
-                        <dt>Level</dt>
-                        <dd>{c.level}</dd>
-                      </div>
-                      <div>
-                        <dt>Program</dt>
-                        <dd>{c.school || "Independent"}</dd>
-                      </div>
-                      <div>
-                        <dt>Role at Camp</dt>
-                        <dd>{c.title}</dd>
-                      </div>
-                    </dl>
-
-                    {/* Chips */}
-                    <div className="mt-7 flex flex-wrap gap-2">
-                      {c.chips.map((chip) => (
-                        <span key={chip} className="coach-profile__chip">{chip}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </article>
-
-              {!isLast && (
-                <div className="coach-divider" role="separator" aria-hidden="true">
-                  <span className="coach-divider__line coach-divider__line--left" />
-                  <span className="coach-divider__mark">
-                    <span className="coach-divider__num coach-divider__num--from">{c.n}</span>
-                    <span className="coach-divider__dot" />
-                    <span className="coach-divider__num coach-divider__num--to">{next.n}</span>
-                  </span>
-                  <span className="coach-divider__line coach-divider__line--right" />
-                </div>
-              )}
+                <CoachProfile c={c} reverse={reverse} total={COACHES.length} />
+                {!isLast && <CoachDivider from={c.n} to={next.n} />}
               </React.Fragment>
             );
           })}

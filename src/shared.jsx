@@ -468,6 +468,19 @@ const COACHES = [
   },
   {
     n: "02",
+    name: "RYANN DENECOUR",
+    first: "RYANN",
+    last: "DENECOUR",
+    title: "Head of Girls Programs/Camps",
+    school: "LSU",
+    level: "NCAA SEC",
+    role: "Head of Girls Programs/Camps · LSU Soccer",
+    bio: "Appeared in 17 matches with two starts during her freshman season at LSU, recording one goal and one assist for three points while logging 334 minutes. Scored her first career goal in LSU's road victory at FGCU and added an assist at Utah Valley, finishing with four shots and two shots on target before undergoing surgery that ended her season early. Named to the Fall 2025 SEC Academic Honor Roll. A forward from Charlestown, Rhode Island and a three-star Class of 2025 prospect per Top Drawer Soccer, Ryann won a state championship at Chariho High School in 2021 and earned All-State honors that year, followed by All-New England and All-State again in 2022, while playing club soccer with New England FC. “Ryann is an aggressive and powerful player with the front foot,” said LSU head coach Sian Hudson. “She has the ability to go at players 1v1 and stretch back lines. Along with her link up play and ability to assist from wide areas, she's also shown her instincts in front of goal with a variety of clever finishes.”",
+    chips: ["LSU SOCCER", "SEC HONOR ROLL", "GIRLS PROGRAMS"],
+    src: "public/uploads/images/Ryann Denecour.png",
+  },
+  {
+    n: "03",
     name: "CHRIS CALDEN",
     first: "CHRIS",
     last: "CALDEN",
@@ -480,7 +493,7 @@ const COACHES = [
     src: "public/uploads/images/new cofounder.PNG",
   },
   {
-    n: "03",
+    n: "04",
     name: "JAMIE KABUUSU",
     first: "JAMIE",
     last: "KABUUSU",
@@ -493,7 +506,7 @@ const COACHES = [
     src: "public/uploads/images/Jamie Kabuusu.jpeg",
   },
   {
-    n: "04",
+    n: "05",
     name: "ANTHONY RAPO",
     first: "ANTHONY",
     last: "RAPO",
@@ -506,7 +519,7 @@ const COACHES = [
     src: "public/uploads/images/Anthony Rap.jpeg",
   },
   {
-    n: "05",
+    n: "06",
     name: "BRYAN TORO",
     first: "BRYAN",
     last: "TORO",
@@ -519,7 +532,7 @@ const COACHES = [
     src: "public/uploads/images/Brian Toro.jpeg",
   },
   {
-    n: "06",
+    n: "07",
     name: "ANGEL ORTEZ",
     first: "ANGEL",
     last: "ORTEZ",
@@ -532,7 +545,7 @@ const COACHES = [
     src: "public/uploads/images/angel1.jpeg",
   },
   {
-    n: "07",
+    n: "08",
     name: "TJ KAHOLI",
     first: "TJ",
     last: "KAHOLI",
@@ -545,7 +558,7 @@ const COACHES = [
     src: "public/uploads/images/Tj Kaholi.jpeg",
   },
   {
-    n: "08",
+    n: "09",
     name: "ENZO GONCALVES",
     first: "ENZO",
     last: "GONCALVES",
@@ -558,7 +571,7 @@ const COACHES = [
     src: "public/uploads/images/Enzo Goncalves.png",
   },
   {
-    n: "09",
+    n: "10",
     name: "SEBASTIAN OTERO",
     first: "SEBASTIAN",
     last: "OTERO",
@@ -571,7 +584,7 @@ const COACHES = [
     src: "public/uploads/images/Sebastian Otero.png",
   },
   {
-    n: "10",
+    n: "11",
     name: "IAN HECKER",
     first: "IAN",
     last: "HECKER",
@@ -584,7 +597,7 @@ const COACHES = [
     src: "public/uploads/images/Ian Hecker.png",
   },
   {
-    n: "11",
+    n: "12",
     name: "AIDEN REILLY",
     first: "AIDEN",
     last: "REILLY",
@@ -597,7 +610,7 @@ const COACHES = [
     src: "public/uploads/images/Aiden Reilly.png",
   },
   {
-    n: "12",
+    n: "13",
     name: "JOSH PARTAL",
     first: "JOSH",
     last: "PARTAL",
@@ -610,7 +623,7 @@ const COACHES = [
     src: "public/uploads/images/Josh Partal.png",
   },
   {
-    n: "13",
+    n: "14",
     name: "ALEJANDRO PALACIO",
     first: "ALEJANDRO",
     last: "PALACIO",
