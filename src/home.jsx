@@ -412,9 +412,10 @@ const Home = ({ setPage }) => {
           </div>
 
           {/* Location cards */}
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
             {[
               { tag: "Winter Camp", place: "WALPOLE", region: "Massachusetts", note: "Dec 27–31 · 9 AM–1 PM", accent: "#D2122E", page: "winterCamp" },
+              { tag: "Winter Clinic", place: "NORFOLK", region: "8 Sharon Ave · Ages 12–17", note: "Dec 28–31 · 9 AM–12 PM", accent: "#C9A24A" },
               { tag: "Summer 2027", place: "WATERTOWN", region: "Victory Field", note: "July 12–23 · 9 AM–2 PM", accent: "#C9A24A", page: "summerCamp" },
               { tag: "Summer 2027 & Beyond", place: "DOVER", region: "Massachusetts · + more", note: "Locations expanding · Stay tuned", accent: "#D2122E" },
             ].map((c) => {

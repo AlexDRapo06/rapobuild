@@ -263,6 +263,9 @@ const PrivateTraining = ({ setPage }) => {
           <div className="mt-10 text-center font-cond uppercase tracking-[0.15em] text-[13px] text-fog">
             Packages bookable online · 3+ player groups inquire below
           </div>
+          <div className="mt-2 text-center font-cond uppercase tracking-[0.15em] text-[11px] text-fog">
+            All sales are final · No refunds
+          </div>
         </div>
       </section>
 
