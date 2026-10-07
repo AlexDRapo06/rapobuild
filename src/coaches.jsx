@@ -179,13 +179,12 @@ const Coaches = ({ setPage }) => {
             GUEST <span className="coaches-guests__accent">APPEARANCES</span>.
           </h2>
           <p className="mt-5 text-[16px] lg:text-[17px] leading-[1.65]" style={{ color: "rgba(255,255,255,0.72)" }}>
-            New England Revolution and CF Montréal Homegrown pros — Peyton Miller, Olger Escobar, Eric Klein, and Cristiano Oliveira — dropping in throughout the summer. Sessions aren't pre-scheduled. Drop by, train with whoever's running the day.
+            New England Revolution Homegrown pros — Peyton Miller, Eric Klein, and Cristiano Oliveira — dropping in throughout the summer. Sessions aren't pre-scheduled. Drop by, train with whoever's running the day.
           </p>
 
-          <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 gap-3">
             {[
               { n: "PEYTON MILLER",      s: "NER · LB",        src: "public/uploads/images/peyton miller.jpeg" },
-              { n: "OLGER ESCOBAR",      s: "MONTRÉAL · AM",   src: "public/uploads/images/Olger Escobar.png" },
               { n: "ERIC KLEIN",         s: "NER · MID",       src: "public/uploads/images/Eric Klein.png" },
               { n: "CRISTIANO OLIVEIRA", s: "NER · AM",        src: "public/uploads/images/Cristiano Oliveira .png" },
             ].map((g) => (
