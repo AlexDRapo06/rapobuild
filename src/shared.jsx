@@ -635,6 +635,19 @@ const COACHES = [
     chips: ["EX-IFA", "HARVARD", "IVY LEAGUE"],
     src: "public/uploads/images/Alejandro Palacio.png",
   },
+  {
+    n: "15",
+    name: "MIGUEL SOSA",
+    first: "MIGUEL",
+    last: "SOSA",
+    title: "Coach",
+    school: "GEORGE WASHINGTON",
+    level: "NCAA D1",
+    role: "Coach · George Washington Men's Soccer",
+    bio: "Four-year ECNL midfielder from Miami who began his college career at Furman, helping the Paladins reach the NCAA Final Four as a sophomore, before transferring to George Washington. Off the field, Miguel runs a content platform giving younger players an inside look at life as a Division I athlete — training, games, recovery, travel, and balancing academics with everyday life.",
+    chips: ["FURMAN FINAL FOUR", "GEORGE WASHINGTON", "D1"],
+    src: "public/uploads/images/Miguel Sosa.png",
+  },
 ];
 
 Object.assign(window, {
