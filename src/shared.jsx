@@ -1,13 +1,19 @@
 // Shared components: Nav, Footer, AccentBanner, Button primitives, Image helper
 
+// `desktop: false` items are covered on desktop by the wordmark (Home) and the
+// red CTA (Private Training), which keeps the center row clear at 1024px.
+// The mobile menu always lists every item.
 const NAV_ITEMS = [
-  { key: "home", label: "Home" },
+  { key: "home", label: "Home", desktop: false },
+  { key: "summerCamp", label: "Summer Camps" },
   { key: "winterCamp", label: "Winter Camp" },
-  { key: "summerCamp", label: "Summer Camp" },
-  { key: "basketball", label: "Basketball" },
+  { key: "miami", label: "Miami Combine" },
   { key: "coaches", label: "Coaches" },
-  { key: "privateTraining", label: "Private Training" },
+  { key: "media", label: "Media" },
+  { key: "privateTraining", label: "Private Training", desktop: false },
 ];
+
+const pad2 = (n) => String(n).padStart(2, "0");
 
 // ---- BUTTON ---------------------------------------------------------------
 const RedButton = ({ children, onClick, full = false, size = "md", type = "button", className = "" }) => {
@@ -75,9 +81,9 @@ const TopNav = ({ page, setPage }) => {
         </button>
 
         {/* Center desktop */}
-        {/* gap tightens at lg so six items still clear the wordmark and CTA */}
+        {/* gap tightens at lg so every item still clears the wordmark and CTA */}
         <ul className="hidden lg:flex items-center gap-5 xl:gap-8">
-          {NAV_ITEMS.map((it) => {
+          {NAV_ITEMS.filter((it) => it.desktop !== false).map((it) => {
             const active = page === it.key;
             return (
               <li key={it.key}>
@@ -115,7 +121,7 @@ const TopNav = ({ page, setPage }) => {
 
     {/* Mobile overlay — rendered as sibling to escape header's stacking context */}
     {open && (
-      <div className="mobile-menu fixed inset-0 z-[100] text-white flex flex-col">
+      <div className="mobile-menu fixed inset-0 z-[100] text-white flex flex-col overflow-y-auto">
         <div className="mobile-menu__bg" aria-hidden="true" />
         <div className="mobile-menu__glow mobile-menu__glow--red" aria-hidden="true" />
         <div className="mobile-menu__glow mobile-menu__glow--gold" aria-hidden="true" />
@@ -132,7 +138,7 @@ const TopNav = ({ page, setPage }) => {
           </span>
         </div>
 
-        <ul className="relative z-10 flex-1 flex flex-col justify-center px-7 gap-1 -mt-6">
+        <ul className="relative z-10 flex-1 flex flex-col justify-center px-7 gap-0.5 -mt-4">
           {NAV_ITEMS.map((it, i) => {
             const active = page === it.key;
             return (
@@ -206,7 +212,7 @@ const TopNav = ({ page, setPage }) => {
             gap: 14px;
             width: 100%;
             text-align: left;
-            padding: 14px 4px;
+            padding: clamp(9px, 1.6vh, 14px) 4px;
             border-bottom: 1px solid rgba(255,255,255,0.06);
             transition: padding-left 0.25s ease, border-color 0.25s ease;
           }
@@ -223,9 +229,10 @@ const TopNav = ({ page, setPage }) => {
             color: rgba(255,255,255,0.35);
             min-width: 22px;
           }
+          .mobile-menu__bg, .mobile-menu__grid { position: fixed; }
           .mobile-menu__label {
             font-family: "Bebas Neue", sans-serif;
-            font-size: 38px;
+            font-size: clamp(30px, 5.2vh, 38px);
             line-height: 1;
             letter-spacing: 0.01em;
             color: #fff;
@@ -269,8 +276,8 @@ const Footer = ({ setPage }) => {
       </ul>
     </div>
   );
-  const NavBtn = ({ to, children }) => (
-    <button onClick={() => setPage(to)} className="hover:text-white text-left">
+  const NavBtn = ({ to, sub, children }) => (
+    <button onClick={() => setPage(to, sub)} className="hover:text-white text-left">
       {children}
     </button>
   );
@@ -303,19 +310,17 @@ const Footer = ({ setPage }) => {
           <li className="flex items-center gap-2"><IconMapPin size={14} /> Greater Boston, MA</li>
         </Col>
         <Col title="Navigate">
-          <li><NavBtn to="home">Home</NavBtn></li>
-          <li><NavBtn to="winterCamp">Winter Camp</NavBtn></li>
-          <li><NavBtn to="summerCamp">Summer Camp</NavBtn></li>
-          <li><NavBtn to="basketball">Basketball</NavBtn></li>
-          <li><NavBtn to="coaches">Coaches</NavBtn></li>
-          <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
+          {NAV_ITEMS.map((it) => (
+            <li key={it.key}><NavBtn to={it.key}>{it.label}</NavBtn></li>
+          ))}
         </Col>
-        <Col title="Program">
-          <li><NavBtn to="coaches">About the Coaches</NavBtn></li>
-          <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
-          <li><NavBtn to="basketball">Basketball</NavBtn></li>
+        <Col title="Programs">
+          {SUMMER_CAMPS.filter((c) => c.slug).map((c) => (
+            <li key={c.id}><NavBtn to="summerCamp" sub={c.slug}>Summer Camp — {c.name}</NavBtn></li>
+          ))}
           <li><NavBtn to="winterCamp">Winter Camp — Walpole</NavBtn></li>
-          <li><NavBtn to="summerCamp">Summer Camp — Watertown</NavBtn></li>
+          <li><NavBtn to="miami">College Combine — Miami</NavBtn></li>
+          <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
         </Col>
       </div>
 
@@ -373,12 +378,20 @@ const LabelRow = ({ label, value, dark = false, last = false }) => (
 );
 
 // ---- FORM PRIMITIVES ------------------------------------------------------
-// Shared across Private Training inquiry (and formerly Register).
-const Field = ({ label, id, type = "text", required, value, onChange, placeholder, min, max }) => (
+// Shared by the camp forms, the Miami combine form and the Private Training inquiry.
+const FieldLabel = ({ id, label, required, optional }) => (
+  <label htmlFor={id} className="font-cond font-bold uppercase tracking-[0.1em] text-[12px] text-ink">
+    {label}{required && " *"}
+    {optional && <span className="font-semibold normal-case tracking-normal text-fog"> (optional)</span>}
+  </label>
+);
+
+const Field = ({
+  label, id, type = "text", required, optional, value, onChange, placeholder, min, max,
+  autoComplete, inputMode, maxLength, hint, invalid,
+}) => (
   <div className="flex flex-col gap-2">
-    <label htmlFor={id} className="font-cond font-bold uppercase tracking-[0.1em] text-[12px] text-ink">
-      {label}{required && " *"}
-    </label>
+    <FieldLabel id={id} label={label} required={required} optional={optional} />
     <input
       id={id}
       name={id}
@@ -389,9 +402,19 @@ const Field = ({ label, id, type = "text", required, value, onChange, placeholde
       placeholder={placeholder}
       min={min}
       max={max}
+      autoComplete={autoComplete}
+      inputMode={inputMode}
+      maxLength={maxLength}
+      aria-invalid={invalid || undefined}
+      aria-describedby={hint ? `${id}-hint` : undefined}
       className="border border-ink px-4 py-3.5 text-[16px] bg-white text-ink"
-      style={{ borderRadius: 0, transition: "border-color 200ms ease" }}
+      style={{ borderRadius: 0, transition: "border-color 200ms ease", borderColor: invalid ? "#D2122E" : undefined }}
     />
+    {hint && (
+      <p id={`${id}-hint`} aria-live="polite" className="text-[13px] leading-snug" style={{ color: invalid ? "#D2122E" : "#757575" }}>
+        {hint}
+      </p>
+    )}
   </div>
 );
 
@@ -413,21 +436,20 @@ const Textarea = ({ label, id, rows = 4, required, value, onChange }) => (
   </div>
 );
 
-const SelectField = ({ label, id, required, value, onChange, options }) => (
+const SelectField = ({ label, id, required, value, onChange, options, autoComplete, placeholder = "Select…" }) => (
   <div className="flex flex-col gap-2">
-    <label htmlFor={id} className="font-cond font-bold uppercase tracking-[0.1em] text-[12px] text-ink">
-      {label}{required && " *"}
-    </label>
+    <FieldLabel id={id} label={label} required={required} />
     <select
       id={id}
       name={id}
       required={required}
       value={value}
       onChange={onChange}
+      autoComplete={autoComplete}
       className="border border-ink px-4 py-3.5 text-[16px] bg-white text-ink"
       style={{ borderRadius: 0, transition: "border-color 200ms ease" }}
     >
-      <option value="" disabled>Select…</option>
+      <option value="" disabled>{placeholder}</option>
       {/* Accepts plain strings, or {value, label} when the two differ. */}
       {options.map((o) => {
         const val = typeof o === "string" ? o : o.value;
@@ -462,7 +484,7 @@ const COACHES = [
     school: "BABSON",
     level: "NCAA D3",
     role: "Founder · Babson Men's Soccer",
-    bio: "Former New England Revolution Academy player and current Babson Men's Soccer player. Alexander founded Footy Up to bring the same training environment that shaped him to the next generation of Boston-area players.",
+    bio: "Former New England Revolution Academy player and current Babson Men's Soccer player. Alexander founded FOOTYUP to bring the same training environment that shaped him to the next generation of Boston-area players.",
     chips: ["EX-NER ACADEMY", "BABSON", "FOUNDER"],
     src: "public/uploads/images/Alex Rapo.jpeg",
   },
@@ -640,18 +662,53 @@ const COACHES = [
     name: "MIGUEL SOSA",
     first: "MIGUEL",
     last: "SOSA",
-    title: "Coach",
+    title: "Head of Media",
     school: "GEORGE WASHINGTON",
     level: "NCAA D1",
-    role: "Coach · George Washington Men's Soccer",
+    role: "Head of Media · George Washington Men's Soccer",
     bio: "Four-year ECNL midfielder from Miami who began his college career at Furman, helping the Paladins reach the NCAA Final Four as a sophomore, before transferring to George Washington. Off the field, Miguel runs a content platform giving younger players an inside look at life as a Division I athlete — training, games, recovery, travel, and balancing academics with everyday life.",
-    chips: ["FURMAN FINAL FOUR", "GEORGE WASHINGTON", "D1"],
+    chips: ["FURMAN FINAL FOUR", "GEORGE WASHINGTON", "HEAD OF MEDIA"],
     src: "public/uploads/images/Miguel Sosa.png",
   },
 ];
 
+// URL-safe id for deep links, e.g. #coaches/josh-partal.
+const coachSlug = (c) => c.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+// HOME RAIL ORDER — "Meet the Coaches" on the home page leads with the biggest
+// names. Anyone not listed here (e.g. newly added coaches) follows in COACHES
+// order, and HOME_RAIL_LAST always closes the rail.
+const HOME_RAIL_FIRST = [
+  "ALEXANDER RAPO",
+  "RYANN DENECOUR",
+  "JOSH PARTAL",
+  "JAMIE KABUUSU",
+  "TJ KAHOLI",
+  "ALEJANDRO PALACIO",
+  "IAN HECKER",
+  "AIDEN REILLY",
+  "BRYAN TORO",
+  "SEBASTIAN OTERO",
+  "ANTHONY RAPO",
+  "ANGEL ORTEZ",
+  "ENZO GONCALVES",
+  "MIGUEL SOSA",
+];
+const HOME_RAIL_LAST = ["CHRIS CALDEN"];
+
+const homeRailCoaches = () => {
+  const byName = (n) => COACHES.find((c) => c.name === n);
+  const listed = [...HOME_RAIL_FIRST, ...HOME_RAIL_LAST];
+  return [
+    ...HOME_RAIL_FIRST.map(byName).filter(Boolean),
+    ...COACHES.filter((c) => !listed.includes(c.name)),
+    ...HOME_RAIL_LAST.map(byName).filter(Boolean),
+  ];
+};
+
 Object.assign(window, {
   TopNav, Footer, AccentBanner, RedButton, OutlineButton,
   UnsplashImg, LabelRow, COACHES, NAV_ITEMS,
-  Field, Textarea, SelectField, SuccessCard,
+  Field, FieldLabel, Textarea, SelectField, SuccessCard,
+  pad2, coachSlug, homeRailCoaches,
 });

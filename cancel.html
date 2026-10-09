@@ -74,7 +74,16 @@
     </div>
     <h1>REGISTRATION CANCELLED.</h1>
     <p>No charge was made. Your spot is still available — head back to complete registration when you're ready.</p>
-    <a href="/#register" class="btn">BACK TO REGISTRATION &rarr;</a>
+    <a href="/" id="back" class="btn">BACK TO REGISTRATION &rarr;</a>
   </div>
+  <script>
+    // Return to the camp the family was registering for (set by api/checkout.js).
+    (function () {
+      var camp = new URLSearchParams(window.location.search).get('camp') || '';
+      if (/^[A-Za-z]+(\/[a-z0-9-]+)?$/.test(camp)) {
+        document.getElementById('back').setAttribute('href', '/#' + camp);
+      }
+    })();
+  </script>
 </body>
 </html>

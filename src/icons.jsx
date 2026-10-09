@@ -68,7 +68,67 @@ const IconCalendar = ({ size = 16, className = "" }) => (
   </svg>
 );
 
+// Shared frame for the icons below — same stroke style as the ones above.
+const IconFrame = ({ size, className, children }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter" className={className} aria-hidden="true">
+    {children}
+  </svg>
+);
+
+const IconLock = ({ size = 18, className = "" }) => (
+  <IconFrame size={size} className={className}>
+    <rect x="4" y="11" width="16" height="10" />
+    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+  </IconFrame>
+);
+
+const IconBolt = ({ size = 18, className = "" }) => (
+  <IconFrame size={size} className={className}>
+    <polygon points="13 2 4 14 12 14 11 22 20 10 12 10 13 2" />
+  </IconFrame>
+);
+
+const IconUsers = ({ size = 18, className = "" }) => (
+  <IconFrame size={size} className={className}>
+    <circle cx="9" cy="8" r="4" />
+    <path d="M2 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1" />
+    <path d="M16 4a4 4 0 0 1 0 8" />
+    <path d="M22 21v-1a6 6 0 0 0-4-5.6" />
+  </IconFrame>
+);
+
+const IconBook = ({ size = 18, className = "" }) => (
+  <IconFrame size={size} className={className}>
+    <path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z" />
+    <path d="M20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z" />
+  </IconFrame>
+);
+
+const IconShirt = ({ size = 18, className = "" }) => (
+  <IconFrame size={size} className={className}>
+    <path d="M8 3 3 6l2 5 3-1v11h8V10l3 1 2-5-5-3a4 4 0 0 1-8 0z" />
+  </IconFrame>
+);
+
+const IconIdCard = ({ size = 18, className = "" }) => (
+  <IconFrame size={size} className={className}>
+    <rect x="3" y="5" width="18" height="14" />
+    <circle cx="9" cy="11" r="2" />
+    <path d="M6 16a3 3 0 0 1 6 0" />
+    <line x1="15" y1="10" x2="18" y2="10" />
+    <line x1="15" y1="14" x2="18" y2="14" />
+  </IconFrame>
+);
+
+const IconTarget = ({ size = 18, className = "" }) => (
+  <IconFrame size={size} className={className}>
+    <circle cx="12" cy="12" r="9" />
+    <circle cx="12" cy="12" r="5" />
+    <circle cx="12" cy="12" r="1" />
+  </IconFrame>
+);
+
 Object.assign(window, {
   IconArrowRight, IconPlus, IconMinus, IconCheck, IconMenu, IconX, IconMail, IconPhone, IconMapPin,
-  IconCalendar,
+  IconCalendar, IconLock, IconBolt, IconUsers, IconBook, IconShirt, IconIdCard, IconTarget,
 });

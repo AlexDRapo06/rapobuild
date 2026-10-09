@@ -1,6 +1,6 @@
 // WINTER CAMP page — indoor camp in Walpole, registration via the shared camp form
 const WinterCamp = ({ setPage }) => {
-  const camp = CAMPS.winterCamp;
+  const camp = campById("winter_walpole");
 
   const RegisterButton = ({ size = "lg", full = false, className = "" }) => (
     <button

@@ -1,6 +1,9 @@
 // COACHES page — premium dark dossier
-const CoachProfile = ({ c, reverse, total }) => (
-  <article className={`coach-profile group relative ${reverse ? "coach-profile--reverse" : ""}`}>
+const CoachProfile = ({ c, reverse, total, target }) => (
+  <article
+    id={`coach-${coachSlug(c)}`}
+    className={`coach-profile group relative ${reverse ? "coach-profile--reverse" : ""} ${target ? "coach-profile--target" : ""}`}
+  >
     <div className="coach-profile__inner">
       {/* Image side */}
       <div className="coach-profile__media">
@@ -16,7 +19,7 @@ const CoachProfile = ({ c, reverse, total }) => (
           {/* Top chip: index pill */}
           <div className="coach-profile__indexpill">
             <span className="coach-profile__dot" aria-hidden="true" />
-            <span>{c.n} / 0{total}</span>
+            <span>{c.n} / {pad2(total)}</span>
           </div>
 
           {/* Bottom-left: school chip */}
@@ -28,7 +31,7 @@ const CoachProfile = ({ c, reverse, total }) => (
         {/* Frame tag-line under image */}
         <div className="coach-profile__frame-tag">
           <span style={{ color: "#D2122E" }}>●</span>
-          <span>Active · Summer 2026</span>
+          <span>Active · Summer 2027</span>
         </div>
       </div>
 
@@ -99,7 +102,33 @@ const CoachDivider = ({ from, to }) => (
   </div>
 );
 
-const Coaches = ({ setPage }) => {
+const Coaches = ({ setPage, sub }) => {
+  // #coaches/<slug> (e.g. from a home-page coach tile) opens at that coach.
+  const target = sub ? COACHES.find((c) => coachSlug(c) === sub) : null;
+  React.useEffect(() => {
+    if (!target) return;
+    const find = () => document.getElementById(`coach-${sub}`);
+    // Tailwind's CDN builds this page's classes just after render, which shifts
+    // the layout — so wait a beat, glide there, then snap once to correct any
+    // drift (unless the visitor has already started scrolling themselves).
+    let userScrolled = false;
+    const mark = () => { userScrolled = true; };
+    const opts = { passive: true };
+    ["wheel", "touchstart", "keydown"].forEach((e) => window.addEventListener(e, mark, opts));
+    const t1 = setTimeout(() => { const el = find(); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); }, 150);
+    const t2 = setTimeout(() => {
+      const el = find();
+      if (!el || userScrolled) return;
+      const offset = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+      if (Math.abs(el.getBoundingClientRect().top - offset) > 24) el.scrollIntoView({ behavior: "auto", block: "start" });
+    }, 1500);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      ["wheel", "touchstart", "keydown"].forEach((e) => window.removeEventListener(e, mark, opts));
+    };
+  }, [sub]);
+
   return (
     <main id="main" className="coaches-page">
       {/* HEADER */}
@@ -124,7 +153,7 @@ const Coaches = ({ setPage }) => {
             THE <span className="coaches-hero__accent">COACHES</span>.
           </h1>
           <p className="mt-7 mx-auto text-[17px] lg:text-[18px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.72)", maxWidth: 720 }}>
-            Active NCAA Division I starters and coaches building this program from the ground up. Every name on this page is on the field with your kid this summer — coaching, demoing, and competing alongside them.
+            NCAA Division I starters and ex-MLS Academy / MLS NEXT players building this program from the ground up. Every name on this page is on the field with your kid — coaching, demoing, and competing alongside them.
           </p>
 
           {/* Quick stat strip */}
@@ -155,7 +184,7 @@ const Coaches = ({ setPage }) => {
             const next = COACHES[i + 1];
             return (
               <React.Fragment key={c.name}>
-                <CoachProfile c={c} reverse={reverse} total={COACHES.length} />
+                <CoachProfile c={c} reverse={reverse} total={COACHES.length} target={target === c} />
                 {!isLast && <CoachDivider from={c.n} to={next.n} />}
               </React.Fragment>
             );
@@ -163,46 +192,9 @@ const Coaches = ({ setPage }) => {
         </div>
       </section>
 
-      {/* GUEST APPEARANCES CALLOUT */}
-      <section className="coaches-guests relative overflow-hidden px-5 lg:px-10 py-24 lg:py-28">
-        <div className="coaches-guests__bg" aria-hidden="true" />
-
-        <div className="relative z-10 max-w-[900px] mx-auto text-center">
-          <div className="inline-flex items-center gap-3 mb-5">
-            <span className="block h-[1px] w-8" style={{ background: "linear-gradient(90deg, transparent, #C9A24A)" }} />
-            <span className="font-cond font-bold uppercase tracking-[0.22em] text-[11px]" style={{ color: "#C9A24A" }}>
-              ★ Featured this summer
-            </span>
-            <span className="block h-[1px] w-8" style={{ background: "linear-gradient(90deg, #C9A24A, transparent)" }} />
-          </div>
-          <h2 className="font-display text-white" style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", lineHeight: 0.95 }}>
-            GUEST <span className="coaches-guests__accent">APPEARANCES</span>.
-          </h2>
-          <p className="mt-5 text-[16px] lg:text-[17px] leading-[1.65]" style={{ color: "rgba(255,255,255,0.72)" }}>
-            New England Revolution Homegrown pros — Peyton Miller, Eric Klein, and Cristiano Oliveira — dropping in throughout the summer. Sessions aren't pre-scheduled. Drop by, train with whoever's running the day.
-          </p>
-
-          <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {[
-              { n: "PEYTON MILLER",      s: "NER · LB",        src: "public/uploads/images/peyton miller.jpeg" },
-              { n: "ERIC KLEIN",         s: "NER · MID",       src: "public/uploads/images/Eric Klein.png" },
-              { n: "CRISTIANO OLIVEIRA", s: "NER · AM",        src: "public/uploads/images/Cristiano Oliveira .png" },
-            ].map((g) => (
-              <div key={g.n} className="coaches-guests__card">
-                <div className="coaches-guests__thumb">
-                  <img src={encodeURI(g.src)} alt={`Portrait of ${g.n}`} loading="lazy" />
-                </div>
-                <div className="font-display text-white text-[18px] leading-tight mt-3">{g.n}</div>
-                <div className="mt-1.5 font-cond font-bold uppercase tracking-[0.14em] text-[11px]" style={{ color: "#D2122E" }}>{g.s}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* RED BANNER */}
       <AccentBanner>
-        EX-NEW ENGLAND REVOLUTION PLAYERS.<br />
+        EX-MLS ACADEMY &amp; MLS NEXT PLAYERS.<br />
         NCAA D1 STARTERS.<br />
         YOUR KID'S COACHES.
       </AccentBanner>
@@ -215,10 +207,11 @@ const Coaches = ({ setPage }) => {
             READY TO TRAIN <span className="coaches-cta__accent">WITH THEM</span>?
           </h2>
           <p className="mt-4 text-[16px]" style={{ color: "rgba(255,255,255,0.7)" }}>
-            Camps are returning soon — book private training now to work with them one-on-one.
+            Summer 2027 camps are open — book a camp, or work with them one-on-one in private training.
           </p>
-          <div className="mt-8 flex justify-center">
-            <RedButton onClick={() => setPage("privateTraining")}>BOOK PRIVATE TRAINING</RedButton>
+          <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
+            <RedButton onClick={() => setPage("summerCamp")}>BOOK SUMMER CAMP</RedButton>
+            <OutlineButton onClick={() => setPage("privateTraining")} className="coaches-cta__outline">PRIVATE TRAINING</OutlineButton>
           </div>
         </div>
       </section>
@@ -288,6 +281,14 @@ const Coaches = ({ setPage }) => {
         .coach-profile {
           position: relative;
           padding: 56px 0;
+          scroll-margin-top: 64px;
+        }
+        /* Arrived via a deep link: a brief red pulse around the portrait */
+        .coach-profile--target .coach-profile__frame { animation: coach-target 2.4s ease-out 0.4s 1; }
+        @keyframes coach-target {
+          0%   { box-shadow: 0 0 0 1px rgba(210,18,46,0.9), 0 0 0 0 rgba(210,18,46,0.55); }
+          60%  { box-shadow: 0 0 0 1px rgba(210,18,46,0.9), 0 0 0 18px rgba(210,18,46,0); }
+          100% { box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 0 0 0 rgba(210,18,46,0); }
         }
         .coach-profile:first-child { padding-top: 24px; }
         .coach-profile:last-child  { padding-bottom: 24px; }
@@ -524,52 +525,6 @@ const Coaches = ({ setPage }) => {
           background: rgba(210,18,46,0.12);
         }
 
-        /* ==================== GUESTS ==================== */
-        .coaches-guests { background: #0A0A0C; }
-        .coaches-guests__bg {
-          position: absolute; inset: 0; z-index: 0; pointer-events: none;
-          background:
-            radial-gradient(800px 400px at 50% 0%, rgba(201,162,74,0.18), transparent 60%),
-            linear-gradient(180deg, #0A0A0C 0%, #101012 100%);
-        }
-        .coaches-guests__accent {
-          background: linear-gradient(90deg, #C9A24A 0%, #f0d68f 100%);
-          -webkit-background-clip: text; background-clip: text;
-          color: transparent;
-        }
-        .coaches-guests__card {
-          padding: 14px;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 14px;
-          text-align: left;
-          transition: border-color 300ms ease, background 300ms ease, transform 300ms ease;
-        }
-        .coaches-guests__card:hover {
-          border-color: rgba(210,18,46,0.45);
-          background: rgba(210,18,46,0.06);
-          transform: translateY(-2px);
-        }
-        .coaches-guests__thumb {
-          aspect-ratio: 1 / 1;
-          width: 100%;
-          overflow: hidden;
-          border-radius: 10px;
-          background: #15151a;
-          border: 1px solid rgba(255,255,255,0.06);
-        }
-        .coaches-guests__thumb img {
-          width: 100%; height: 100%;
-          object-fit: cover;
-          object-position: center 18%;
-          filter: saturate(0.85) contrast(1.05);
-          transition: filter 500ms ease, transform 700ms cubic-bezier(.2,.7,.2,1);
-        }
-        .coaches-guests__card:hover .coaches-guests__thumb img {
-          filter: saturate(1.1) contrast(1.05);
-          transform: scale(1.05);
-        }
-
         /* ==================== CTA ==================== */
         .coaches-cta { background: #0A0A0A; }
         .coaches-cta__bg {
@@ -578,6 +533,8 @@ const Coaches = ({ setPage }) => {
             radial-gradient(700px 400px at 50% 100%, rgba(210,18,46,0.30), transparent 60%),
             linear-gradient(180deg, #0A0A0A 0%, #101013 100%);
         }
+        .coaches-cta .coaches-cta__outline { border-color: rgba(255,255,255,0.5); color: #fff; justify-content: center; }
+        .coaches-cta .coaches-cta__outline:hover { background: #fff; color: #111; border-color: #fff; }
         .coaches-cta__accent {
           background: linear-gradient(90deg, #D2122E 0%, #ff5066 100%);
           -webkit-background-clip: text; background-clip: text;
@@ -585,7 +542,8 @@ const Coaches = ({ setPage }) => {
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .coach-profile__frame, .coach-profile__frame img, .coach-profile__chip, .coaches-guests__card { transition: none !important; }
+          .coach-profile__frame, .coach-profile__frame img, .coach-profile__chip { transition: none !important; }
+          .coach-profile--target .coach-profile__frame { animation: none !important; }
         }
       `}</style>
     </main>
