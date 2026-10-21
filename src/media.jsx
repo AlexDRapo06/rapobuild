@@ -1,9 +1,24 @@
-// MEDIA page — FOOTYUP's media team and the FOOTYUP × US Footy partnership.
+// MEDIA page — FOOTYUP's media team, our main media partner FootyAccess, and
+// the FOOTYUP × US Footy partnership.
 //
 // Add a media partner by adding an entry to MEDIA_TEAM (it also shows in the
 // home page's Media teaser). `src` is a portrait; partners without one show
-// their `logo`, or a monogram of `initials`.
+// their `logo` (`logoInvert` flips a black-on-white logo for the dark tiles),
+// or a monogram of `initials`. `url` adds a link to their site.
+const FOOTYACCESS_URL = "https://www.footyaccess.com/";
+
 const MEDIA_TEAM = [
+  {
+    key: "footyaccess",
+    name: "FOOTYACCESS",
+    role: "Official Media Partner",
+    org: "FOOTYACCESS",
+    meta: "@footyaccess · footyaccess.com",
+    bio: "FootyAccess is FOOTYUP's main media partner — youth soccer scores, rankings and stories across MLS NEXT, ECNL and more. They attend every FOOTYUP event and cover all of our posts.",
+    logo: "assets/footyaccess-logo.svg",
+    logoInvert: true,
+    url: FOOTYACCESS_URL,
+  },
   {
     key: "daniel-casper",
     name: "DANIEL CASPER",
@@ -47,7 +62,7 @@ const MediaAvatar = ({ m, size = 56 }) => {
   if (m.logo) {
     return (
       <span className="media-avatar media-avatar--logo" style={box}>
-        <img src={m.logo} alt={`${m.org} logo`} loading="lazy" />
+        <img src={m.logo} alt={`${m.org} logo`} loading="lazy" style={m.logoInvert ? { filter: "invert(1)" } : undefined} />
       </span>
     );
   }
@@ -62,7 +77,7 @@ const MediaCard = ({ m, i }) => (
   <article className="media-card">
     <div className={`media-card__media ${m.src ? "" : m.logo ? "media-card__media--logo" : "media-card__media--mono"}`}>
       {m.src && <img src={encodeURI(m.src)} alt={`Portrait of ${m.name}`} loading="lazy" />}
-      {!m.src && m.logo && <img className="media-card__logo" src={m.logo} alt={`${m.org} logo`} loading="lazy" />}
+      {!m.src && m.logo && <img className={`media-card__logo ${m.logoInvert ? "media-card__logo--invert" : ""}`} src={m.logo} alt={`${m.org} logo`} loading="lazy" />}
       {!m.src && !m.logo && <span className="media-card__mono font-display" aria-hidden="true">{m.initials}</span>}
       <span className="media-card__index">{pad2(i + 1)} / {pad2(MEDIA_TEAM.length)}</span>
       <span className="media-card__org">{m.org}</span>
@@ -74,6 +89,11 @@ const MediaCard = ({ m, i }) => (
         <div className="mt-2 font-cond font-semibold uppercase tracking-[0.12em] text-[12px]" style={{ color: "rgba(255,255,255,0.55)" }}>{m.meta}</div>
       )}
       {m.bio && <p className="media-card__bio">{m.bio}</p>}
+      {m.url && (
+        <a href={m.url} target="_blank" rel="noopener noreferrer" className="media-card__link">
+          Visit {m.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")} <IconArrowRight size={14} />
+        </a>
+      )}
     </div>
   </article>
 );
@@ -96,7 +116,7 @@ const Media = ({ setPage }) => (
           ON CAMERA.<br />ON THE <span className="media-hero__accent">RADAR</span>.
         </h1>
         <p className="mt-7 mx-auto text-[17px] lg:text-[18px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.72)", maxWidth: 680 }}>
-          Your kid works hard — it's time people saw it. FOOTYUP Media puts our players in front of fans, recruiters and scouts through US Footy and our own media team in Boston and Miami.
+          Your kid works hard — it's time people saw it. FOOTYUP Media puts our players in front of fans, recruiters and scouts through our official media partner FootyAccess, US Footy, and our own media team in Boston and Miami.
         </p>
 
         <div className="mt-12 grid grid-cols-3 gap-3 max-w-[640px] mx-auto">
@@ -130,8 +150,45 @@ const Media = ({ setPage }) => (
             Telling our players' stories
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
           {MEDIA_TEAM.map((m, i) => <MediaCard key={m.key} m={m} i={i} />)}
+        </div>
+      </div>
+    </section>
+
+    {/* FOOTYUP × FOOTYACCESS — main media partner */}
+    <section className="media-fa px-5 lg:px-10 py-20 lg:py-24">
+      <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-[auto_minmax(0,1fr)] gap-10 lg:gap-16 items-center">
+        <div className="media-fa__crest mx-auto lg:mx-0">
+          <img src="assets/footyaccess-logo.svg" alt="FootyAccess logo" loading="lazy" />
+        </div>
+        <div className="text-center lg:text-left">
+          <div className="font-cond font-bold uppercase tracking-[0.2em] text-[12px]" style={{ color: "#C9A24A" }}>Official Media Partner</div>
+          <h2 className="mt-3 font-display text-white" style={{ fontSize: "clamp(2.25rem, 5vw, 4rem)", lineHeight: 0.95 }}>
+            FOOTYUP × <span className="media-hero__accent">FOOTYACCESS</span>.
+          </h2>
+          <p className="mt-5 text-[16px] lg:text-[17px] leading-[1.6] mx-auto lg:mx-0" style={{ color: "rgba(255,255,255,0.72)", maxWidth: 620 }}>
+            FootyAccess is our main media partner. They attend every FOOTYUP event — camps, clinics and the Miami College Combine — and cover all of our posts, putting our players in front of the youth soccer world.
+          </p>
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-[640px] mx-auto lg:mx-0">
+            {[
+              { t: "EVERY EVENT", d: "On site at all FOOTYUP events" },
+              { t: "EVERY POST", d: "Covering all of our content" },
+              { t: "YOUTH SOCCER", d: "Scores, rankings & stories" },
+            ].map((p) => (
+              <div key={p.t} className="media-hero__stat text-left">
+                <div className="font-display text-white text-[22px] leading-none">{p.t}</div>
+                <div className="mt-2 text-[13px] leading-[1.45]" style={{ color: "rgba(255,255,255,0.6)" }}>{p.d}</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+            <a href={FOOTYACCESS_URL} target="_blank" rel="noopener noreferrer" className="btn-arrow justify-center font-display tracking-wide bg-blood text-white hover:bg-blood-dark px-5 py-3 text-[16px]">
+              <span>VISIT FOOTYACCESS.COM</span>
+              <IconArrowRight size={18} className="arrow" />
+            </a>
+            <span className="self-center font-cond uppercase tracking-[0.16em] text-[12px] text-white/50">@footyaccess</span>
+          </div>
         </div>
       </div>
     </section>
@@ -322,7 +379,32 @@ const Media = ({ setPage }) => (
       }
       .media-card__index { left: 14px; color: #fff; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.14); }
       .media-card__org { right: 14px; color: #111; background: #C9A24A; }
+      .media-card__media--logo img.media-card__logo--invert,
+      .media-card:hover .media-card__media--logo img.media-card__logo--invert { filter: invert(1); width: auto; height: 70%; }
       .media-card__body { padding: 22px 24px 26px; }
+      .media-card__link {
+        display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
+        font-family: "Barlow Condensed", sans-serif; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.14em; font-size: 12px;
+        color: #C9A24A;
+      }
+      .media-card__link:hover { color: #fff; }
+
+      .media-fa {
+        background:
+          radial-gradient(700px 400px at 0% 50%, rgba(201,162,74,0.10), transparent 60%),
+          #0A0A0A;
+        border-top: 1px solid rgba(255,255,255,0.06);
+      }
+      .media-fa__crest {
+        width: 200px; padding: 28px;
+        border-radius: 22px;
+        background: radial-gradient(circle at 50% 40%, #1a1a1a 0%, #000 75%);
+        border: 1px solid rgba(201,162,74,0.35);
+        box-shadow: 0 50px 90px -50px rgba(201,162,74,0.4);
+      }
+      .media-fa__crest img { width: 100%; height: auto; display: block; filter: invert(1); }
+      @media (min-width: 1024px) { .media-fa__crest { width: 260px; } }
       .media-card__bio { margin-top: 16px; font-size: 15px; line-height: 1.65; color: rgba(255,255,255,0.74); }
 
       @media (prefers-reduced-motion: reduce) {

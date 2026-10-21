@@ -2,11 +2,13 @@
 
 // `desktop: false` items are covered on desktop by the wordmark (Home) and the
 // red CTA (Private Training), which keeps the center row clear at 1024px.
+// Veterans Day Camp is reached on desktop from its home page card instead.
 // The mobile menu always lists every item.
 const NAV_ITEMS = [
   { key: "home", label: "Home", desktop: false },
   { key: "summerCamp", label: "Summer Camps" },
   { key: "winterCamp", label: "Winter Camp" },
+  { key: "veteransDay", label: "Veterans Day Camp", desktop: false },
   { key: "miami", label: "Miami Combine" },
   { key: "coaches", label: "Coaches" },
   { key: "media", label: "Media" },
@@ -318,6 +320,7 @@ const Footer = ({ setPage }) => {
           {SUMMER_CAMPS.filter((c) => c.slug).map((c) => (
             <li key={c.id}><NavBtn to="summerCamp" sub={c.slug}>Summer Camp — {c.name}</NavBtn></li>
           ))}
+          <li><NavBtn to="veteransDay">Veterans Day Camp — Canton</NavBtn></li>
           <li><NavBtn to="winterCamp">Winter Camp — Walpole</NavBtn></li>
           <li><NavBtn to="miami">College Combine — Miami</NavBtn></li>
           <li><NavBtn to="privateTraining">Private Training</NavBtn></li>

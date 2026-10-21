@@ -2,7 +2,7 @@ const { getCamp, registrationStatus, checkAccessCode } = require('./_camps');
 
 // Registration gate for timed / code-locked camps (the Miami combine).
 //
-// GET  ?campId=…            → { open, gated, opensAt } so the page shows the
+// GET  ?campId=…            → { open, closed, gated, … } so the page shows the
 //                             right state without hard-coding it.
 // POST { campId, code }     → 200 when the code unlocks registration.
 //
@@ -28,9 +28,10 @@ module.exports = async (req, res) => {
   }
 
   if (!status.open) {
-    return res.status(403).json({ ...status, error: 'Registration has not opened yet.' });
+    const error = status.closed ? 'Registration has closed.' : 'Registration has not opened yet.';
+    return res.status(403).json({ ...status, error });
   }
-  if (!checkAccessCode(camp, (req.body || {}).code)) {
+  if (status.gated && !checkAccessCode(camp, (req.body || {}).code)) {
     return res.status(403).json({ ...status, error: 'That access code is not valid. Please check it and try again.' });
   }
   return res.status(200).json({ ...status, ok: true });

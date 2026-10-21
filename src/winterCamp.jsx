@@ -1,14 +1,14 @@
-// WINTER CAMP page — indoor camp in Walpole, registration via the shared camp form
-const WinterCamp = ({ setPage }) => {
-  const camp = campById("winter_walpole");
-
+// SINGLE-SESSION CAMP pages — Winter Camp (Walpole) and Veterans Day Camp
+// (Canton). Copy and figures come from the camp's entry in src/camps.jsx;
+// registration goes through the shared camp form.
+const SingleCampPage = ({ camp }) => {
   const RegisterButton = ({ size = "lg", full = false, className = "" }) => (
     <button
       type="button"
       onClick={scrollToCampForm}
       className={`btn-arrow justify-center font-display tracking-wide bg-blood text-white hover:bg-blood-dark ${size === "lg" ? "px-6 py-5 text-[20px] sm:text-[22px]" : "px-5 py-3 text-[16px]"} ${full ? "w-full" : ""} ${className}`}
     >
-      <span>SIGN UP NOW — $315</span>
+      <span>SIGN UP NOW — {formatUSD(camp.price)}</span>
       <IconArrowRight size={20} className="arrow" />
     </button>
   );
@@ -18,12 +18,12 @@ const WinterCamp = ({ setPage }) => {
       {/* HERO */}
       <section className="bg-white pt-20 pb-10 px-5 lg:px-10">
         <div className="max-w-[1200px] mx-auto text-center">
-          <div className="eyebrow mb-4">Winter Camp</div>
+          <div className="eyebrow mb-4">{camp.tag}</div>
           <h1 className="font-display text-ink" style={{ fontSize: "clamp(2.5rem, 6vw, 5.5rem)" }}>
-            WINTER CAMP.<br />TRAIN THROUGH THE COLD.
+            {camp.headline[0]}<br />{camp.headline[1]}
           </h1>
           <p className="mt-6 mx-auto text-[18px] text-fog leading-[1.55]" style={{ maxWidth: 700 }}>
-            A high-energy indoor session with the FOOTYUP staff — four hours of real coaching to keep your player sharp all winter. Spots are limited.
+            {camp.lead}
           </p>
           <div className="mt-5 flex flex-wrap justify-center items-center gap-x-6 gap-y-2 font-cond uppercase tracking-[0.15em] text-[13px] text-fog">
             <span className="inline-flex items-center gap-2">
@@ -47,10 +47,10 @@ const WinterCamp = ({ setPage }) => {
           <div>
             <div className="eyebrow mb-4">The Details</div>
             <h2 className="font-display text-ink leading-none" style={{ fontSize: "clamp(2rem, 4vw, 3.25rem)" }}>
-              ONE FLAT PRICE.<br />DROP OFF &amp; TRAIN.
+              {camp.detailsTitle[0]}<br />{camp.detailsTitle[1]}
             </h2>
             <p className="mt-5 text-fog text-[16px] leading-[1.55]" style={{ maxWidth: 520 }}>
-              Drop your player off at 9 and pick them up at 1 — technical work, small-sided games, and coaching from college and pro-level players. Register online in under a minute; details for the day are sent after checkout.
+              {camp.details}
             </p>
           </div>
 
@@ -84,4 +84,7 @@ const WinterCamp = ({ setPage }) => {
   );
 };
 
-window.WinterCamp = WinterCamp;
+const WinterCamp = () => <SingleCampPage camp={campById("winter_walpole")} />;
+const VeteransDayCamp = () => <SingleCampPage camp={campById("veterans_canton_2026")} />;
+
+Object.assign(window, { WinterCamp, VeteransDayCamp });

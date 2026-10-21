@@ -6,6 +6,9 @@
 // `id` and session `value` strings below. Change a price and you must change it
 // in both places.
 //
+// Camps with their own `page` (Winter, Veterans Day, Miami) need it added to
+// VALID_PAGES in src/app.jsx.
+//
 // status: "open"     — registers and pays on this site
 //         "external" — info page only; the host school runs sign-ups
 //         "soon"     — teaser card, no page yet
@@ -28,9 +31,42 @@ const CAMP_LIST = [
     minAge: 6,
     maxAge: 17,
     priceLabel: "$315 per player",
+    price: 315,
     accent: "#D2122E",
+    headline: ["WINTER CAMP.", "TRAIN THROUGH THE COLD."],
+    lead: "A high-energy indoor session with the FOOTYUP staff — four hours of real coaching to keep your player sharp all winter. Spots are limited.",
+    detailsTitle: ["ONE FLAT PRICE.", "DROP OFF & TRAIN."],
+    details: "Drop your player off at 9 and pick them up at 1 — technical work, small-sided games, and coaching from college and pro-level players. Register online in under a minute; details for the day are sent after checkout.",
     sessions: [
       { value: "full", label: "Winter Camp — Dec 27–31 · 9 AM–1 PM · $315", price: 315, minAge: 6, maxAge: 17 },
+    ],
+  },
+  {
+    id: "veterans_canton_2026",
+    season: "fall",
+    status: "open",
+    page: "veteransDay",
+    tag: "Veterans Day Camp",
+    name: "Canton",
+    place: "CANTON",
+    region: "5 Carver Cir · Ages 6–17",
+    cardNote: "Wed Nov 11 · 9 AM–1 PM",
+    venue: "5 Carver Cir, Canton, MA 02021",
+    address: "5 Carver Cir, Canton, MA 02021",
+    schedule: "9:00 AM – 1:00 PM",
+    dates: "Wednesday, November 11, 2026",
+    ages: "Ages 6–17",
+    minAge: 6,
+    maxAge: 17,
+    priceLabel: "$120 per player",
+    price: 120,
+    accent: "#D2122E",
+    headline: ["VETERANS DAY CAMP.", "ONE DAY. FOUR HOURS."],
+    lead: "Spend Veterans Day on the ball with the FOOTYUP staff in Canton — four hours of real coaching from college and pro-level players. Spots are limited.",
+    detailsTitle: ["ONE FLAT PRICE.", "DROP OFF & TRAIN."],
+    details: "Drop your player off at 9 and pick them up at 1 — technical work, small-sided games, and coaching from college and pro-level players. Register online in under a minute; details for the day are sent after checkout.",
+    sessions: [
+      { value: "full", label: "Veterans Day Camp — Wed Nov 11 · 9 AM–1 PM · $120", price: 120, minAge: 6, maxAge: 17 },
     ],
   },
   {
@@ -185,23 +221,32 @@ const CAMP_LIST = [
     tag: "College Combine",
     name: "Miami College Combine",
     place: "MIAMI",
-    region: "Gulliver Prep · Ages 14–18",
+    region: "Belen Jesuit Prep · Ages 14–18",
     cardNote: "Boys May 21–23 · Girls May 24–26",
-    venue: "Gulliver Prep",
-    address: "Miami, FL",
+    venue: "Belen Jesuit Preparatory School",
+    venueShort: "Belen Jesuit Prep",
+    address: "500 SW 127th Ave, Miami, FL",
     dates: "May 21 – 26, 2027",
+    schedule: "4:30 – 8:30 PM",
     ages: "Ages 14–18",
     minAge: 14,
     maxAge: 18,
-    priceLabel: "$1,300 per player",
+    spotsPerSession: 225,
     accent: "#C9A24A",
     // Display defaults only — the Miami page asks /api/camp-access for the live
     // state, and api/_camps.js is what actually enforces it.
     opensAt: "2026-11-01T00:00:00-04:00",
+    closesAt: "2027-03-02T00:00:00-05:00",
     gated: true,
+    gatedUntil: "2026-12-01T00:00:00-05:00",
+    // Price by registration date (mirrors priceTiers in api/_camps.js).
+    priceTiers: [
+      { until: "2027-02-02T00:00:00-05:00", price: 1500, label: "Nov 1 – Feb 1" },
+      { price: 1650, label: "Feb 2 – Mar 1" },
+    ],
     sessions: [
-      { value: "boys",  title: "Boys Combine",  short: "Boys",  dates: "May 21 – 23, 2027", ages: "Ages 14–18", minAge: 14, maxAge: 18, price: 1300, label: "Boys Combine — May 21–23, 2027 · $1,300" },
-      { value: "girls", title: "Girls Combine", short: "Girls", dates: "May 24 – 26, 2027", ages: "Ages 14–18", minAge: 14, maxAge: 18, price: 1300, label: "Girls Combine — May 24–26, 2027 · $1,300" },
+      { value: "boys",  title: "Boys Combine",  short: "Boys",  dates: "May 21 – 23, 2027", ages: "Ages 14–18", minAge: 14, maxAge: 18 },
+      { value: "girls", title: "Girls Combine", short: "Girls", dates: "May 24 – 26, 2027", ages: "Ages 14–18", minAge: 14, maxAge: 18 },
     ],
   },
 ];
@@ -209,6 +254,7 @@ const CAMP_LIST = [
 // Order of the Upcoming Camps cards on the home page.
 const HOME_CAMP_ORDER = [
   "miami_combine_2027",
+  "veterans_canton_2026",
   "arlington_catholic_2027",
   "watertown_2027",
   "bbn_2027",
@@ -228,10 +274,33 @@ const campRoute = (c) => {
   return null;
 };
 
-const campRegistrationOpen = (c, now = Date.now()) => !c.opensAt || now >= Date.parse(c.opensAt);
+const passedAt = (iso, now) => !!iso && now >= Date.parse(iso);
+
+// Same shape as GET /api/camp-access — the fallback when the API can't be reached.
+const campRegistrationStatus = (c, now = Date.now()) => {
+  const closed = passedAt(c.closesAt, now);
+  return {
+    open: (!c.opensAt || passedAt(c.opensAt, now)) && !closed,
+    closed,
+    gated: !!c.gated && !passedAt(c.gatedUntil, now),
+    opensAt: c.opensAt || null,
+    closesAt: c.closesAt || null,
+    gatedUntil: c.gatedUntil || null,
+  };
+};
+const campRegistrationOpen = (c, now = Date.now()) => campRegistrationStatus(c, now).open;
+
+// Today's price tier for camps priced by registration date.
+const campPriceTier = (c, now = Date.now()) =>
+  (c.priceTiers || []).find((t) => !t.until || now < Date.parse(t.until)) || null;
+const campPrice = (c, now = Date.now()) => {
+  const tier = campPriceTier(c, now);
+  return tier ? tier.price : c.price;
+};
 const formatUSD = (n) => `$${Number(n).toLocaleString("en-US")}`;
 
 Object.assign(window, {
   CAMP_LIST, HOME_CAMP_ORDER, SUMMER_CAMPS,
-  campById, summerCampBySlug, campRoute, campRegistrationOpen, formatUSD,
+  campById, summerCampBySlug, campRoute,
+  campRegistrationStatus, campRegistrationOpen, campPriceTier, campPrice, formatUSD,
 });

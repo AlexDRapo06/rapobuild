@@ -1,5 +1,5 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const { getCamp, registrationStatus, checkAccessCode } = require('./_camps');
+const { getCamp, registrationStatus, unitAmount, checkAccessCode } = require('./_camps');
 
 // Pricing, sessions, age ranges and access rules live in ./_camps.js, which
 // src/camps.jsx mirrors for display. Nothing about what is charged is taken
@@ -109,6 +109,9 @@ module.exports = async (req, res) => {
 
   // Timed / code-gated registration (e.g. the Miami combine's private-school window).
   const status = registrationStatus(camp);
+  if (status.closed) {
+    return fail(res, 403, 'Registration for this camp has closed.');
+  }
   if (!status.open) {
     return fail(res, 403, 'Registration for this camp has not opened yet.');
   }
@@ -178,7 +181,7 @@ module.exports = async (req, res) => {
               name: camp.name,
               description: campSession.label,
             },
-            unit_amount: campSession.unit_amount,
+            unit_amount: unitAmount(camp, campSession),
           },
           quantity: 1,
         },

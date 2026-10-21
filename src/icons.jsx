@@ -128,7 +128,14 @@ const IconTarget = ({ size = 18, className = "" }) => (
   </IconFrame>
 );
 
+const IconCamera = ({ size = 18, className = "" }) => (
+  <IconFrame size={size} className={className}>
+    <path d="M3 8h4l2-3h6l2 3h4v12H3z" />
+    <circle cx="12" cy="13" r="4" />
+  </IconFrame>
+);
+
 Object.assign(window, {
   IconArrowRight, IconPlus, IconMinus, IconCheck, IconMenu, IconX, IconMail, IconPhone, IconMapPin,
-  IconCalendar, IconLock, IconBolt, IconUsers, IconBook, IconShirt, IconIdCard, IconTarget,
+  IconCalendar, IconLock, IconBolt, IconUsers, IconBook, IconShirt, IconIdCard, IconTarget, IconCamera,
 });

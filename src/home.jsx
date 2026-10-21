@@ -21,7 +21,7 @@ const Home = ({ setPage }) => {
   const railCoaches = homeRailCoaches();
   const homeCamps = HOME_CAMP_ORDER.map(campById).filter(Boolean);
   const miami = campById("miami_combine_2027");
-  const miamiOpen = campRegistrationOpen(miami);
+  const miamiStatus = campRegistrationStatus(miami);
 
   const goCamp = (c) => {
     const route = campRoute(c);
@@ -684,32 +684,35 @@ const Home = ({ setPage }) => {
             <div className="inline-flex items-center gap-2.5 mb-5 px-4 py-2 rounded-full" style={{ background: "rgba(210,18,46,0.10)", border: "1px solid rgba(210,18,46,0.35)" }}>
               <span className="upcoming__pulse" aria-hidden="true" />
               <span className="font-cond font-bold uppercase tracking-[0.2em] text-[11px]" style={{ color: "#ff6072" }}>
-                Now booking — Summer 2027 · Winter · Miami
+                Now booking — Veterans Day · Winter · Summer 2027 · Miami
               </span>
             </div>
             <h2 className="font-display text-white" style={{ fontSize: "clamp(2.25rem, 5vw, 4.5rem)", lineHeight: 0.95, letterSpacing: "-0.01em" }}>
               UPCOMING <span className="upcoming__accent">CAMPS</span>.
             </h2>
             <p className="mt-6 text-[16px] lg:text-[17px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.72)" }}>
-              Summer camps at Arlington Catholic, Watertown and BB&amp;N, Winter Camp in Walpole this December, and the FOOTYUP College Combine in Miami. Tap a camp for dates, details and registration.
+              A Veterans Day Camp in Canton on November 11, Winter Camp in Walpole this December, summer camps at Arlington Catholic, Watertown and BB&amp;N, and the FOOTYUP College Combine in Miami. Tap a camp for dates, details and registration.
             </p>
           </div>
 
           {/* Camp cards */}
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-            {homeCamps.map((c) => {
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+            {homeCamps.map((c, i) => {
               const route = campRoute(c);
               const Card = route ? "button" : "div";
               const featured = c.id === miami.id;
               const cta = featured
-                ? (miamiOpen ? "Register now" : "Registration opens Nov 1")
+                ? (miamiStatus.closed ? "Registration closed" : miamiStatus.open ? "Register now" : "Registration opens Nov 1")
                 : c.status === "external" ? "Camp info" : "Register now";
+              // The featured card fills a row, so an odd number of others would
+              // leave the last one alone on two-column screens — stretch it.
+              const stretchLast = i === homeCamps.length - 1 && (homeCamps.length - 1) % 2 === 1;
               return (
                 <Card
                   key={c.id}
                   type={route ? "button" : undefined}
                   onClick={route ? () => goCamp(c) : undefined}
-                  className={`upcoming__card text-left ${route ? "upcoming__card--live" : ""} ${featured ? "upcoming__card--featured sm:col-span-2" : ""}`}
+                  className={`upcoming__card text-left ${route ? "upcoming__card--live" : ""} ${featured ? "upcoming__card--featured sm:col-span-2" : ""} ${stretchLast ? "sm:col-span-2 lg:col-span-1" : ""}`}
                 >
                   <div className="flex items-center gap-2">
                     <span className="upcoming__card-dot" style={{ background: c.accent }} aria-hidden="true" />
@@ -723,12 +726,13 @@ const Home = ({ setPage }) => {
                       {c.sessions.map((s) => (
                         <span key={s.value} className="upcoming__chip">{s.short} · {s.dates.replace(", 2027", "")}</span>
                       ))}
-                      <span className="upcoming__chip upcoming__chip--price">{formatUSD(c.sessions[0].price)}</span>
+                      <span className="upcoming__chip">{c.schedule}</span>
+                      <span className="upcoming__chip upcoming__chip--price">{formatUSD(campPrice(c))}</span>
                     </div>
                   )}
                   {featured && (
                     <p className="mt-4 text-[14px] leading-[1.55]" style={{ color: "rgba(255,255,255,0.68)", maxWidth: 460 }}>
-                      College coaches in attendance, VALD performance testing, recruiting sessions and a custom FOOTYUP × GOINGFORGOAT kit shipped home.
+                      Now hosted at {c.venue}. College coaches in attendance, VALD performance testing, FootyAccess media coverage and a custom FOOTYUP × GOINGFORGOAT kit shipped home.
                     </p>
                   )}
                   <div className="flex-1" aria-hidden="true" />
@@ -882,7 +886,7 @@ const Home = ({ setPage }) => {
               YOUR KID WORKS HARD.<br />IT'S TIME PEOPLE SAW IT.
             </h2>
             <p className="mt-5 text-[16px] leading-[1.6]" style={{ color: "rgba(0,0,0,0.72)", maxWidth: 520 }}>
-              Official media &amp; training partner of US Footy — 14,400+ followers — with our own media team covering FOOTYUP players in Boston and Miami.
+              FootyAccess, our official media partner, covers every FOOTYUP event. We're also the media &amp; training partner of US Footy — 14,400+ followers — with our own media team covering FOOTYUP players in Boston and Miami.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <RedButton onClick={() => setPage("media")}>MEET OUR MEDIA TEAM</RedButton>

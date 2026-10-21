@@ -36,23 +36,41 @@ const CAMPS = {
       elite:  { label: 'Elite Summer Camp · Ages 14–18 · July 19–23, 2027 · 9 AM–1 PM', unit_amount: 75000, minAge: 14, maxAge: 18 },
     },
   },
+  veterans_canton_2026: {
+    name: 'FOOTYUP Veterans Day Camp — Canton, MA',
+    route: 'veteransDay',
+    // Registration closes when camp starts.
+    closesAt: '2026-11-11T09:00:00-05:00',
+    sessions: {
+      full: { label: 'Veterans Day · Wed Nov 11, 2026 · 9 AM–1 PM', unit_amount: 12000, minAge: 6, maxAge: 17 },
+    },
+  },
   miami_combine_2027: {
-    name: 'FOOTYUP Miami College Combine 2027 — Gulliver Prep',
+    name: 'FOOTYUP Miami College Combine 2027 — Belen Jesuit Preparatory School',
     route: 'miami',
     kind: 'combine',
-    // Registration opens at midnight Eastern on Nov 1, 2026.
+    // Registration opens at midnight Eastern on Nov 1, 2026…
     opensAt: '2026-11-01T00:00:00-04:00',
-    // Private-school priority window: checkout requires the access code.
-    // To open registration to the public, set `gated: false` — the Miami page
-    // reads this through /api/camp-access, so nothing else needs to change.
+    // …and March 1, 2027 is the last day to register.
+    closesAt: '2027-03-02T00:00:00-05:00',
+    // Private-school priority window (Nov 1–30): checkout requires the access
+    // code. From `gatedUntil` on, registration is open to the public — the Miami
+    // page reads this through /api/camp-access, so nothing else needs to change.
     gated: true,
+    gatedUntil: '2026-12-01T00:00:00-05:00',
     // sha256(ACCESS_CODE_SALT + normalized code). The code itself never ships
     // to the browser or lives in the repo. To change it, hash the new code:
     //   node -e "console.log(require('crypto').createHash('sha256').update('footyup-combine-2027:'+'NEWCODE'.trim().toLowerCase()).digest('hex'))"
-    accessCodeHash: '177f3362edf9ec32f3791758493a3f6cb4023ca3082caf1e1da01c776924e435',
+    accessCodeHash: '305988d0bcee605deff3c351783303cc7b35516cc84bec95672756dfb25709d4',
+    // Price by registration date: the first tier whose `until` hasn't passed.
+    // $1,500 through Feb 1, then $1,650 through close on March 1.
+    priceTiers: [
+      { until: '2027-02-02T00:00:00-05:00', unit_amount: 150000 },
+      { unit_amount: 165000 },
+    ],
     sessions: {
-      boys:  { label: 'Boys Combine · May 21–23, 2027 · Ages 14–18', unit_amount: 130000, minAge: 14, maxAge: 18, sex: 'Male' },
-      girls: { label: 'Girls Combine · May 24–26, 2027 · Ages 14–18', unit_amount: 130000, minAge: 14, maxAge: 18, sex: 'Female' },
+      boys:  { label: 'Boys Combine · May 21–23, 2027 · 4:30–8:30 PM · Ages 14–18', minAge: 14, maxAge: 18, sex: 'Male' },
+      girls: { label: 'Girls Combine · May 24–26, 2027 · 4:30–8:30 PM · Ages 14–18', minAge: 14, maxAge: 18, sex: 'Female' },
     },
   },
 };
@@ -61,20 +79,32 @@ const ACCESS_CODE_SALT = 'footyup-combine-2027:';
 
 const getCamp = (id) => (Object.prototype.hasOwnProperty.call(CAMPS, id) ? CAMPS[id] : null);
 
-// Whether registration has opened yet, and whether it still needs a code.
+const passed = (iso, now) => !!iso && now >= Date.parse(iso);
+
+// Whether registration has opened (and not yet closed), and whether it still
+// needs a code.
 const registrationStatus = (camp, now = Date.now()) => {
-  const opensAt = camp.opensAt ? Date.parse(camp.opensAt) : null;
+  const closed = passed(camp.closesAt, now);
   return {
-    open: opensAt == null || now >= opensAt,
-    gated: !!camp.gated,
+    open: (!camp.opensAt || passed(camp.opensAt, now)) && !closed,
+    closed,
+    gated: !!camp.gated && !passed(camp.gatedUntil, now),
     opensAt: camp.opensAt || null,
+    closesAt: camp.closesAt || null,
+    gatedUntil: camp.gatedUntil || null,
   };
+};
+
+// What a session costs right now, in cents.
+const unitAmount = (camp, session, now = Date.now()) => {
+  const tier = (camp.priceTiers || []).find((t) => !t.until || now < Date.parse(t.until));
+  return tier ? tier.unit_amount : session.unit_amount;
 };
 
 // Codes are compared case-insensitively with surrounding spaces ignored, so a
 // parent's phone auto-capitalizing or a pasted trailing space never locks them out.
 const checkAccessCode = (camp, code) => {
-  if (!camp.gated) return true;
+  if (!camp.accessCodeHash) return true;
   if (typeof code !== 'string' || !code.trim()) return false;
   const given = crypto
     .createHash('sha256')
@@ -84,4 +114,4 @@ const checkAccessCode = (camp, code) => {
   return given.length === expected.length && crypto.timingSafeEqual(given, expected);
 };
 
-module.exports = { CAMPS, getCamp, registrationStatus, checkAccessCode };
+module.exports = { CAMPS, getCamp, registrationStatus, unitAmount, checkAccessCode };
