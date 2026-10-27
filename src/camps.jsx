@@ -6,6 +6,12 @@
 // `id` and session `value` strings below. Change a price and you must change it
 // in both places.
 //
+// MIAMI COMBINE ON/OFF — flip SHOW_MIAMI to true to bring the whole Miami
+// College Combine back (page, nav, footer, home pill, home camp card and CTA).
+// The page (src/miami.jsx), camp data and API config are all still in place;
+// this flag only controls whether the site links to / routes to them.
+const SHOW_MIAMI = false;
+
 // Camps with their own `page` (Winter, Veterans Day, Miami) need it added to
 // VALID_PAGES in src/app.jsx.
 //
@@ -253,7 +259,7 @@ const CAMP_LIST = [
 
 // Order of the Upcoming Camps cards on the home page.
 const HOME_CAMP_ORDER = [
-  "miami_combine_2027",
+  ...(SHOW_MIAMI ? ["miami_combine_2027"] : []),
   "veterans_canton_2026",
   "arlington_catholic_2027",
   "watertown_2027",
@@ -300,7 +306,7 @@ const campPrice = (c, now = Date.now()) => {
 const formatUSD = (n) => `$${Number(n).toLocaleString("en-US")}`;
 
 Object.assign(window, {
-  CAMP_LIST, HOME_CAMP_ORDER, SUMMER_CAMPS,
+  SHOW_MIAMI, CAMP_LIST, HOME_CAMP_ORDER, SUMMER_CAMPS,
   campById, summerCampBySlug, campRoute,
   campRegistrationStatus, campRegistrationOpen, campPriceTier, campPrice, formatUSD,
 });

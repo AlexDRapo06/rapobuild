@@ -3,7 +3,11 @@
 // Routes are "#page" or "#page/sub" — e.g. #summerCamp/arlington-catholic for a
 // single camp, or #coaches/josh-partal to open the staff page at one coach.
 // Unknown pages (including the retired #basketball) fall back to home.
-const VALID_PAGES = ["home", "summerCamp", "winterCamp", "veteransDay", "miami", "coaches", "media", "privateTraining"];
+const VALID_PAGES = [
+  "home", "summerCamp", "winterCamp", "veteransDay",
+  ...(SHOW_MIAMI ? ["miami"] : []),
+  "coaches", "media", "privateTraining",
+];
 
 const PAGE_TITLES = {
   home: "FOOTYUP — Boston Youth Soccer",

@@ -20,8 +20,8 @@ const Home = ({ setPage }) => {
 
   const railCoaches = homeRailCoaches();
   const homeCamps = HOME_CAMP_ORDER.map(campById).filter(Boolean);
-  const miami = campById("miami_combine_2027");
-  const miamiStatus = campRegistrationStatus(miami);
+  const miami = SHOW_MIAMI ? campById("miami_combine_2027") : null;
+  const miamiStatus = miami ? campRegistrationStatus(miami) : null;
 
   const goCamp = (c) => {
     const route = campRoute(c);
@@ -84,14 +84,16 @@ const Home = ({ setPage }) => {
         <div className="hero-content-wrap relative z-10 w-full px-6 sm:px-10 lg:px-20 py-20 lg:py-28">
           <div className="hero-content max-w-[640px]">
             <div className="hero-content__top">
-              <button type="button" onClick={() => setPage("miami")} className="hero-pill mb-6">
-                <span className="hero-pill__tag">New</span>
-                <span>Miami College Combine · May 2027</span>
-                <IconArrowRight size={14} className="hero-pill__arrow" />
-              </button>
+              {SHOW_MIAMI && (
+                <button type="button" onClick={() => setPage("miami")} className="hero-pill mb-6">
+                  <span className="hero-pill__tag">New</span>
+                  <span>Miami College Combine · May 2027</span>
+                  <IconArrowRight size={14} className="hero-pill__arrow" />
+                </button>
+              )}
               <div className="eyebrow mb-6" style={{ color: "rgba(255,255,255,0.7)" }}>
                 <span className="inline-block w-2 h-2 rounded-full mr-2.5 align-middle" style={{ background: "#D2122E", boxShadow: "0 0 0 4px rgba(210,18,46,0.25)" }} />
-                Boston · Miami · Est. 2024
+                {SHOW_MIAMI ? "Boston · Miami · Est. 2024" : "Boston · Est. 2024"}
               </div>
               <h1
                 className="font-display text-white"
@@ -684,14 +686,14 @@ const Home = ({ setPage }) => {
             <div className="inline-flex items-center gap-2.5 mb-5 px-4 py-2 rounded-full" style={{ background: "rgba(210,18,46,0.10)", border: "1px solid rgba(210,18,46,0.35)" }}>
               <span className="upcoming__pulse" aria-hidden="true" />
               <span className="font-cond font-bold uppercase tracking-[0.2em] text-[11px]" style={{ color: "#ff6072" }}>
-                Now booking — Veterans Day · Winter · Summer 2027 · Miami
+                Now booking — Veterans Day · Winter · Summer 2027{SHOW_MIAMI ? " · Miami" : ""}
               </span>
             </div>
             <h2 className="font-display text-white" style={{ fontSize: "clamp(2.25rem, 5vw, 4.5rem)", lineHeight: 0.95, letterSpacing: "-0.01em" }}>
               UPCOMING <span className="upcoming__accent">CAMPS</span>.
             </h2>
             <p className="mt-6 text-[16px] lg:text-[17px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.72)" }}>
-              A Veterans Day Camp in Canton on November 11, Winter Camp in Walpole this December, summer camps at Arlington Catholic, Watertown and BB&amp;N, and the FOOTYUP College Combine in Miami. Tap a camp for dates, details and registration.
+              A Veterans Day Camp in Canton on November 11, Winter Camp in Walpole this December, summer camps at Arlington Catholic, Watertown and BB&amp;N{SHOW_MIAMI ? ", and the FOOTYUP College Combine in Miami" : ""}. Tap a camp for dates, details and registration.
             </p>
           </div>
 
@@ -700,7 +702,7 @@ const Home = ({ setPage }) => {
             {homeCamps.map((c, i) => {
               const route = campRoute(c);
               const Card = route ? "button" : "div";
-              const featured = c.id === miami.id;
+              const featured = !!miami && c.id === miami.id;
               const cta = featured
                 ? (miamiStatus.closed ? "Registration closed" : miamiStatus.open ? "Register now" : "Registration opens Nov 1")
                 : c.status === "external" ? "Camp info" : "Register now";
@@ -753,14 +755,16 @@ const Home = ({ setPage }) => {
           <div className="mt-12 flex flex-col sm:flex-row sm:flex-wrap justify-center items-center gap-4">
             <RedButton onClick={() => setPage("summerCamp")}>BOOK SUMMER CAMP</RedButton>
             <RedButton onClick={() => setPage("winterCamp")}>BOOK WINTER CAMP — $315</RedButton>
-            <button
-              type="button"
-              onClick={() => setPage("miami")}
-              className="upcoming__gold-btn btn-arrow font-display tracking-wide px-5 py-3 text-[16px]"
-            >
-              <span>MIAMI COLLEGE COMBINE</span>
-              <IconArrowRight size={18} className="arrow" />
-            </button>
+            {SHOW_MIAMI && (
+              <button
+                type="button"
+                onClick={() => setPage("miami")}
+                className="upcoming__gold-btn btn-arrow font-display tracking-wide px-5 py-3 text-[16px]"
+              >
+                <span>MIAMI COLLEGE COMBINE</span>
+                <IconArrowRight size={18} className="arrow" />
+              </button>
+            )}
           </div>
 
           {/* Notify */}

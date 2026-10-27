@@ -9,7 +9,7 @@ const NAV_ITEMS = [
   { key: "summerCamp", label: "Summer Camps" },
   { key: "winterCamp", label: "Winter Camp" },
   { key: "veteransDay", label: "Veterans Day Camp", desktop: false },
-  { key: "miami", label: "Miami Combine" },
+  ...(SHOW_MIAMI ? [{ key: "miami", label: "Miami Combine" }] : []),
   { key: "coaches", label: "Coaches" },
   { key: "media", label: "Media" },
   { key: "privateTraining", label: "Private Training", desktop: false },
@@ -322,7 +322,7 @@ const Footer = ({ setPage }) => {
           ))}
           <li><NavBtn to="veteransDay">Veterans Day Camp — Canton</NavBtn></li>
           <li><NavBtn to="winterCamp">Winter Camp — Walpole</NavBtn></li>
-          <li><NavBtn to="miami">College Combine — Miami</NavBtn></li>
+          {SHOW_MIAMI && <li><NavBtn to="miami">College Combine — Miami</NavBtn></li>}
           <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
         </Col>
       </div>

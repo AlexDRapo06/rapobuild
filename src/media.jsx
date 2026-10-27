@@ -168,7 +168,7 @@ const Media = ({ setPage }) => (
             FOOTYUP × <span className="media-hero__accent">FOOTYACCESS</span>.
           </h2>
           <p className="mt-5 text-[16px] lg:text-[17px] leading-[1.6] mx-auto lg:mx-0" style={{ color: "rgba(255,255,255,0.72)", maxWidth: 620 }}>
-            FootyAccess is our main media partner. They attend every FOOTYUP event — camps, clinics and the Miami College Combine — and cover all of our posts, putting our players in front of the youth soccer world.
+            FootyAccess is our main media partner. They attend every FOOTYUP event — camps, clinics{SHOW_MIAMI ? " and the Miami College Combine" : ""} — and cover all of our posts, putting our players in front of the youth soccer world.
           </p>
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-[640px] mx-auto lg:mx-0">
             {[
