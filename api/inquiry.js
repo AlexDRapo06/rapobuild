@@ -1,7 +1,11 @@
+const { forward } = require('./_platform');
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+  // The platform saves the inquiry and emails the coaches; Telegram is the fallback.
+  if (await forward(req, res, 'inquiry')) return;
 
   const { name, email, phone, players, bundle, ages, notes } = req.body || {};
 

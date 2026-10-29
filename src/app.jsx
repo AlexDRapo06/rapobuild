@@ -47,6 +47,17 @@ const App = () => {
     document.title = pageTitle(route);
   }, [route.page, route.sub]);
 
+  // Re-render once live prices from the dashboard arrive (see applyCatalog).
+  const [, setCatalogVersion] = React.useState(0);
+  React.useEffect(() => {
+    fetch("/api/catalog")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((catalog) => {
+        if (applyCatalog(catalog)) setCatalogVersion((v) => v + 1);
+      })
+      .catch(() => {});
+  }, []);
+
   const setPage = (p, sub = "") => {
     if (!VALID_PAGES.includes(p)) { p = "home"; sub = ""; }
     const hash = sub ? `${p}/${encodeURIComponent(sub)}` : p;

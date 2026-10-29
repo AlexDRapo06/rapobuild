@@ -14,14 +14,15 @@ const PrivateTraining = ({ setPage }) => {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const live = (id, fallback) => (window.TRAINING_PRICES && window.TRAINING_PRICES[id]) || fallback;
   const individual = [
-    { count: "5 Sessions",  price: "$550",   packageId: "individual_5" },
-    { count: "7 Sessions",  price: "$640",   packageId: "individual_7" },
-    { count: "10 Sessions", price: "$910",   packageId: "individual_10" },
+    { count: "5 Sessions",  price: live("individual_5", "$550"),   packageId: "individual_5" },
+    { count: "7 Sessions",  price: live("individual_7", "$640"),   packageId: "individual_7" },
+    { count: "10 Sessions", price: live("individual_10", "$910"),   packageId: "individual_10" },
   ];
   const group2 = [
-    { count: "5 Sessions", price: "$850",   packageId: "group2_5" },
-    { count: "7 Sessions", price: "$1,000", packageId: "group2_7" },
+    { count: "5 Sessions", price: live("group2_5", "$850"),   packageId: "group2_5" },
+    { count: "7 Sessions", price: live("group2_7", "$1,000"), packageId: "group2_7" },
   ];
 
   const [buying, setBuying] = React.useState(null);

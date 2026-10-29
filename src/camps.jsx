@@ -392,8 +392,44 @@ const campPrice = (c, now = Date.now()) => {
 };
 const formatUSD = (n) => `$${Number(n).toLocaleString("en-US")}`;
 
+// Live prices from the admin dashboard (GET /api/catalog). Rewrites the prices
+// above, including the ones inside labels like "Week 1 — July 12–16 · $415",
+// so the cards, forms and checkout all agree. Returns true if anything changed.
+const swapPrice = (text, from, to) =>
+  typeof text === "string" && from !== to ? text.split(formatUSD(from)).join(formatUSD(to)) : text;
+const applyCatalog = (catalog) => {
+  if (!catalog || typeof catalog !== "object") return false;
+  let changed = false;
+  for (const c of CAMP_LIST) {
+    const live = catalog.camps && catalog.camps[c.id];
+    if (live && Array.isArray(c.sessions)) {
+      for (const s of c.sessions) {
+        const ls = live.sessions && live.sessions[s.value];
+        if (!ls || typeof ls.price !== "number" || ls.price === s.price) continue;
+        s.label = swapPrice(s.label, s.price, ls.price);
+        if (c.price === s.price) {
+          c.priceLabel = swapPrice(c.priceLabel, c.price, ls.price);
+          c.price = ls.price;
+        }
+        s.price = ls.price;
+        changed = true;
+      }
+    }
+    const m = catalog.miami;
+    if (m && m.id === c.id && Array.isArray(m.priceTiers) && m.priceTiers.length && Array.isArray(c.priceTiers)) {
+      c.priceTiers = m.priceTiers.map((t, i) => ({ ...(c.priceTiers[i] || {}), until: t.until || undefined, price: t.price }));
+      changed = true;
+    }
+  }
+  if (catalog.trainingPackages) {
+    window.TRAINING_PRICES = Object.fromEntries(Object.entries(catalog.trainingPackages).map(([id, p]) => [id, formatUSD(p.price)]));
+    changed = true;
+  }
+  return changed;
+};
+
 Object.assign(window, {
   SHOW_MIAMI, CAMP_LIST, HOME_CAMP_ORDER, SUMMER_CAMPS,
   campById, summerCampBySlug, campRoute,
-  campRegistrationStatus, campRegistrationOpen, campPriceTier, campPrice, formatUSD,
+  campRegistrationStatus, campRegistrationOpen, campPriceTier, campPrice, formatUSD, applyCatalog,
 });

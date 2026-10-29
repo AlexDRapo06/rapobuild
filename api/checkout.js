@@ -1,5 +1,7 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+// Loaded only for the original checkout path; with PLATFORM_API_URL set the site needs no Stripe key.
+const stripe = () => require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { getCamp, registrationStatus, unitAmount, checkAccessCode } = require('./_camps');
+const { forward } = require('./_platform');
 
 // Pricing, sessions, age ranges and access rules live in ./_camps.js, which
 // src/camps.jsx mirrors for display. Nothing about what is charged is taken
@@ -96,6 +98,7 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return fail(res, 405, 'Method not allowed');
   }
+  if (await forward(req, res, 'checkout')) return;
 
   const body = req.body || {};
   const camp = getCamp(body.campId);
@@ -170,7 +173,7 @@ module.exports = async (req, res) => {
   const origin = `${proto}://${req.headers.host}`;
 
   try {
-    const checkout = await stripe.checkout.sessions.create({
+    const checkout = await stripe().checkout.sessions.create({
       payment_method_types: ['card'],
       customer_email: f.parentEmail,
       line_items: [

@@ -1,4 +1,6 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+// Loaded only for the original checkout path; with PLATFORM_API_URL set the site needs no Stripe key.
+const stripe = () => require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { forward } = require('./_platform');
 
 const PACKAGES = {
   individual_5:  { name: "Individual — 5 Sessions (1 hr 30 min each)",  unit_amount: 55000 },
@@ -12,6 +14,7 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+  if (await forward(req, res, 'checkout-training')) return;
 
   const { packageId } = req.body || {};
   const pkg = PACKAGES[packageId];
@@ -23,7 +26,7 @@ module.exports = async (req, res) => {
   const origin = `${proto}://${req.headers.host}`;
 
   try {
-    const session = await stripe.checkout.sessions.create({
+    const session = await stripe().checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
         {

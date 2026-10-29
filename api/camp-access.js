@@ -1,4 +1,5 @@
 const { getCamp, registrationStatus, checkAccessCode } = require('./_camps');
+const { forward } = require('./_platform');
 
 // Registration gate for timed / code-locked camps (the Miami combine).
 //
@@ -10,6 +11,7 @@ const { getCamp, registrationStatus, checkAccessCode } = require('./_camps');
 // decides what the page shows — it can't be used to skip the gate.
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
+  if ((req.method === 'GET' || req.method === 'POST') && (await forward(req, res, 'camp-access'))) return;
 
   const campId = req.method === 'GET' ? (req.query || {}).campId : (req.body || {}).campId;
   const camp = getCamp(campId);
