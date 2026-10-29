@@ -40,21 +40,21 @@ const CAMPS = {
     name: 'FOOTYUP Summer Camp 2027 — Rivier University, Nashua, NH',
     route: 'summerCamp/rivier',
     sessions: {
-      full: { label: 'June 28–July 2, 2027 · 8:30 AM–1:30 PM', unit_amount: 40000, minAge: 7, maxAge: 16 },
+      full: { label: 'June 28–July 2, 2027 · 8:30 AM–1:30 PM', unit_amount: 40000, minAge: 6, maxAge: 17 },
     },
   },
   union_point_2027: {
     name: 'FOOTYUP Summer Camp 2027 — Union Point, Weymouth, MA',
     route: 'summerCamp/union-point',
     sessions: {
-      full: { label: 'July 26–30, 2027 · 8:30 AM–2:00 PM', unit_amount: 50000, minAge: 7, maxAge: 16 },
+      full: { label: 'July 26–30, 2027 · 8:30 AM–2:00 PM', unit_amount: 50000, minAge: 6, maxAge: 17 },
     },
   },
   brandeis_2027: {
     name: 'FOOTYUP Summer Camp 2027 — Brandeis University, Waltham, MA',
     route: 'summerCamp/brandeis',
     sessions: {
-      full: { label: 'August 2–6, 2027 · 8:30 AM–1:30 PM', unit_amount: 45000, minAge: 7, maxAge: 16 },
+      full: { label: 'August 2–6, 2027 · 8:30 AM–1:30 PM', unit_amount: 45000, minAge: 6, maxAge: 17 },
     },
   },
   veterans_canton_2026: {
