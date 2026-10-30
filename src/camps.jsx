@@ -405,7 +405,10 @@ const applyCatalog = (catalog) => {
     if (live && Array.isArray(c.sessions)) {
       for (const s of c.sessions) {
         const ls = live.sessions && live.sessions[s.value];
-        if (!ls || typeof ls.price !== "number" || ls.price === s.price) continue;
+        if (!ls) continue;
+        const full = ls.spotsLeft === 0;
+        if (!!s.full !== full) { s.full = full; changed = true; }
+        if (typeof ls.price !== "number" || ls.price === s.price) continue;
         s.label = swapPrice(s.label, s.price, ls.price);
         if (c.price === s.price) {
           c.priceLabel = swapPrice(c.priceLabel, c.price, ls.price);
@@ -420,6 +423,17 @@ const applyCatalog = (catalog) => {
       c.priceTiers = m.priceTiers.map((t, i) => ({ ...(c.priceTiers[i] || {}), until: t.until || undefined, price: t.price }));
       changed = true;
     }
+    if (m && m.id === c.id && m.sessions && Array.isArray(c.sessions)) {
+      for (const s of c.sessions) {
+        const full = !!m.sessions[s.value] && m.sessions[s.value].spotsLeft === 0;
+        if (!!s.full !== full) { s.full = full; changed = true; }
+      }
+    }
+  }
+  if (catalog.miami && catalog.miami.options) window.MIAMI_OPTIONS = catalog.miami.options;
+  if (catalog.forms) {
+    window.SITE_FORMS = catalog.forms;
+    changed = true;
   }
   if (catalog.trainingPackages) {
     window.TRAINING_PRICES = Object.fromEntries(Object.entries(catalog.trainingPackages).map(([id, p]) => [id, formatUSD(p.price)]));

@@ -7,7 +7,8 @@ module.exports = async (req, res) => {
   // The platform saves the inquiry and emails the coaches; Telegram is the fallback.
   if (await forward(req, res, 'inquiry')) return;
 
-  const { name, email, phone, players, bundle, ages, notes } = req.body || {};
+  const { name, email, phone, town, playerNames, players, bundle, ages, notes, website } = req.body || {};
+  if (website) return res.status(200).json({ success: true });
 
   const lines = [
     `🏐 *New Training Inquiry*`,
@@ -15,6 +16,8 @@ module.exports = async (req, res) => {
     `*Parent:* ${name}`,
     `*Email:* ${email}`,
     `*Phone:* ${phone}`,
+    town ? `*Town:* ${town}` : null,
+    playerNames ? `*Player Name(s):* ${playerNames}` : null,
     `*Players:* ${players}`,
     `*Bundle:* ${bundle}`,
     ages  ? `*Player Ages:* ${ages}`  : null,

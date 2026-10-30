@@ -199,16 +199,26 @@ const MiamiFieldset = ({ n, title, note, children }) => (
 );
 
 const MiamiForm = ({ camp, price, accessCode, session, setSession, onCodeRejected }) => {
+  const offer = waitlistOfferFor(camp.id);
   const [form, setForm] = React.useState({
     playerName: "", playerEmail: "", playerAge: "", gradYear: "",
-    heightFt: "", heightIn: "", weight: "", position: "", club: "", clothingSize: "",
-    parentName: "", parentEmail: "", parentPhone: "",
+    heightFt: "", heightIn: "", weight: "", position: "", club: "", clothingSize: "", shortSize: "",
+    parentName: offer ? offer.parent.name : "", parentEmail: offer ? offer.parent.email : "",
+    parentPhone: offer ? offer.parent.phone : "", emergencyPhone: "",
     address1: "", address2: "", city: "", state: "", zip: "",
   });
+  const [waiverAccepted, setWaiverAccepted] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
+  // Set when checkout reports the group filled up after the page loaded.
+  const [fullNow, setFullNow] = React.useState("");
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
   const selected = camp.sessions.find((s) => s.value === session);
+  const isFull = !offer && !!selected && (selected.full || fullNow === session);
+  const { waiver, waiverRequired } = siteForm("miami");
+  const options = window.MIAMI_OPTIONS || {};
+  const shirtSizes = options.clothingSizes && options.clothingSizes.length ? options.clothingSizes : MIAMI_SIZES;
+  const shortSizes = options.shortSizes && options.shortSizes.length ? options.shortSizes : MIAMI_SIZES;
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -224,12 +234,19 @@ const MiamiForm = ({ camp, price, accessCode, session, setSession, onCodeRejecte
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ campId: camp.id, session, accessCode, ...form }),
+        body: JSON.stringify({
+          campId: camp.id, session, accessCode, ...form,
+          ...(waiver ? { waiverId: waiver.id, waiverAccepted } : {}),
+          ...(offer ? { waitlistToken: offer.token } : {}),
+        }),
       });
       const data = await res.json();
       if (data.url) {
         // Leaves the page — deliberately stays in the loading state.
         window.location.href = data.url;
+      } else if (data.code === "group_full" && !offer) {
+        setFullNow(session);
+        setLoading(false);
       } else if (res.status === 403 && onCodeRejected) {
         // The saved code no longer works (or registration closed) — back to the gate.
         onCodeRejected(data.error);
@@ -244,6 +261,7 @@ const MiamiForm = ({ camp, price, accessCode, session, setSession, onCodeRejecte
   };
 
   return (
+    <>
     <form onSubmit={onSubmit} className="flex flex-col gap-10">
       <MiamiFieldset n="01" title="Choose Your Combine">
         <div role="radiogroup" aria-label="Combine" className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -264,13 +282,14 @@ const MiamiForm = ({ camp, price, accessCode, session, setSession, onCodeRejecte
                   <span className="block font-display text-[26px] leading-none text-ink">{s.title}</span>
                   <span className="block mt-1.5 font-cond font-semibold uppercase tracking-[0.12em] text-[13px] text-fog">{s.dates} · {camp.schedule} · {s.ages}</span>
                 </span>
-                <span className="font-display text-[24px] text-ink">{formatUSD(price)}</span>
+                <span className="font-display text-[24px] text-ink">{s.full && !offer ? "FULL" : formatUSD(price)}</span>
               </label>
             );
           })}
         </div>
       </MiamiFieldset>
 
+      {!isFull && (<>
       <MiamiFieldset n="02" title="Player">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <Field id="m-playerName" label="Player Full Name" required autoComplete="off" value={form.playerName} onChange={set("playerName")} />
@@ -282,10 +301,13 @@ const MiamiForm = ({ camp, price, accessCode, session, setSession, onCodeRejecte
           <SelectField id="m-heightFt" label="Height (ft)" required value={form.heightFt} onChange={set("heightFt")} options={["4", "5", "6", "7"].map((v) => ({ value: v, label: `${v} ft` }))} />
           <SelectField id="m-heightIn" label="Height (in)" required value={form.heightIn} onChange={set("heightIn")} options={Array.from({ length: 12 }, (_, i) => ({ value: String(i), label: `${i} in` }))} />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <Field id="m-weight" type="number" inputMode="numeric" label="Weight (lb)" required min={60} max={350} value={form.weight} onChange={set("weight")} />
           <SelectField id="m-position" label="Primary Position" required value={form.position} onChange={set("position")} options={MIAMI_POSITIONS} />
-          <SelectField id="m-clothingSize" label="Clothing Size" required value={form.clothingSize} onChange={set("clothingSize")} options={MIAMI_SIZES} />
+        </div>
+        <div className="grid grid-cols-2 gap-5">
+          <SelectField id="m-clothingSize" label="Shirt Size" required value={form.clothingSize} onChange={set("clothingSize")} options={shirtSizes} />
+          <SelectField id="m-shortSize" label="Short Size" required value={form.shortSize} onChange={set("shortSize")} options={shortSizes} />
         </div>
         <Field id="m-club" label="Current Club / Team" required placeholder="e.g. Club name, MLS NEXT / ECNL team" maxLength={120} value={form.club} onChange={set("club")} />
       </MiamiFieldset>
@@ -296,6 +318,7 @@ const MiamiForm = ({ camp, price, accessCode, session, setSession, onCodeRejecte
           <Field id="m-parentEmail" type="email" label="Parent Email" required autoComplete="email" value={form.parentEmail} onChange={set("parentEmail")} />
           <Field id="m-parentPhone" type="tel" label="Parent Phone" required autoComplete="tel" value={form.parentPhone} onChange={set("parentPhone")} />
         </div>
+        <Field id="m-emergencyPhone" type="tel" label="Emergency Phone" required autoComplete="off" value={form.emergencyPhone} onChange={set("emergencyPhone")} />
       </MiamiFieldset>
 
       <MiamiFieldset n="04" title="Home Address" note="Your custom FOOTYUP × GOINGFORGOAT kit ships here before the combine.">
@@ -307,6 +330,10 @@ const MiamiForm = ({ camp, price, accessCode, session, setSession, onCodeRejecte
           <Field id="m-zip" label="ZIP" required autoComplete="postal-code" inputMode="numeric" maxLength={10} value={form.zip} onChange={set("zip")} />
         </div>
       </MiamiFieldset>
+
+      {waiver && (
+        <WaiverAcceptance id="m-waiver" waiver={waiver} required={waiverRequired} checked={waiverAccepted} onChange={setWaiverAccepted} />
+      )}
 
       <div>
         <button
@@ -327,15 +354,23 @@ const MiamiForm = ({ camp, price, accessCode, session, setSession, onCodeRejecte
           <span>Confirmation emailed after checkout</span>
         </div>
       </div>
+      </>)}
     </form>
+    {isFull && (
+      <div className="mt-6">
+        <WaitlistForm campId={camp.id} session={session} title={`THE ${selected.short.toUpperCase()} COMBINE IS FULL.`} />
+      </div>
+    )}
+    </>
   );
 };
 
 // ---- PAGE -------------------------------------------------------------------
 const MiamiCombine = ({ setPage }) => {
   const camp = campById("miami_combine_2027");
+  const offer = waitlistOfferFor(camp.id);
   const [status, setStatus] = React.useState(null);
-  const [session, setSession] = React.useState("");
+  const [session, setSession] = React.useState(offer ? offer.session : "");
   const [accessCode, setAccessCode] = React.useState(() => {
     try { return sessionStorage.getItem(MIAMI_CODE_KEY) || ""; } catch { return ""; }
   });
@@ -374,7 +409,8 @@ const MiamiCombine = ({ setPage }) => {
   const price = campPrice(camp);
   const tier = campPriceTier(camp);
   const nextTier = tier && camp.priceTiers[camp.priceTiers.indexOf(tier) + 1];
-  const unlocked = !gated || !!accessCode;
+  // A waitlist offer link stands in for the code; the server checks the offer.
+  const unlocked = !gated || !!accessCode || !!offer;
 
   const [gateError, setGateError] = React.useState("");
   const unlock = (code) => {
@@ -768,13 +804,18 @@ const MiamiCombine = ({ setPage }) => {
             {status && open && !unlocked && <MiamiCodeGate camp={camp} gatedUntil={status.gatedUntil} onUnlock={unlock} initialError={gateError} />}
             {status && open && unlocked && (
               <>
-                {gated && (
+                {offer ? (
+                  <div className="miami-unlocked" role="status">
+                    <IconCheck size={14} strokeWidth={3} />
+                    Waitlist spot held until {new Date(offer.expiresAt).toLocaleString("en-US", { weekday: "long", month: "long", day: "numeric", hour: "numeric", minute: "2-digit" })}
+                  </div>
+                ) : gated && (
                   <div className="miami-unlocked" role="status">
                     <IconCheck size={14} strokeWidth={3} />
                     Access code accepted — private school registration unlocked
                   </div>
                 )}
-                <MiamiForm camp={camp} price={price} accessCode={accessCode} session={session} setSession={setSession} onCodeRejected={gated ? relock : undefined} />
+                <MiamiForm camp={camp} price={price} accessCode={accessCode} session={session} setSession={setSession} onCodeRejected={gated && !offer ? relock : undefined} />
               </>
             )}
           </div>

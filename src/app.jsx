@@ -58,6 +58,27 @@ const App = () => {
       .catch(() => {});
   }, []);
 
+  // Waitlist offer emails link to /?waitlist=<token>: open that camp's form with the spot held.
+  const [offerExpired, setOfferExpired] = React.useState(false);
+  React.useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get("waitlist");
+    if (!token) return;
+    fetch(`/api/waitlist?token=${encodeURIComponent(token)}`, { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((offer) => {
+        const camp = offer && offer.valid && campById(offer.campId);
+        const target = camp && campRoute(camp);
+        if (!target) { setOfferExpired(true); return; }
+        window.WAITLIST_OFFER = { ...offer, token };
+        setPage(target[0], target[1] || "");
+        setTimeout(() => {
+          const el = document.getElementById(camp.page === "miami" ? "miami-register" : "camp-register");
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 400);
+      })
+      .catch(() => setOfferExpired(true));
+  }, []);
+
   const setPage = (p, sub = "") => {
     if (!VALID_PAGES.includes(p)) { p = "home"; sub = ""; }
     const hash = sub ? `${p}/${encodeURIComponent(sub)}` : p;
@@ -89,6 +110,12 @@ const App = () => {
   return (
     <>
       <TopNav page={route.page} setPage={setPage} />
+      {offerExpired && (
+        <div role="alert" className="bg-ink text-white px-5 py-4 text-center text-[14px] flex items-center justify-center gap-4 flex-wrap">
+          <span>This waitlist link has expired or was already used. Email footyupp@outlook.com and we'll help.</span>
+          <button type="button" onClick={() => setOfferExpired(false)} className="font-cond uppercase tracking-[0.15em] text-[12px] underline">Dismiss</button>
+        </div>
+      )}
       <Page setPage={setPage} sub={route.sub} />
       <Footer setPage={setPage} />
     </>
