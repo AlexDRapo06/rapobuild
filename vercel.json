@@ -1,4 +1,34 @@
 {
   "cleanUrls": true,
-  "outputDirectory": "."
+  "outputDirectory": ".",
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "https://footyup-platform.vercel.app/admin/"
+    },
+    {
+      "source": "/admin/",
+      "destination": "https://footyup-platform.vercel.app/admin/"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "https://footyup-platform.vercel.app/admin/:path*"
+    },
+    {
+      "source": "/api/admin/:path*",
+      "destination": "https://footyup-platform.vercel.app/api/admin/:path*"
+    },
+    {
+      "source": "/api/email/:path*",
+      "destination": "https://footyup-platform.vercel.app/api/email/:path*"
+    },
+    {
+      "source": "/api/stripe/:path*",
+      "destination": "https://footyup-platform.vercel.app/api/stripe/:path*"
+    },
+    {
+      "source": "/api/test-checkout",
+      "destination": "https://footyup-platform.vercel.app/api/test-checkout"
+    }
+  ]
 }
