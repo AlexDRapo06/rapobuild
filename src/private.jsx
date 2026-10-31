@@ -30,7 +30,7 @@ const PrivateTraining = ({ setPage }) => {
     if (buying) return;
     setBuying(packageId);
     try {
-      const res = await fetch('/api/checkout-training', {
+      const res = await fetch('/api/site/checkout-training', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ packageId }),
@@ -291,7 +291,7 @@ const PrivateTraining = ({ setPage }) => {
                 setLoading(true);
                 setError("");
                 try {
-                  const res = await fetch('/api/inquiry', {
+                  const res = await fetch('/api/site/inquiry', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

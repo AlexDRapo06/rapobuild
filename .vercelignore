@@ -1,3 +1,0 @@
-# The back end deploys as its own Vercel project (Root Directory: platform),
-# so the website project never uploads or serves it.
-/platform

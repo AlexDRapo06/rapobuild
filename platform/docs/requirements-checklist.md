@@ -214,16 +214,16 @@ Every requirement in the **Developer Brief (full scope)** and the client's
 
 | Requirement | Status |
 | --- | --- |
-| Site's camp and Miami forms save to Supabase and show in the dashboard | ✅ `/api/site/checkout`; patch in `integration/rapobuild/` |
+| Site's camp and Miami forms save to Supabase and show in the dashboard | ✅ `/api/site/checkout` |
 | Miami access-code gate uses the dashboard's codes and schedule | ✅ `/api/site/camp-access` |
 | Private training packages bought on the site show in the dashboard | ✅ Training → Packages bought; Revenue |
-| Private training inquiries save, add a contact and email the coaches | ✅ `/api/site/inquiry` (replaces Telegram; Telegram stays as the fallback) |
+| Private training inquiries save, add a contact and email the coaches | ✅ `/api/site/inquiry` (replaces Telegram) |
 | Site prices follow the dashboard | ✅ `/api/site/catalog` |
 | Payments from the site's current checkout reach the dashboard before the switch | ✅ Webhook reads the site's Stripe metadata; `pnpm stripe:backfill` imports earlier ones |
-| Fields the brief requires that the site's forms didn't ask (camp parent phone; Miami short size, emergency phone; training town and player names; waiver) | ✅ On the site's forms (patch 0003) |
-| Waitlist form when full, and offer links | ✅ The camp and Miami forms turn into the waitlist; `/?waitlist=…` opens the held spot (patch 0003) |
+| Fields the brief requires that the site's forms didn't ask (camp parent phone; Miami short size, emergency phone; training town and player names; waiver) | ✅ On the site's forms |
+| Waitlist form when full, and offer links | ✅ The camp and Miami forms turn into the waitlist; `/?waitlist=…` opens the held spot |
 | Stripe promotion codes keep working, and discounts reconcile per program | ✅ |
-| Switch-over and rollback without touching the pages | 🟡 `PLATFORM_API_URL` on the site's Vercel project, after Stage 1 sign-off |
+| Site and back end deploy together; rollback is one click | ✅ One Vercel project from the `rapobuild` repo; Vercel's Instant Rollback restores the previous deployment |
 
 ## Other front ends (🔷)
 

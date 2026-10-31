@@ -5,12 +5,12 @@ the serverless API behind camp checkout, the Miami combine checkout and the
 private training form, the Stripe webhook, and the dashboard where Alex and
 Chris view registrations.
 
-The public site is the existing footyup.net (repo `rapobuild`). Its `api/*.js`
-functions forward every form to this platform's `/api/site/*` endpoints, so
-registrations, payments, training requests and contacts land in Supabase and the
-dashboard. That change to the site is a ready-to-apply patch in
-[`integration/rapobuild/`](integration/rapobuild/README.md). The general API for
-other front ends is in [`docs/api-contract.md`](docs/api-contract.md).
+It lives in the site's repo (`rapobuild`) and deploys with it as **one Vercel
+project**. The website's pages are at the repo root; this folder holds the
+back end and dashboard code; the serverless functions are in the repo-root
+`api/` folder. The site's forms call `/api/site/*` directly, so registrations,
+payments, training requests and contacts land in Supabase and the dashboard.
+The general API for other front ends is in [`docs/api-contract.md`](docs/api-contract.md).
 
 Requirements come from the Developer Brief, with the client's **Kickoff
 Information Form (Oct 18, 2026)** taking priority where they differ.
@@ -28,9 +28,8 @@ and what's still waiting on the client. In short:
   - Email: send to groups, contacts with import, and history.
   - Settings: camps and sessions, Miami, access codes, discounts and promo codes, waivers, email.
 - **Changing the domain:** one platform setting (`PUBLIC_SITE_URL`) plus a few clicks; see [`docs/changing-the-domain.md`](docs/changing-the-domain.md).
-- **Live site connected:** the site's camp, Miami, training checkout and inquiry forms feed the dashboard
-  (patch in `integration/rapobuild/`). Payments made through the site's old checkout are picked up by the
-  webhook too, and `pnpm stripe:backfill` imports past ones.
+- **Site and back end in one project:** the site's camp, Miami, training checkout, inquiry and waitlist forms feed
+  the dashboard. Payments the site's old checkout took before the switch can be imported with `pnpm stripe:backfill`.
 - **Email through Brevo:** campaigns, two-way unsubscribe sync, confirmations, reminders and waitlist offers. See [`docs/email-guide.md`](docs/email-guide.md).
 - **Not built:** multi-factor login for admins (recommended next), plus template screenshots from Gmail/Outlook/Apple Mail, which need the live Brevo account.
 
@@ -38,20 +37,21 @@ Client-facing test list: [`docs/stage-1-checklist.md`](docs/stage-1-checklist.md
 
 ## Run it locally
 
-Requires Node 22, pnpm 10 and Postgres 15+.
+Requires Node 22, pnpm 10 and Postgres 15+. Run everything from the **repo root**.
 
 ```bash
 pnpm install
-cp .env.example .env          # local Postgres, mock Stripe, dev admin login
+cp platform/.env.example platform/.env   # local Postgres, mock Stripe, dev admin login
 pnpm db:reset                 # local only: schema + data/*.json
-pnpm admin:build              # builds the dashboard into public/admin
-pnpm dev                      # http://localhost:4319  (dashboard: /admin/)
+pnpm admin:build              # builds the dashboard into platform/public/admin
+pnpm dev                      # http://localhost:4319: the website, /admin/ and the API
 pnpm admins add you@example.com   # local admin for the dev login
 pnpm demo:data                # optional: fake families through the real checkout
+pnpm build                    # what Vercel runs: site + dashboard into dist/
 ```
 
 `data/camps.json` and `data/miami.json` mirror the live site's catalog (same camp and
-session ids as `rapobuild/api/_camps.js`). Miami opens to access-code holders on
+session ids as the site's `src/camps.jsx`). Miami opens to access-code holders on
 Nov 1, 2026 and to everyone on Dec 1. To try Miami checkout locally before then,
 clear the opening times:
 `psql "$DATABASE_URL" -c "update miami_event set opens_at = null, public_opens_at = null"`.
@@ -118,7 +118,7 @@ Names only. Values go in Vercel project settings, never in the repo.
 | `SUPABASE_ANON_KEY` | Vercel | Supabase publishable/anon key (safe in the browser) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Vercel (server-only) + scripts | Sending admin invites, from Settings → Admins or `pnpm admins add`. Server secret: never in the browser or the repo. Without it on Vercel, admins can only be added from the terminal |
 | `PUBLIC_ADMIN_URL` | scripts | Where invite links land, e.g. `https://<api domain>/admin/` |
-| `CORS_ALLOWED_ORIGINS` | Vercel | Site domains allowed to call the API from the browser |
+| `CORS_ALLOWED_ORIGINS` | Vercel, optional | Other domains allowed to call the API from the browser (not needed for the site itself) |
 | `BREVO_WEBHOOK_SECRET` | Vercel | Secret in the Brevo webhook URL (unsubscribe/bounce sync) |
 | `PUBLIC_API_URL` | Vercel, optional | Public origin of this API for unsubscribe links (defaults to the admin URL's origin) |
 | `EMAIL_DOMAIN` | Vercel, optional | Sending domain to authenticate (defaults to `EMAIL_FROM`'s domain) |
@@ -128,28 +128,24 @@ Names only. Values go in Vercel project settings, never in the repo.
 | `EMAIL_FROM`, `EMAIL_FROM_NAME` | Vercel | Sender (must be verified in Brevo) |
 | `CRON_SECRET` | Vercel | Auth for `/api/cron/cleanup` |
 | `RATE_LIMIT_SALT` | Vercel | Salt for hashing IPs in rate-limit keys |
-| `SITE_API_KEY` | Vercel (both projects) | Same random value on the site and here; lets the platform rate-limit per family behind the site's server |
 | `TURNSTILE_SECRET_KEY` | Vercel, optional | CAPTCHA on the training form |
 | `PAYMENTS_MODE` | local only | `mock`; refused in production |
 
 ## Going live (client accounts)
 
-Everything runs in the client's **FootyUP** accounts (Kickoff Form, Section A).
-The setup is this repo as its own Vercel project (API + `/admin`), with the
-existing site forwarding its forms to it. The live site keeps its current
-checkout until `PLATFORM_API_URL` is set on the site's Vercel project, which is
-the switch-over (and unsetting it is the rollback). See
-[`integration/rapobuild/README.md`](integration/rapobuild/README.md).
+Everything runs in the client's **FootyUP** accounts (Kickoff Form, Section A):
+one Vercel project built from this repo serves the website, `/admin` and the API.
+The step-by-step list for launch is [`docs/go-live-checklist.md`](docs/go-live-checklist.md).
 
 1. **Supabase** (FootyUP org, Pro): create the project, then run `pnpm db:migrate`
    with `DIRECT_DATABASE_URL`, and `pnpm camps:upsert` and `pnpm miami config`.
    In Auth settings: turn **off** "Allow new users to sign up", set the Site URL to
-   `https://<api domain>/admin/` and add it to the redirect URLs. Point backups at the Pro plan's daily backups.
-2. **Vercel** (FootyUP team, Pro): import the repo as a project. `vercel.json`
-   already sets the build (`pnpm build`), output (`public`) and the daily cleanup cron.
-   Add the environment variables above.
+   `https://www.footyup.net/admin/` and add it to the redirect URLs. Point backups at the Pro plan's daily backups.
+2. **Vercel** (FootyUP team, Pro): import the repo as a project (Root Directory empty).
+   The repo-root `vercel.json` sets the build (`pnpm build`), output (`dist`) and the cron jobs.
+   Add the environment variables above. Pro is required: the waitlist job runs hourly.
 3. **Stripe** (client account, test mode first): add a webhook endpoint at
-   `https://<api domain>/api/stripe/webhook` for `checkout.session.completed`,
+   `https://www.footyup.net/api/stripe/webhook` for `checkout.session.completed`,
    `checkout.session.expired`, `checkout.session.async_payment_succeeded`,
    `checkout.session.async_payment_failed` and `charge.refunded`. Keep bank-debit methods off.
 4. **Admins:** `pnpm admins add alexdimitrirapo@gmail.com` for the first admin. Each gets an
@@ -160,23 +156,32 @@ the switch-over (and unsetting it is the rollback). See
    controls the footyup.net DNS.
 6. **Access code:** Ivy Devs runs `pnpm miami code add <code> --label "Host families"` (or Dashboard →
    Settings → Access codes). The site's current code can't be copied over, because only a hash is kept.
-7. **Connect the site:** follow [`integration/rapobuild/README.md`](integration/rapobuild/README.md).
-8. Run [`docs/stage-1-checklist.md`](docs/stage-1-checklist.md) on test mode, then swap to live Stripe keys.
+7. Run [`docs/stage-1-checklist.md`](docs/stage-1-checklist.md) on test mode, then swap to live Stripe keys.
 
 
 ## Layout
 
+Repo root (`rapobuild`):
+
 ```
-api/                  Vercel functions (Web Request/Response); api/admin/[view].ts serves the dashboard API
-admin/                Dashboard (React + Tailwind v4, ReUI/shadcn + Magic UI components; built into public/admin)
+index.html, src/*.jsx, public/, assets/   The website (Ivy Devs' pages)
+api/                  Vercel functions (Web Request/Response). api/site/[action].ts serves the site's forms;
+                      api/admin/[view].ts serves the dashboard API
+platform/             Back end and dashboard code (this README)
+vercel.json           One project: build, output (dist/), cron jobs, /admin headers
+```
+
+Inside `platform/`:
+
+```
+admin/                Dashboard (React + Tailwind v4, ReUI/shadcn + Magic UI components)
 src/contract.ts       Request/response schemas shared with the front end
 src/handlers/         Endpoint logic
 src/lib/              Database, Stripe gateway (+ mock), email, admin auth, guards, settings
 supabase/migrations/  Schema, functions, RLS
 supabase/local/       Local-only stand-in for Supabase auth (never applied to Supabase)
-scripts/              Dev server, migrations, admin CLIs, demo data, dashboard build
+scripts/              Dev server, migrations, admin CLIs, demo data, dashboard and site build
 data/                 Camp and Miami configuration (mirrors the live site's catalog)
-integration/rapobuild/  Patch for the live site that forwards its forms here, with the switch-over steps
-docs/                 API contract, Stage 1 checklist, open decisions, handoff
+docs/                 Go-live checklist, API contract, Stage 1 checklist, open decisions, handoff
 tests/                Acceptance tests against a real Postgres
 ```

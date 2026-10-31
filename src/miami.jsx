@@ -1,9 +1,9 @@
 // MIAMI COLLEGE COMBINE — event page + code-gated registration (#miami).
 //
-// Registration state comes from /api/camp-access, backed by api/_camps.js:
+// Registration state comes from /api/site/camp-access (the dashboard's Miami settings):
 // before `opensAt` the form is locked behind a countdown; while `gated` (the
 // private-school window, Nov 1–30) families unlock it with the access code;
-// after `closesAt` it shows as closed. api/checkout.js re-checks all of it, and
+// after `closesAt` it shows as closed. /api/site/checkout re-checks all of it, and
 // charges today's price tier, so nothing here can be used to skip the gate.
 // If the API can't be reached (e.g. a static preview), the page falls back to
 // the defaults in src/camps.jsx.
@@ -19,7 +19,7 @@ const MIAMI_HERO_IMAGE = {
   ].join(", "),
 };
 
-// Must match the lists in api/checkout.js.
+// Fallback lists; the dashboard's Miami settings replace them (window.MIAMI_OPTIONS).
 const MIAMI_SIZES = ["Youth L", "Adult XS", "Adult S", "Adult M", "Adult L", "Adult XL", "Adult XXL"];
 const MIAMI_POSITIONS = [
   "Goalkeeper", "Center Back", "Outside Back", "Defensive Midfielder",
@@ -112,7 +112,7 @@ const MiamiCodeGate = ({ camp, gatedUntil, onUnlock, initialError = "" }) => {
     setChecking(true);
     setError("");
     try {
-      const res = await fetch("/api/camp-access", {
+      const res = await fetch("/api/site/camp-access", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ campId: camp.id, code }),
@@ -231,7 +231,7 @@ const MiamiForm = ({ camp, price, accessCode, session, setSession, onCodeRejecte
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/checkout", {
+      const res = await fetch("/api/site/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -379,7 +379,7 @@ const MiamiCombine = ({ setPage }) => {
 
   React.useEffect(() => {
     let alive = true;
-    fetch(`/api/camp-access?campId=${encodeURIComponent(camp.id)}`, { cache: "no-store" })
+    fetch(`/api/site/camp-access?campId=${encodeURIComponent(camp.id)}`, { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
       .then((d) => { if (alive) setStatus(d); })
       .catch(() => {

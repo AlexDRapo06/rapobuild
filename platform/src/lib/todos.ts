@@ -348,11 +348,6 @@ export async function listTodos(db: Db, env: Env): Promise<Todo[]> {
       detail: "Needs SUPABASE_SERVICE_ROLE_KEY and PUBLIC_ADMIN_URL in the Vercel project.",
     },
     {
-      key: "site_key", kind: "check", severity: env.onVercel ? "warning" : "info", done: Boolean(env.siteApiKey) || !env.onVercel, confirmable: false,
-      title: "Connect the live site",
-      detail: "Set SITE_API_KEY here and PLATFORM_API_URL + SITE_API_KEY on the site (integration/rapobuild/README.md).",
-    },
-    {
       key: "stripe_webhook", kind: "check", severity: env.onVercel ? "warning" : "info", done: c.stripe_events > 0, confirmable: false,
       title: "Stripe webhook",
       detail: "No payment events have arrived yet. Point Stripe's webhook at /api/stripe/webhook so payments land here.",

@@ -233,8 +233,7 @@ Returns `201 { "ok": true }`.
 
 ## The live site's adapter: `/api/site/*`
 
-footyup.net's own `api/*.js` functions forward their exact request bodies here
-(see `integration/rapobuild/README.md`), so the site's pages don't change.
+The website's forms (same repo, same Vercel project) call these directly.
 They use the site's camp ids and session values, and answer in the site's
 shapes: `{ "url" }` to redirect to Stripe, `{ "success": true }`, or
 `{ "error": "message to show" }`.
@@ -250,8 +249,7 @@ shapes: `{ "url" }` to redirect to Stripe, `{ "success": true }`, or
 | `GET /api/site/waitlist?token=…` | `{ valid, campId, session, spots, expiresAt, parent: { name, email, phone, town } }` or `{ valid: false }` |
 | `GET /api/site/catalog` | Live prices, spots and open state per camp and session, Miami price steps and form options, training package prices |
 
-When the site's server sends `x-site-key` equal to `SITE_API_KEY`, the
-platform rate-limits by the family's IP in `x-footyup-client-ip` instead of the site server's.
+Rate limits apply per family, by the browser's IP address.
 
 ## Not called by the pages
 

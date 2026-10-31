@@ -33,11 +33,10 @@ Never in the repo.
 | `SUPABASE_URL`, `SUPABASE_ANON_KEY` | Supabase → Project Settings → API (URL and publishable/anon key) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Project Settings → API (secret key). Server-only: Vercel (for Settings → Admins) and scripts; never in the browser or the repo |
 | `PUBLIC_ADMIN_URL` | The deployed dashboard URL, e.g. `https://<api domain>/admin/` |
-| `CORS_ALLOWED_ORIGINS` | The public site's domains, comma-separated |
+| `CORS_ALLOWED_ORIGINS` | Optional: other domains that call the API from a browser (not needed for the site) |
 | `BREVO_WEBHOOK_SECRET` | Any long random string; also pasted into the Brevo webhook URL |
 | `CRON_SECRET` | Any long random string; Vercel sends it to cron routes |
 | `RATE_LIMIT_SALT` | Any long random string |
-| `SITE_API_KEY` | Any long random string; the same value on the site's Vercel project (`integration/rapobuild/`) |
 
 ## Packages
 
@@ -87,7 +86,7 @@ Everything below is in the dashboard at `/admin` unless noted.
 | Revenue reconciliation | Revenue page: Collected and Refunds match Stripe for the same dates (before fees) |
 | Give someone dashboard access, or take it away | Settings → Admins (or terminal: `pnpm admins add <email>`, `pnpm admins remove <email>`) |
 | Add a camp the site sells | Settings → Camps, with the same camp id and session ids as the site's `src/camps.jsx` |
-| Connect or disconnect the live site | `integration/rapobuild/README.md` (set or remove `PLATFORM_API_URL` on the site) |
+| Undo a bad deploy | Vercel → the project → Deployments → the last good one → ⋯ → Promote to Production (Instant Rollback) |
 | Import payments Stripe has but the dashboard doesn't | Terminal: `pnpm stripe:backfill --since <date> --apply` |
 | Restore a backup | Supabase → Database → Backups → choose a point in time → Restore (Pro plan). Restoring replaces the whole database, so export recent registrations first. |
 

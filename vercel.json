@@ -1,34 +1,55 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
-  "outputDirectory": ".",
-  "rewrites": [
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
+  "crons": [
+    {
+      "path": "/api/cron/cleanup",
+      "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/emails",
+      "schedule": "0 13 * * *"
+    },
+    {
+      "path": "/api/cron/waitlist",
+      "schedule": "15 * * * *"
+    }
+  ],
+  "redirects": [
     {
       "source": "/admin",
-      "destination": "https://footyup-platform.vercel.app/admin/"
-    },
-    {
-      "source": "/admin/",
-      "destination": "https://footyup-platform.vercel.app/admin/"
-    },
-    {
-      "source": "/admin/:path*",
-      "destination": "https://footyup-platform.vercel.app/admin/:path*"
-    },
-    {
-      "source": "/api/admin/:path*",
-      "destination": "https://footyup-platform.vercel.app/api/admin/:path*"
-    },
-    {
-      "source": "/api/email/:path*",
-      "destination": "https://footyup-platform.vercel.app/api/email/:path*"
-    },
-    {
-      "source": "/api/stripe/:path*",
-      "destination": "https://footyup-platform.vercel.app/api/stripe/:path*"
-    },
-    {
-      "source": "/api/test-checkout",
-      "destination": "https://footyup-platform.vercel.app/api/test-checkout"
+      "destination": "/admin/",
+      "permanent": true
     }
-  ]
+  ],
+  "headers": [
+    {
+      "source": "/admin/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "api/admin/[view].ts": {
+      "maxDuration": 300
+    }
+  }
 }

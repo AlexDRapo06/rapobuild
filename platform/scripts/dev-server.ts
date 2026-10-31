@@ -1,6 +1,7 @@
 /**
- * Local stand-in for `vercel dev`: serves every function in api/ on one port,
- * plus a fake Stripe Checkout page when PAYMENTS_MODE=mock.
+ * Local stand-in for `vercel dev`: serves the website (repo root), the
+ * dashboard (/admin) and every function in ../api on one port, plus a fake
+ * Stripe Checkout page when PAYMENTS_MODE=mock.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
@@ -17,7 +18,9 @@ const env = loadEnv();
 const deps = createDeps(env);
 setDeps(deps);
 
-const apiRoot = resolve("api");
+const apiRoot = resolve("../api");
+const siteRoot = resolve("..");
+const SITE_DIRS = ["/src/", "/public/", "/assets/"];
 
 async function toRequest(req: IncomingMessage): Promise<Request> {
   const chunks: Buffer[] = [];
@@ -79,7 +82,24 @@ const MIME: Record<string, string> = {
   ".png": "image/png",
   ".ico": "image/x-icon",
   ".map": "application/json",
+  ".jsx": "text/javascript; charset=utf-8",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
+  ".mp4": "video/mp4",
 };
+
+/** The website's own files, as Vercel serves them (cleanUrls: /success -> success.html). */
+function serveSite(pathname: string): Response | null {
+  const page = pathname === "/" ? "/index.html" : pathname === "/success" || pathname === "/cancel" ? `${pathname}.html` : null;
+  if (!page && !SITE_DIRS.some((d) => pathname.startsWith(d))) return null;
+  const file = join(siteRoot, decodeURIComponent(page ?? pathname));
+  const allowed = page ? file === join(siteRoot, page) : SITE_DIRS.some((d) => file.startsWith(join(siteRoot, d)));
+  if (!allowed || !existsSync(file) || statSync(file).isDirectory()) return null;
+  return new Response(readFileSync(file), {
+    headers: { "content-type": MIME[extname(file)] ?? "application/octet-stream", "cache-control": "no-store" },
+  });
+}
 
 function serveStatic(pathname: string): Response | null {
   let file = join(publicRoot, decodeURIComponent(pathname));
@@ -153,17 +173,15 @@ const server = createServer(async (nodeReq, nodeRes) => {
     if (url.pathname === "/admin") return send(nodeRes, new Response(null, { status: 308, headers: { location: "/admin/" } }));
     const asset = url.pathname.startsWith("/admin/") ? serveStatic(url.pathname) : null;
     if (asset) return send(nodeRes, asset);
-    if (url.pathname === "/success" || url.pathname === "/cancel") {
-      const ok = url.pathname === "/success";
-      return send(nodeRes, html(`<h1>${ok ? "Payment received" : "Checkout cancelled"}</h1><p>The live site's <code>${url.pathname}</code> page shows here. ${ok ? "The registration is now in the dashboard." : "The held spot is released."}</p><p><a href="/admin/">Open the dashboard</a></p>`));
-    }
+    const site = serveSite(url.pathname);
+    if (site) return send(nodeRes, site);
     if (url.pathname === "/registration/success") {
       return send(nodeRes, html(`<h1>Registration received</h1><p>Stripe session <code>${url.searchParams.get("session_id") ?? ""}</code>. This placeholder stands in for the success page Ivy Devs builds.</p><p><a href="/">Back</a></p>`));
     }
     if (url.pathname === "/registration/cancelled") {
       return send(nodeRes, html(`<h1>Checkout cancelled</h1><p>The held spot is released. This placeholder stands in for Ivy Devs' page.</p><p><a href="/">Back</a></p>`));
     }
-    if (url.pathname === "/") {
+    if (url.pathname === "/__dev") {
       return send(
         nodeRes,
         html(`<h1>Footy Up registration API</h1><p>Local server. Payments: <code>${env.paymentsMode}</code>. Email: <code>${deps.mailer.mode}</code>.</p>

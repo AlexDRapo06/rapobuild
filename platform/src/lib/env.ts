@@ -67,7 +67,7 @@ export function loadEnv(source: NodeJS.ProcessEnv = process.env): Env {
   const adminAuthMode: Env["adminAuthMode"] = supabaseUrl && supabaseAnonKey ? "supabase" : source.VERCEL_ENV ? "unconfigured" : "dev";
 
   const siteUrl = (source.PUBLIC_SITE_URL || "http://localhost:4319").replace(/\/+$/, "");
-  // The dashboard is served at the site's /admin (see integration/rapobuild), so by default
+  // The dashboard is served at the site's /admin (same Vercel project), so by default
   // PUBLIC_SITE_URL alone sets the admin, unsubscribe and test-checkout links.
   const adminUrl = source.PUBLIC_ADMIN_URL || (source.PUBLIC_SITE_URL ? `${siteUrl}/admin/` : undefined);
   const adminOrigin = adminUrl ? new URL(adminUrl).origin : undefined;

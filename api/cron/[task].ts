@@ -1,6 +1,6 @@
-import { cleanup, emailsCron, waitlistCron } from "../../src/handlers/cleanup.js";
-import { getDeps } from "../../src/lib/deps.js";
-import { ApiError, endpoint } from "../../src/lib/http.js";
+import { cleanup, emailsCron, waitlistCron } from "../../platform/src/handlers/cleanup.js";
+import { getDeps } from "../../platform/src/lib/deps.js";
+import { ApiError, endpoint } from "../../platform/src/lib/http.js";
 
 /** /api/cron/cleanup and /api/cron/emails /api/cron/waitlist (one function, several Vercel cron schedules). */
 export const GET = endpoint("cron", (req) => {

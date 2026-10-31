@@ -50,7 +50,7 @@ const App = () => {
   // Re-render once live prices from the dashboard arrive (see applyCatalog).
   const [, setCatalogVersion] = React.useState(0);
   React.useEffect(() => {
-    fetch("/api/catalog")
+    fetch("/api/site/catalog")
       .then((r) => (r.ok ? r.json() : null))
       .then((catalog) => {
         if (applyCatalog(catalog)) setCatalogVersion((v) => v + 1);
@@ -63,7 +63,7 @@ const App = () => {
   React.useEffect(() => {
     const token = new URLSearchParams(window.location.search).get("waitlist");
     if (!token) return;
-    fetch(`/api/waitlist?token=${encodeURIComponent(token)}`, { cache: "no-store" })
+    fetch(`/api/site/waitlist?token=${encodeURIComponent(token)}`, { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : null))
       .then((offer) => {
         const camp = offer && offer.valid && campById(offer.campId);

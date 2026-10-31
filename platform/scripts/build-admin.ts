@@ -17,7 +17,8 @@ import { compile } from "tailwindcss";
 const watch = process.argv.includes("--watch");
 const dev = watch || process.argv.includes("--dev");
 const srcDir = resolve("admin/src");
-const outdir = "public/admin";
+// The repo-root build (pnpm build) puts the dashboard into ../dist/admin next to the site.
+const outdir = process.env.ADMIN_OUT_DIR ?? "public/admin";
 
 async function listSources(dir: string): Promise<string[]> {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -42,9 +43,12 @@ async function candidates(): Promise<string[]> {
   return [...found];
 }
 
+// Packages are installed at the repo root (one package.json for the site and back end).
+const modules = resolve("../node_modules");
+
 function packageStylesheet(id: string): string | null {
-  if (id === "tailwindcss") return resolve("node_modules/tailwindcss/index.css");
-  if (id === "tw-animate-css") return resolve("node_modules/tw-animate-css/dist/tw-animate.css");
+  if (id === "tailwindcss") return join(modules, "tailwindcss/index.css");
+  if (id === "tw-animate-css") return join(modules, "tw-animate-css/dist/tw-animate.css");
   return null;
 }
 
@@ -53,7 +57,7 @@ async function buildCss(): Promise<string> {
   const compiler = await compile(await readFile(entry, "utf8"), {
     base: srcDir,
     loadStylesheet: async (id, base) => {
-      const path = packageStylesheet(id) ?? (id.startsWith("tailwindcss/") ? resolve("node_modules", id) : resolve(base, id));
+      const path = packageStylesheet(id) ?? (id.startsWith("tailwindcss/") ? join(modules, id) : resolve(base, id));
       return { path, base: dirname(path), content: await readFile(path, "utf8") };
     },
   });

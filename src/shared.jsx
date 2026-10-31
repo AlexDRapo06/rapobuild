@@ -477,7 +477,7 @@ const SuccessCard = ({ headline, sub }) => (
 );
 
 // ---- WAIVER + WAITLIST ----------------------------------------------------
-// Both come from the admin dashboard via GET /api/catalog (window.SITE_FORMS):
+// Both come from the admin dashboard via GET /api/site/catalog (window.SITE_FORMS):
 // nothing renders until a waiver is published there.
 const siteForm = (flow) => (window.SITE_FORMS && window.SITE_FORMS[flow]) || {};
 
@@ -516,7 +516,7 @@ const WaitlistForm = ({ campId, session, title }) => {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/waitlist", {
+      const res = await fetch("/api/site/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ campId, session, ...form }),

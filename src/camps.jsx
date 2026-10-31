@@ -1,10 +1,10 @@
 // CAMP DATA — one source of truth for every camp page, the summer hub, the
 // Miami combine, and the home page's Upcoming Camps cards.
 //
-// Prices, ages and session labels here are for DISPLAY ONLY. api/_camps.js holds
-// what Stripe actually charges and what the server accepts, keyed by the same
-// `id` and session `value` strings below. Change a price and you must change it
-// in both places.
+// Prices, ages and session labels here are display defaults. The admin
+// dashboard (Settings → Camps, Miami) holds what Stripe actually charges and
+// what the server accepts, keyed by the same `id` and session `value` strings
+// below; GET /api/site/catalog swaps the live prices in (applyCatalog).
 //
 // MIAMI COMBINE ON/OFF — flip SHOW_MIAMI to true to bring the whole Miami
 // College Combine back (page, nav, footer, home pill, home camp card and CTA).
@@ -323,13 +323,13 @@ const CAMP_LIST = [
     maxAge: 18,
     spotsPerSession: 225,
     accent: "#C9A24A",
-    // Display defaults only — the Miami page asks /api/camp-access for the live
-    // state, and api/_camps.js is what actually enforces it.
+    // Display defaults only — the Miami page asks /api/site/camp-access for the
+    // live state, and the dashboard's Miami settings are what's enforced.
     opensAt: "2026-11-01T00:00:00-04:00",
     closesAt: "2027-03-02T00:00:00-05:00",
     gated: true,
     gatedUntil: "2026-12-01T00:00:00-05:00",
-    // Price by registration date (mirrors priceTiers in api/_camps.js).
+    // Price by registration date (the dashboard's Miami price steps replace these).
     priceTiers: [
       { until: "2027-02-02T00:00:00-05:00", price: 1500, label: "Nov 1 – Feb 1" },
       { price: 1650, label: "Feb 2 – Mar 1" },
@@ -369,7 +369,7 @@ const campRoute = (c) => {
 
 const passedAt = (iso, now) => !!iso && now >= Date.parse(iso);
 
-// Same shape as GET /api/camp-access — the fallback when the API can't be reached.
+// Same shape as GET /api/site/camp-access — the fallback when the API can't be reached.
 const campRegistrationStatus = (c, now = Date.now()) => {
   const closed = passedAt(c.closesAt, now);
   return {
@@ -392,7 +392,7 @@ const campPrice = (c, now = Date.now()) => {
 };
 const formatUSD = (n) => `$${Number(n).toLocaleString("en-US")}`;
 
-// Live prices from the admin dashboard (GET /api/catalog). Rewrites the prices
+// Live prices from the admin dashboard (GET /api/site/catalog). Rewrites the prices
 // above, including the ones inside labels like "Week 1 — July 12–16 · $415",
 // so the cards, forms and checkout all agree. Returns true if anything changed.
 const swapPrice = (text, from, to) =>
