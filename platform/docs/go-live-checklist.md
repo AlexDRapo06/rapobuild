@@ -3,12 +3,30 @@
 Everything left to finish the Footy Up registration platform, written for a
 person to do by hand. Do the parts in order; each step says who has the access.
 
+**Status, Sun Nov 1, 3:00 PM ET** (✅ done · ⬜ to do · ⚠️ urgent)
+
+| | What | Who |
+| --- | --- | --- |
+| ⚠️ | **Step 1: upgrade Vercel to Pro. The trial ends today, Nov 1, at 7:18 PM ET.** | Whoever pays for the FootyUP team |
+| ⬜ | Step 2: Supabase login settings (sign-ups are still on) | Alex |
+| ⬜ | Steps 3–4: add Alex and Chris as admins, then remove `test@test.com` | Reid, after step 2 |
+| ✅ | Step 5: pull request #1 is open. Re-push it to include today's fixes (step 5). | Reid |
+| ⬜ | Step 8: Miami access code (none entered yet) | Viraj or Alex |
+| ⬜ | Step 9: confirm the Miami settings and the open Miami decisions in **To do** | Reid with Alex |
+| ⬜ | Step 10: waiver wording (none published) | Footy Up |
+| ⬜ | Steps 11–13: Brevo TXT record at Wix, then a footyup.net sender | Wix login holder, then Reid |
+| ⬜ | Step 14: real mailing address, training-alert inbox, reply-to, logo | Reid with Alex |
+| ✅ | Step 15: test data cleared | Done Nov 1 |
+| ✅ | Step 16: Stripe live secret key and live webhook are in. The dashboard confirms live mode. Check ACH is off. | Done Nov 1 |
+| ✅ | Step 17: test mode off; emails go to everyone | Done Nov 1 |
+| ⬜ | Steps 18–25: the switch (set address, redeploy, Wix TXT records, checks, real-card test, backfill, merge) | Reid, after Ivy Devs signs off |
+
 **Where things are today**
 
 | What | Address |
 | --- | --- |
 | Live website (old version, until step 20) | https://www.footyup.net, from Alex's personal Vercel project `rapobuild` |
-| Staging: website + dashboard + API in one | https://footyup-platform.vercel.app (dashboard at `/admin`) |
+| The new system (live mode; not on footyup.net until step 20) | https://footyup-platform.vercel.app (dashboard at `/admin`) |
 | Code | GitHub `AlexDRapo06/rapobuild`: the site at the root, the back end in `platform/`, functions in `api/` |
 | Vercel project | FootyUP team → `footyup-platform`. This becomes the one project for footyup.net |
 | Supabase project | FootyUP org → "FootyUP Project" |
@@ -43,8 +61,14 @@ variable changes only take effect after a redeploy.
 - footyup-platform already has every key, the Stripe webhook and the scheduled jobs.
 - `www.footyup.net` and `footyup.net` are already added to footyup-platform as **pending**. The live site keeps running the old version from Alex's personal Vercel project until the Wix record in step 20 is added.
 
-5. **Pull request #1 is open** (from `ReidT205/rapobuild`, branch `platform-integration`).
+5. ✅ **Pull request #1 is open** (from `ReidT205/rapobuild`, branch `platform-integration`).
    - The Vercel bot comment and the red ✕ on it come from Alex's old project trying to build a preview. Ignore them and don't click "authorize it".
+   - **Keep it up to date:** in Terminal, inside your `rapobuild` folder, run:
+     ```bash
+     git checkout main
+     git fetch "$HOME/Library/Application Support/Cursor/AgentStores/cursor_agent_stores/bc-53f0c4d2-07d0-440f-a3f8-d2ec82efaf04/files/artifacts/rapobuild-platform-integration.bundle" +platform-integration:platform-integration
+     git push fork platform-integration
+     ```
 6. **Don't merge it yet.** Merge it in step 25, after the switch. If it's merged before the switch, Alex's old project rebuilds with code it has no keys for, and checkout on footyup.net breaks.
 7. **Optional: deploy from GitHub automatically.** footyup-platform → **Settings → Git** → **Connect Git Repository** → `AlexDRapo06/rapobuild`, branch `main`, Root Directory empty. Vercel asks Alex to approve its GitHub app on the repo once.
    - Until then, a FootyUP team member deploys from a checkout of the repo with `npx vercel deploy --prod`.
@@ -80,10 +104,10 @@ variable changes only take effect after a redeploy.
 
 ## Part 5: Go live and switch footyup.net (one sitting, only after Ivy Devs signs off)
 
-Adding the Wix record in step 20 makes footyup.net run the new system within minutes. Do steps 15–19 first, so it goes live with real payments and real emails.
+Adding the Wix record in step 20 makes footyup.net run the new system within minutes. Steps 15–17 are done. Do 18–19 right before 20.
 
-15. **Clear the test data.** Done Nov 1: all test registrations, payments, inquiries, contacts and email history were cleared. Camps, sessions, Miami settings, admins and settings were kept.
-16. **Stripe live mode.** In Stripe, switch from Sandbox to the live account and repeat the Sandbox setup:
+15. ✅ **Clear the test data.** Done Nov 1: all test registrations, payments, inquiries, contacts and email history were cleared. Camps, sessions, Miami settings, admins and settings were kept.
+16. ✅ **Stripe live mode.** Done Nov 1: the live secret key (`Footy Up platform`) and the live webhook signing secret are in Vercel, and the dashboard confirms live mode. Only step 4 below is unconfirmed. For reference, the setup was:
     1. **Developers → API keys** → copy the live **Secret key** (`sk_live_…`). In **footyup-platform → Settings → Environment Variables**, edit `STRIPE_SECRET_KEY` and replace its value.
     2. **Developers → Webhooks → Add destination**:
        - events from **Your account**;
@@ -92,7 +116,7 @@ Adding the Wix record in step 20 makes footyup.net run the new system within min
        - URL `https://footyup-platform.vercel.app/api/stripe/webhook`. It works before and after the domain switch, so no payment is missed in between. Don't use `www.footyup.net` until step 20 is done; until then that address is still the old site.
     3. Copy its **Signing secret** (`whsec_…`) and replace the value of `STRIPE_WEBHOOK_SECRET`.
     4. **Settings → Payment methods**: turn off **ACH Direct Debit** (Link's instant "Bank" option can stay).
-17. **Turn off test mode.** Done Nov 1: `FOOTYUP_STAGING` and `EMAIL_TEST_RECIPIENTS` were deleted. Emails go to every real recipient through Footy Up's Brevo account.
+17. ✅ **Turn off test mode.** Done Nov 1: `FOOTYUP_STAGING` and `EMAIL_TEST_RECIPIENTS` were deleted. Emails go to every real recipient through Footy Up's Brevo account.
 18. **Set the address** (right before step 20). **footyup-platform → Settings → Environment Variables**: set `PUBLIC_SITE_URL` to `https://www.footyup.net`.
 19. **Redeploy:** Vercel → footyup-platform → **Deployments** → the top deployment → **⋯** → **Redeploy**. Wait for **Ready**.
 20. **Switch footyup.net** (needs the Wix login):
