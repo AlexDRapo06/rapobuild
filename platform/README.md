@@ -143,7 +143,7 @@ The step-by-step list for launch is [`docs/go-live-checklist.md`](docs/go-live-c
    `https://www.footyup.net/admin/` and add it to the redirect URLs. Point backups at the Pro plan's daily backups.
 2. **Vercel** (FootyUP team, Pro): import the repo as a project (Root Directory empty).
    The repo-root `vercel.json` sets the build (`pnpm build`), output (`dist`) and the cron jobs.
-   Add the environment variables above. Pro is required: the waitlist job runs hourly.
+   Add the environment variables above. Use the Pro plan: Vercel doesn't allow the free plan for a business site that takes payments.
 3. **Stripe** (client account, test mode first): add a webhook endpoint at
    `https://www.footyup.net/api/stripe/webhook` for `checkout.session.completed`,
    `checkout.session.expired`, `checkout.session.async_payment_succeeded`,

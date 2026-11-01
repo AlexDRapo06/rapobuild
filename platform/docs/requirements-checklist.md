@@ -122,7 +122,7 @@ Every requirement in the **Developer Brief (full scope)** and the client's
 | Requirement | Status | Where |
 | --- | --- | --- |
 | Waitlist form when full (name, email, phone, town, session/group, spots), ordered | ✅ | Site's camp and Miami forms; `POST /api/site/waitlist` (or `POST /api/waitlist` for other front ends) |
-| Freed spot (refund, cancellation, expired hold, capacity increase) → email next family with time-limited link, spot held | ✅ | Hourly cron + immediate on refund/expiry/cancel/edit; tests #13 |
+| Freed spot (refund, cancellation, expired hold, capacity increase) → email next family with time-limited link, spot held | ✅ | Daily cron + immediate on refund/expiry/cancel/edit; tests #13 |
 | Hold length configurable (48h default) | ✅ | Settings → Discounts → Waitlist hold |
 | Dashboard: ordered list, manual "notify next", remove | ✅ | Dashboard → Waitlist |
 | Unused hold passes to the next family | ✅ | tests #13 |

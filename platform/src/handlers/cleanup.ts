@@ -28,7 +28,7 @@ export async function emailsCron(req: Request, deps: Deps): Promise<Response> {
   return json({ confirmations, reminders });
 }
 
-/** GET /api/cron/waitlist (hourly): lapses expired offers and offers freed spots (Brief D9). */
+/** GET /api/cron/waitlist (daily, 9 AM ET): lapses expired offers and offers freed spots (Brief D9). Refunds, cancellations and expired checkouts already offer the spot immediately. */
 export async function waitlistCron(req: Request, deps: Deps): Promise<Response> {
   authorize(req, deps);
   return json(await processWaitlists(deps));
