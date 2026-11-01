@@ -1,0 +1,62 @@
+{
+  "_note": "Camps and sessions. Edit and run `pnpm camps:upsert`. Values marked TBC are placeholders from the brief and must be confirmed by the client before launch.",
+  "camps": [
+    {
+      "slug": "arlington-catholic",
+      "name": "Arlington Catholic Summer Camp",
+      "host": "Arlington Catholic High School",
+      "kind": "summer",
+      "sortOrder": 1,
+      "sessions": [
+        {
+          "_note": "Pairing confirmed in the Kickoff Form: July 12 = ages 6-13, $500; July 19 = ages 14-18, $750. Daily times and info text still to come.",
+          "slug": "week-of-july-12",
+          "name": "Week of July 12 (ages 6-13)",
+          "startsOn": "2027-07-12",
+          "endsOn": "2027-07-16",
+          "startTime": "09:00",
+          "location": "Arlington Catholic High School",
+          "ageMin": 6,
+          "ageMax": 13,
+          "priceCents": 50000,
+          "infoText": "TBC: session details from the client.",
+          "sortOrder": 1
+        },
+        {
+          "slug": "week-of-july-19",
+          "name": "Week of July 19 (ages 14-18, high intensity)",
+          "startsOn": "2027-07-19",
+          "endsOn": "2027-07-23",
+          "startTime": "09:00",
+          "location": "Arlington Catholic High School",
+          "ageMin": 6,
+          "ageMax": 18,
+          "priceCents": 75000,
+          "infoText": "TBC: session details from the client.",
+          "sortOrder": 2
+        }
+      ]
+    },
+    {
+      "_note": "Kickoff Form: $425, 'both weeks'. Week dates and whether $425 is per week are still missing, so this stays hidden. Fill in dates, set status to open and active to true.",
+      "slug": "watertown",
+      "name": "Watertown Summer Camp",
+      "kind": "summer",
+      "active": false,
+      "sortOrder": 2,
+      "sessions": [
+        { "slug": "week-1", "name": "Week 1", "priceCents": 42500, "status": "closed", "sortOrder": 1 },
+        { "slug": "week-2", "name": "Week 2", "priceCents": 42500, "status": "closed", "sortOrder": 2 }
+      ]
+    },
+    {
+      "slug": "bbn",
+      "name": "BB&N Summer Camp",
+      "host": "BB&N",
+      "kind": "summer",
+      "infoOnly": true,
+      "description": "BB&N handles its own signups. TBC: info text and signup link from the client.",
+      "sortOrder": 3
+    }
+  ]
+}
