@@ -1,4 +1,55 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
-  "outputDirectory": "."
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
+  "crons": [
+    {
+      "path": "/api/cron/cleanup",
+      "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/emails",
+      "schedule": "0 13 * * *"
+    },
+    {
+      "path": "/api/cron/waitlist",
+      "schedule": "0 14 * * *"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "/admin/",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/admin/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "api/admin/[view].ts": {
+      "maxDuration": 300
+    }
+  }
 }
