@@ -1,10 +1,10 @@
 // CAMP DATA — one source of truth for every camp page, the summer hub, the
 // Miami combine, and the home page's Upcoming Camps cards.
 //
-// Prices, ages and session labels here are display defaults. The admin
-// dashboard (Settings → Camps, Miami) holds what Stripe actually charges and
-// what the server accepts, keyed by the same `id` and session `value` strings
-// below; GET /api/site/catalog swaps the live prices in (applyCatalog).
+// Prices, ages and session labels here are for DISPLAY ONLY. api/_camps.js holds
+// what Stripe actually charges and what the server accepts, keyed by the same
+// `id` and session `value` strings below. Change a price and you must change it
+// in both places.
 //
 // MIAMI COMBINE ON/OFF — flip SHOW_MIAMI to true to bring the whole Miami
 // College Combine back (page, nav, footer, home pill, home camp card and CTA).
@@ -323,13 +323,13 @@ const CAMP_LIST = [
     maxAge: 18,
     spotsPerSession: 225,
     accent: "#C9A24A",
-    // Display defaults only — the Miami page asks /api/site/camp-access for the
-    // live state, and the dashboard's Miami settings are what's enforced.
+    // Display defaults only — the Miami page asks /api/camp-access for the live
+    // state, and api/_camps.js is what actually enforces it.
     opensAt: "2026-11-01T00:00:00-04:00",
     closesAt: "2027-03-02T00:00:00-05:00",
     gated: true,
     gatedUntil: "2026-12-01T00:00:00-05:00",
-    // Price by registration date (the dashboard's Miami price steps replace these).
+    // Price by registration date (mirrors priceTiers in api/_camps.js).
     priceTiers: [
       { until: "2027-02-02T00:00:00-05:00", price: 1500, label: "Nov 1 – Feb 1" },
       { price: 1650, label: "Feb 2 – Mar 1" },
@@ -369,7 +369,7 @@ const campRoute = (c) => {
 
 const passedAt = (iso, now) => !!iso && now >= Date.parse(iso);
 
-// Same shape as GET /api/site/camp-access — the fallback when the API can't be reached.
+// Same shape as GET /api/camp-access — the fallback when the API can't be reached.
 const campRegistrationStatus = (c, now = Date.now()) => {
   const closed = passedAt(c.closesAt, now);
   return {
@@ -392,58 +392,8 @@ const campPrice = (c, now = Date.now()) => {
 };
 const formatUSD = (n) => `$${Number(n).toLocaleString("en-US")}`;
 
-// Live prices from the admin dashboard (GET /api/site/catalog). Rewrites the prices
-// above, including the ones inside labels like "Week 1 — July 12–16 · $415",
-// so the cards, forms and checkout all agree. Returns true if anything changed.
-const swapPrice = (text, from, to) =>
-  typeof text === "string" && from !== to ? text.split(formatUSD(from)).join(formatUSD(to)) : text;
-const applyCatalog = (catalog) => {
-  if (!catalog || typeof catalog !== "object") return false;
-  let changed = false;
-  for (const c of CAMP_LIST) {
-    const live = catalog.camps && catalog.camps[c.id];
-    if (live && Array.isArray(c.sessions)) {
-      for (const s of c.sessions) {
-        const ls = live.sessions && live.sessions[s.value];
-        if (!ls) continue;
-        const full = ls.spotsLeft === 0;
-        if (!!s.full !== full) { s.full = full; changed = true; }
-        if (typeof ls.price !== "number" || ls.price === s.price) continue;
-        s.label = swapPrice(s.label, s.price, ls.price);
-        if (c.price === s.price) {
-          c.priceLabel = swapPrice(c.priceLabel, c.price, ls.price);
-          c.price = ls.price;
-        }
-        s.price = ls.price;
-        changed = true;
-      }
-    }
-    const m = catalog.miami;
-    if (m && m.id === c.id && Array.isArray(m.priceTiers) && m.priceTiers.length && Array.isArray(c.priceTiers)) {
-      c.priceTiers = m.priceTiers.map((t, i) => ({ ...(c.priceTiers[i] || {}), until: t.until || undefined, price: t.price }));
-      changed = true;
-    }
-    if (m && m.id === c.id && m.sessions && Array.isArray(c.sessions)) {
-      for (const s of c.sessions) {
-        const full = !!m.sessions[s.value] && m.sessions[s.value].spotsLeft === 0;
-        if (!!s.full !== full) { s.full = full; changed = true; }
-      }
-    }
-  }
-  if (catalog.miami && catalog.miami.options) window.MIAMI_OPTIONS = catalog.miami.options;
-  if (catalog.forms) {
-    window.SITE_FORMS = catalog.forms;
-    changed = true;
-  }
-  if (catalog.trainingPackages) {
-    window.TRAINING_PRICES = Object.fromEntries(Object.entries(catalog.trainingPackages).map(([id, p]) => [id, formatUSD(p.price)]));
-    changed = true;
-  }
-  return changed;
-};
-
 Object.assign(window, {
   SHOW_MIAMI, CAMP_LIST, HOME_CAMP_ORDER, SUMMER_CAMPS,
   campById, summerCampBySlug, campRoute,
-  campRegistrationStatus, campRegistrationOpen, campPriceTier, campPrice, formatUSD, applyCatalog,
+  campRegistrationStatus, campRegistrationOpen, campPriceTier, campPrice, formatUSD,
 });
