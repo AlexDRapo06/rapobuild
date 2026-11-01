@@ -73,4 +73,16 @@ describe("Brevo unsubscribe webhooks", () => {
     expect(hooks).toHaveLength(2)
     expect(calls.filter((c) => c.startsWith("PUT")).length).toBe(2)
   })
+
+  it("reports a domain Brevo doesn't know as not added, instead of reading the 404 reply as the domain", async () => {
+    globalThis.fetch = (async (input: string | URL | Request) => {
+      const path = String(input).replace("https://api.brevo.com/v3", "")
+      if (path === "/account") return Response.json({ email: "owner@example.test", companyName: "FootyUP", plan: [{ type: "subscription", credits: 100 }] })
+      if (path === "/senders") return Response.json({ senders: [] })
+      if (path.startsWith("/senders/domains/")) return Response.json({ code: "document_not_found", message: "Domain does not exist" }, { status: 404 })
+      return new Response(null, { status: 204 })
+    }) as typeof fetch
+    const status = await new BrevoProvider("xkeysib-test-not-real").status("footyup.net", "hello@footyup.net")
+    expect(status).toMatchObject({ connected: true, domain: { name: "footyup.net", exists: false } })
+  })
 })

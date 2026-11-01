@@ -245,7 +245,9 @@ export class BrevoProvider implements EmailProvider {
     try {
       const account = await this.call<{ email?: string; companyName?: string; plan?: { type: string; credits?: number }[] }>("GET", "/account")
       const senders = await this.call<{ senders?: { email: string; active: boolean }[] }>("GET", "/senders")
-      const found = await this.call<any>("GET", `/senders/domains/${encodeURIComponent(domain)}`, undefined, [404])
+      const lookup = await this.call<any>("GET", `/senders/domains/${encodeURIComponent(domain)}`, undefined, [404])
+      // A 404 still has a JSON body ({ code: "document_not_found" }), so check for a real domain record.
+      const found = lookup && !lookup.code ? lookup : null
       const records: DnsRecord[] = []
       const raw = (found?.dns_records ?? {}) as Record<string, { type?: string; value?: string; host_name?: string; status?: boolean }>
       const labels: Record<string, string> = { brevo_code: "Brevo verification", dkim_record: "DKIM", dkim1Record: "DKIM 1", dkim2Record: "DKIM 2", dmarc_record: "DMARC", spf_record: "SPF" }
