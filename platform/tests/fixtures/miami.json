@@ -1,0 +1,52 @@
+{
+  "_note": "From the client's Kickoff Information Form (Alex Rapo, Oct 18, 2026). Edit and run `pnpm miami config`. Still to confirm: spot limits (the form says 'out of all 450' but neither limit box is ticked), whether the 200 reserved spots are shared or split by group and when unused ones release to the public, the location, and the size lists. The access code is never stored here; set it with `pnpm miami code add`.",
+  "camp": {
+    "slug": "miami-combine",
+    "name": "FOOTYUP x GOINGFORGOAT College Combine",
+    "host": null
+  },
+  "event": {
+    "name": "FOOTYUP x GOINGFORGOAT College Combine",
+    "location": "Miami, FL",
+    "infoText": "Players will participate in an elite three-day college soccer combine designed to provide exposure to college coaches, professional athletic performance testing, and high-level competition.\n\nThe combine will feature approximately 20–30 college programs attending each of the boys' and girls' events, giving athletes the opportunity to showcase their abilities in front of college coaches.\n\nEvery registered player will receive an exclusive GOINGFORGOAT x FOOTYUP package, shipped directly to their home before the combine. The package will include exclusive combine apparel, including kits for the combine, and additional player gear.\n\nThroughout the event, athletes will participate in competitive training sessions, small-sided games, full-field matches, and advanced athletic performance testing using VALD technology. Players will have the opportunity to demonstrate their technical ability, athleticism, tactical awareness, and overall potential at the collegiate level.\n\nPlease ensure all registration information, apparel sizing, and shipping details are accurate before submitting.",
+    "opensAt": "2026-11-01T10:00:00-05:00",
+    "publicOpensAt": "2026-11-01T10:00:00-05:00",
+    "closesAt": "2027-03-01T23:59:00-05:00",
+    "checkoutOpen": true,
+    "holdMinutes": 35,
+    "waiverRequired": false,
+    "reservedTotal": 200,
+    "reservedUntil": null,
+    "positions": [],
+    "shirtSizes": [],
+    "shortSizes": []
+  },
+  "groups": [
+    {
+      "grp": "boys",
+      "label": "Boys",
+      "cap": 225,
+      "startsOn": "2027-05-21",
+      "endsOn": "2027-05-23",
+      "dailyStartTime": "16:30",
+      "dailyEndTime": "20:30",
+      "reservedForCodeHolders": 0,
+      "priceCodeHolderCents": 150000,
+      "pricePublicCents": 150000,
+      "open": true
+    },
+    {
+      "grp": "girls",
+      "label": "Girls",
+      "cap": 225,
+      "startsOn": "2027-05-24",
+      "endsOn": "2027-05-26",
+      "dailyStartTime": "16:30",
+      "dailyEndTime": "20:30",
+      "reservedForCodeHolders": 0,
+      "priceCodeHolderCents": 150000,
+      "pricePublicCents": 150000,
+      "open": true
+    }
+  ]
+}

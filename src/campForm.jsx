@@ -1,10 +1,12 @@
 // CAMP REGISTRATION FORM — shared by every camp page.
 //
 // Collects the details on the site (Player Name, Parent Name, Player Age,
-// Parent Email, Town) and then hands off to Stripe, rather than letting Stripe
-// collect them at checkout. Camps running more than one session also get a
-// session picker. Pages that let families pick a session from cards pass
-// `session` + `onSessionChange` to control it; otherwise the form owns it.
+// Parent Email, Parent Phone, Town, and the waiver once one is published) and
+// then hands off to Stripe, rather than letting Stripe collect them at
+// checkout. A full session shows the waitlist form instead. Camps running more
+// than one session also get a session picker. Pages that let families pick a
+// session from cards pass `session` + `onSessionChange` to control it;
+// otherwise the form owns it.
 
 // Camp pages link to the form with a button rather than an <a href="#camp-register">,
 // because the site routes on the URL hash — an anchor would navigate to the home page.
@@ -16,17 +18,27 @@ const scrollToCampForm = () => {
 const CampRegistrationForm = ({ camp, session: sessionProp, onSessionChange }) => {
   const multiSession = camp.sessions.length > 1;
   const controlled = typeof onSessionChange === "function";
+  const offer = waitlistOfferFor(camp.id);
   const [form, setForm] = React.useState({
     playerName: "",
-    parentName: "",
+    parentName: offer ? offer.parent.name : "",
     playerAge: "",
-    parentEmail: "",
-    town: "",
+    parentEmail: offer ? offer.parent.email : "",
+    parentPhone: offer ? offer.parent.phone : "",
+    town: offer ? offer.parent.town : "",
     // Single-session camps have nothing to choose, so preselect it.
-    session: multiSession ? "" : camp.sessions[0].value,
+    session: offer ? offer.session : multiSession ? "" : camp.sessions[0].value,
   });
+  const [waiverAccepted, setWaiverAccepted] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
+  // Set when checkout reports the session filled up after the page loaded.
+  const [fullNow, setFullNow] = React.useState("");
+  const { waiver, waiverRequired } = siteForm("camp");
+
+  React.useEffect(() => {
+    if (offer && controlled && !sessionProp) onSessionChange(offer.session);
+  }, []);
 
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
   const session = controlled ? sessionProp || "" : form.session;
@@ -35,6 +47,7 @@ const CampRegistrationForm = ({ camp, session: sessionProp, onSessionChange }) =
     else setForm({ ...form, session: e.target.value });
   };
   const selected = camp.sessions.find((s) => s.value === session);
+  const isFull = !offer && !!selected && (selected.full || fullNow === session);
 
   // Age limits follow the chosen session (e.g. Arlington Catholic's 6–13 vs 14–18 weeks).
   const minAge = selected ? selected.minAge : camp.minAge;
@@ -48,15 +61,22 @@ const CampRegistrationForm = ({ camp, session: sessionProp, onSessionChange }) =
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/checkout", {
+      const res = await fetch("/api/site/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ campId: camp.id, ...form, session }),
+        body: JSON.stringify({
+          campId: camp.id, ...form, session,
+          ...(waiver ? { waiverId: waiver.id, waiverAccepted } : {}),
+          ...(offer ? { waitlistToken: offer.token } : {}),
+        }),
       });
       const data = await res.json();
       if (data.url) {
         // Leaves the page — deliberately stays in the loading state.
         window.location.href = data.url;
+      } else if (data.code === "session_full" && !offer) {
+        setFullNow(session);
+        setLoading(false);
       } else {
         setError(data.error || "Something went wrong. Please try again.");
         setLoading(false);
@@ -106,12 +126,19 @@ const CampRegistrationForm = ({ camp, session: sessionProp, onSessionChange }) =
                   <span>{selected.dates}</span>
                   {(selected.schedule || camp.schedule) && <span>{selected.schedule || camp.schedule}</span>}
                   <span>{selected.ages}</span>
-                  <span className="camp-form__summary-price">{formatUSD(selected.price)}</span>
+                  <span className="camp-form__summary-price">{isFull ? "FULL" : formatUSD(selected.price)}</span>
                 </div>
               )}
             </div>
           )}
 
+          {offer && (
+            <div className="camp-form__offer" role="status">
+              Your waitlist spot is held until {new Date(offer.expiresAt).toLocaleString("en-US", { weekday: "long", month: "long", day: "numeric", hour: "numeric", minute: "2-digit" })}.
+            </div>
+          )}
+
+          {!isFull && (<>
           <Field
             id="playerName"
             label="Player Name"
@@ -152,16 +179,31 @@ const CampRegistrationForm = ({ camp, session: sessionProp, onSessionChange }) =
               onChange={set("parentEmail")}
             />
           </div>
-          <Field
-            id="town"
-            label="Town / City of Residence"
-            required
-            autoComplete="address-level2"
-            placeholder="e.g. Brookline"
-            maxLength={80}
-            value={form.town}
-            onChange={set("town")}
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <Field
+              id="parentPhone"
+              type="tel"
+              label="Parent Phone"
+              required
+              autoComplete="tel"
+              value={form.parentPhone}
+              onChange={set("parentPhone")}
+            />
+            <Field
+              id="town"
+              label="Town / City of Residence"
+              required
+              autoComplete="address-level2"
+              placeholder="e.g. Brookline"
+              maxLength={80}
+              value={form.town}
+              onChange={set("town")}
+            />
+          </div>
+
+          {waiver && (
+            <WaiverAcceptance id="camp-waiver" waiver={waiver} required={waiverRequired} checked={waiverAccepted} onChange={setWaiverAccepted} />
+          )}
 
           <button
             type="submit"
@@ -184,7 +226,13 @@ const CampRegistrationForm = ({ camp, session: sessionProp, onSessionChange }) =
             <span aria-hidden="true" className="text-fog/50">•</span>
             <span>Confirmation emailed after checkout</span>
           </div>
+          </>)}
         </form>
+        {isFull && (
+          <div className="mt-5">
+            <WaitlistForm campId={camp.id} session={session} />
+          </div>
+        )}
       </div>
 
       <style>{`
@@ -197,6 +245,11 @@ const CampRegistrationForm = ({ camp, session: sessionProp, onSessionChange }) =
           font-weight: 600; text-transform: uppercase;
           letter-spacing: 0.1em; font-size: 13px;
           color: #757575;
+        }
+        .camp-form__offer {
+          padding: 12px 16px; background: #111; color: #fff;
+          font-family: "Barlow Condensed", sans-serif; font-weight: 600;
+          text-transform: uppercase; letter-spacing: 0.08em; font-size: 13px;
         }
         .camp-form__summary-price { margin-left: auto; color: #111; font-family: "Bebas Neue", sans-serif; font-size: 20px; letter-spacing: 0.02em; }
       `}</style>

@@ -1,7 +1,7 @@
 // PRIVATE TRAINING page
 const PrivateTraining = ({ setPage }) => {
   const [form, setForm] = React.useState({
-    name: "", email: "", phone: "", ages: "", players: "", bundle: "", notes: "",
+    name: "", email: "", phone: "", town: "", playerNames: "", ages: "", players: "", bundle: "", notes: "", website: "",
   });
   const [submitted, setSubmitted] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -14,14 +14,15 @@ const PrivateTraining = ({ setPage }) => {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const live = (id, fallback) => (window.TRAINING_PRICES && window.TRAINING_PRICES[id]) || fallback;
   const individual = [
-    { count: "5 Sessions",  price: "$550",   packageId: "individual_5" },
-    { count: "7 Sessions",  price: "$640",   packageId: "individual_7" },
-    { count: "10 Sessions", price: "$910",   packageId: "individual_10" },
+    { count: "5 Sessions",  price: live("individual_5", "$550"),   packageId: "individual_5" },
+    { count: "7 Sessions",  price: live("individual_7", "$640"),   packageId: "individual_7" },
+    { count: "10 Sessions", price: live("individual_10", "$910"),   packageId: "individual_10" },
   ];
   const group2 = [
-    { count: "5 Sessions", price: "$850",   packageId: "group2_5" },
-    { count: "7 Sessions", price: "$1,000", packageId: "group2_7" },
+    { count: "5 Sessions", price: live("group2_5", "$850"),   packageId: "group2_5" },
+    { count: "7 Sessions", price: live("group2_7", "$1,000"), packageId: "group2_7" },
   ];
 
   const [buying, setBuying] = React.useState(null);
@@ -29,7 +30,7 @@ const PrivateTraining = ({ setPage }) => {
     if (buying) return;
     setBuying(packageId);
     try {
-      const res = await fetch('/api/checkout-training', {
+      const res = await fetch('/api/site/checkout-training', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ packageId }),
@@ -290,17 +291,20 @@ const PrivateTraining = ({ setPage }) => {
                 setLoading(true);
                 setError("");
                 try {
-                  const res = await fetch('/api/inquiry', {
+                  const res = await fetch('/api/site/inquiry', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                       name: form.name,
                       email: form.email,
                       phone: form.phone,
+                      town: form.town,
+                      playerNames: form.playerNames,
                       players: form.players,
                       bundle: form.bundle,
                       ages: form.ages,
                       notes: form.notes,
+                      website: form.website,
                     }),
                   });
                   const data = await res.json();
@@ -320,6 +324,8 @@ const PrivateTraining = ({ setPage }) => {
               <Field id="pt-name" label="Parent Name" required value={form.name} onChange={set("name")} />
               <Field id="pt-email" type="email" label="Email" required value={form.email} onChange={set("email")} />
               <Field id="pt-phone" type="tel" label="Phone" required value={form.phone} onChange={set("phone")} />
+              <Field id="pt-town" label="Town / City of Residence" required autoComplete="address-level2" placeholder="e.g. Brookline" maxLength={80} value={form.town} onChange={set("town")} />
+              <Field id="pt-playerNames" label="Player Name(s)" required autoComplete="off" maxLength={200} value={form.playerNames} onChange={set("playerNames")} />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <Field id="pt-ages" label="Player Age(s)" required value={form.ages} onChange={set("ages")} />
                 <Field id="pt-players" type="number" label="Number of Players" required value={form.players} onChange={set("players")} />
@@ -333,6 +339,8 @@ const PrivateTraining = ({ setPage }) => {
                 options={bundleOptions}
               />
               <Textarea id="pt-notes" label="Availability / Notes" value={form.notes} onChange={set("notes")} />
+              {/* Honeypot: hidden from people, filled in by spam bots. */}
+              <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" value={form.website} onChange={set("website")} style={{ position: "absolute", left: "-10000px", width: 1, height: 1, opacity: 0 }} />
 
               <button
                 type="submit"
