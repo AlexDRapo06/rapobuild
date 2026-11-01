@@ -82,25 +82,18 @@ variable changes only take effect after a redeploy.
 
 Adding the Wix record in step 20 makes footyup.net run the new system within minutes. Do steps 15–19 first, so it goes live with real payments and real emails.
 
-15. **Clear the test data.** Supabase → **SQL Editor** → run:
-    ```sql
-    truncate public.registrations, public.payments, public.checkout_intents, public.holds,
-             public.stripe_events, public.training_purchases, public.private_training_requests,
-             public.waitlist_entries, public.contacts, public.contact_imports, public.email_log,
-             public.rate_limits;
-    ```
-    It keeps camps, sessions, Miami settings, access codes, waivers, promo codes, settings and admins.
+15. **Clear the test data.** Done Nov 1: all test registrations, payments, inquiries, contacts and email history were cleared. Camps, sessions, Miami settings, admins and settings were kept.
 16. **Stripe live mode.** In Stripe, switch from Sandbox to the live account and repeat the Sandbox setup:
     1. **Developers → API keys** → copy the live **Secret key** (`sk_live_…`). In **footyup-platform → Settings → Environment Variables**, edit `STRIPE_SECRET_KEY` and replace its value.
     2. **Developers → Webhooks → Add destination**:
        - events from **Your account**;
        - events `checkout.session.completed`, `checkout.session.expired`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `charge.refunded`;
        - type **Webhook endpoint**;
-       - URL `https://www.footyup.net/api/stripe/webhook`. Include the `www`: `footyup.net` without it redirects, and Stripe doesn't follow redirects.
+       - URL `https://footyup-platform.vercel.app/api/stripe/webhook`. It works before and after the domain switch, so no payment is missed in between. Don't use `www.footyup.net` until step 20 is done; until then that address is still the old site.
     3. Copy its **Signing secret** (`whsec_…`) and replace the value of `STRIPE_WEBHOOK_SECRET`.
     4. **Settings → Payment methods**: turn off **ACH Direct Debit** (Link's instant "Bank" option can stay).
-17. **Turn off test mode.** **footyup-platform → Environment Variables**: delete `FOOTYUP_STAGING` and `EMAIL_TEST_RECIPIENTS`.
-18. **Set the address.** In the same place, set `PUBLIC_SITE_URL` to `https://www.footyup.net`.
+17. **Turn off test mode.** Done Nov 1: `FOOTYUP_STAGING` and `EMAIL_TEST_RECIPIENTS` were deleted. Emails go to every real recipient through Footy Up's Brevo account.
+18. **Set the address** (right before step 20). **footyup-platform → Settings → Environment Variables**: set `PUBLIC_SITE_URL` to `https://www.footyup.net`.
 19. **Redeploy:** Vercel → footyup-platform → **Deployments** → the top deployment → **⋯** → **Redeploy**. Wait for **Ready**.
 20. **Switch footyup.net** (needs the Wix login):
     1. Wix → **Domains → footyup.net → Manage DNS records → TXT → Add record**.
