@@ -15,8 +15,8 @@ Today:
 
 1. **Point the domain at the project.**
    - In Vercel, open **FootyUP → footyup-platform → Settings → Domains** and add `www.footyup.net`, plus `footyup.net` set to redirect to `www.footyup.net`.
-   - If the domain is still attached to another Vercel project, remove it there first.
-   - If Vercel shows DNS records or a verification record, add them where the domain's DNS is managed.
+   - If the domain is attached to another Vercel account, Vercel shows it as "Verification Needed" with a `_vercel` TXT value. Add that TXT record where the domain's DNS is managed (Wix for footyup.net), and the domain moves over once Vercel sees it. Nothing has to be removed from the other account first.
+   - The A and CNAME records already point at Vercel; leave them as they are.
 2. **Tell the project its address.**
    - In **footyup-platform → Settings → Environment Variables**, set `PUBLIC_SITE_URL` to `https://www.footyup.net`, then redeploy.
    - That one setting moves:
