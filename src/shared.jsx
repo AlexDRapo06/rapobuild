@@ -476,111 +476,6 @@ const SuccessCard = ({ headline, sub }) => (
   </div>
 );
 
-// ---- WAIVER + WAITLIST ----------------------------------------------------
-// Both come from the admin dashboard via GET /api/site/catalog (window.SITE_FORMS):
-// nothing renders until a waiver is published there.
-const siteForm = (flow) => (window.SITE_FORMS && window.SITE_FORMS[flow]) || {};
-
-const WaiverAcceptance = ({ id, waiver, required, checked, onChange }) => (
-  <div className="flex flex-col gap-3">
-    <FieldLabel id={id} label={waiver.title || "Waiver"} required={required} />
-    {waiver.url ? (
-      <a href={waiver.url} target="_blank" rel="noopener noreferrer" className="text-[14px] underline text-ink">
-        Read the {waiver.title || "waiver"}
-      </a>
-    ) : (
-      <div className="border border-ash bg-white p-4 text-[14px] leading-[1.6] text-ink whitespace-pre-line" style={{ maxHeight: 200, overflowY: "auto" }}>
-        {waiver.body}
-      </div>
-    )}
-    <label className="flex items-start gap-3 text-[14px] text-ink cursor-pointer">
-      <input id={id} type="checkbox" required={required} checked={checked} onChange={(e) => onChange(e.target.checked)} className="mt-1" style={{ width: 18, height: 18 }} />
-      <span>I am the player's parent or guardian, and I have read and agree to the {waiver.title || "waiver"}.</span>
-    </label>
-  </div>
-);
-
-// Sign-up for a full session or Miami group. Saved in order; when a spot opens,
-// the family is emailed a link that holds it for them.
-const WaitlistForm = ({ campId, session, title }) => {
-  const [form, setForm] = React.useState({ parentName: "", email: "", phone: "", town: "", spots: "1", website: "" });
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
-  const [done, setDone] = React.useState(false);
-  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
-  const idp = `wl-${campId}`;
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    if (loading) return;
-    setLoading(true);
-    setError("");
-    try {
-      const res = await fetch("/api/site/waitlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ campId, session, ...form }),
-      });
-      const data = await res.json();
-      if (data.success) setDone(true);
-      else setError(data.error || "Something went wrong. Please try again.");
-    } catch {
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (done) {
-    return (
-      <div className="bg-white border-l-[3px] border-blood p-6" role="status">
-        <div className="font-display text-[26px] leading-none text-ink">YOU'RE ON THE WAITLIST.</div>
-        <p className="mt-3 text-[15px] text-fog leading-[1.55]">
-          If a spot opens, we'll email {form.email} a link that holds it for you for a limited time.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-5">
-      <div className="bg-white border-l-[3px] border-blood p-5">
-        <div className="font-display text-[24px] leading-none text-ink">{title || "THIS SESSION IS FULL."}</div>
-        <p className="mt-2 text-[15px] text-fog leading-[1.55]">
-          Join the waitlist. If a spot opens, families are emailed in the order they joined.
-        </p>
-      </div>
-      <Field id={`${idp}-name`} label="Parent Name" required autoComplete="name" value={form.parentName} onChange={set("parentName")} />
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <Field id={`${idp}-email`} type="email" label="Email" required autoComplete="email" value={form.email} onChange={set("email")} />
-        <Field id={`${idp}-phone`} type="tel" label="Phone" required autoComplete="tel" value={form.phone} onChange={set("phone")} />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-5">
-        <Field id={`${idp}-town`} label="Town / City of Residence" required autoComplete="address-level2" maxLength={80} value={form.town} onChange={set("town")} />
-        <SelectField id={`${idp}-spots`} label="Spots Needed" required value={form.spots} onChange={set("spots")} options={["1", "2", "3", "4", "5"]} />
-      </div>
-      {/* Honeypot: hidden from people, filled in by spam bots. */}
-      <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" value={form.website} onChange={set("website")} style={{ position: "absolute", left: "-10000px", width: 1, height: 1, opacity: 0 }} />
-      <button
-        type="submit"
-        disabled={loading}
-        className="btn-arrow w-full justify-center font-display text-[22px] bg-ink text-white hover:bg-blood py-5"
-        style={{ opacity: loading ? 0.6 : 1 }}
-      >
-        <span>{loading ? "JOINING…" : "JOIN THE WAITLIST"}</span>
-        <IconArrowRight size={20} className="arrow" />
-      </button>
-      {error && <p role="alert" className="text-[14px] text-center" style={{ color: "#D2122E" }}>{error}</p>}
-    </form>
-  );
-};
-
-// A waitlist offer link (/?waitlist=<token>) loaded by app.jsx, if it's for this camp.
-const waitlistOfferFor = (campId) => {
-  const offer = window.WAITLIST_OFFER;
-  return offer && offer.campId === campId ? offer : null;
-};
-
 // ---- COACH DATA -----------------------------------------------------------
 const COACHES = [
   {
@@ -804,6 +699,5 @@ Object.assign(window, {
   TopNav, Footer, AccentBanner, RedButton, OutlineButton,
   UnsplashImg, LabelRow, COACHES, NAV_ITEMS,
   Field, FieldLabel, Textarea, SelectField, SuccessCard,
-  siteForm, WaiverAcceptance, WaitlistForm, waitlistOfferFor,
   pad2, coachSlug, homeRailCoaches,
 });

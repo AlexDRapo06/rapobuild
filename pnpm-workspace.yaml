@@ -1,5 +1,0 @@
-# Refuse package versions published less than 3 days ago (value is in minutes).
-minimumReleaseAge: 4320
-
-onlyBuiltDependencies:
-  - esbuild
