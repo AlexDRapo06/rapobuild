@@ -64,7 +64,7 @@ variable changes only take effect after a redeploy.
     - Open https://www.footyup.net. A camp page should show the new Parent Phone field.
     - https://www.footyup.net/admin should open the dashboard.
     - Send a test private training inquiry. It should appear in the dashboard under Private training.
-13. **Clean up:** delete the Vercel project **footyup-site** in the FootyUP team. It was a staging copy and isn't used.
+13. **Clean up:** the old staging project **footyup-site** was already deleted (Nov 1). Nothing to do.
 
 ## Part 3: Miami settings
 
@@ -79,16 +79,20 @@ variable changes only take effect after a redeploy.
 
 ## Part 4: Email
 
-17. **Authenticate the domain in Brevo** (needs DNS access to footyup.net):
-    1. Brevo → **Senders, Domains & Dedicated IPs → Domains** → **Add a domain** → `footyup.net`.
-    2. Brevo lists the DNS records (its code, DKIM and DMARC). Add each one at the domain registrar exactly as shown.
-    3. Back in Brevo, click **Verify**. It can take up to a few hours.
-18. **Add the sender.** Brevo → **Senders** → add an address such as `hello@footyup.net`, with name "Footy Up".
-19. **Use it.** **footyup-platform → Environment Variables**: set `EMAIL_FROM` to that address, then redeploy. Dashboard → **Settings → Email** → **Check again** should show the domain records passing.
+17. **Finish authenticating footyup.net in Brevo** (needs the footyup.net login at **Wix**, where its DNS is managed):
+    - Status on Nov 1: footyup.net is added in Footy Up's Brevo account, and its DKIM, DMARC and SPF records are already live at Wix. The only thing missing is Brevo's ownership code for this account.
+    1. In Wix → **Domains → footyup.net → Manage DNS records → TXT → Add record**:
+       - Host: `@` (or leave empty)
+       - Value: `brevo-code:fa93e36266e5a8c9ede46626470b2489`
+       - Keep the existing `brevo-code:941db…` TXT record and the SPF record. Add this one next to them; don't replace anything.
+    2. Wait about 30 minutes. Then go to Dashboard → **Settings → Email** → **Authenticate domain** (or Brevo → **Senders, Domains & Dedicated IPs → Domains → footyup.net → Authenticate**).
+18. **Add the sender.** Brevo → **Senders** → add `no-reply@footyup.net` (or `hello@footyup.net`) with name "Footy Up".
+    - footyup.net has no mailbox, so set a **Reply-to address** in step 20. Otherwise parents' replies go nowhere.
+19. **Use it.** **footyup-platform → Environment Variables**: set `EMAIL_FROM` to that address, then redeploy. Dashboard → **Settings → Email** → **Check again** should show all records passing.
 20. **Fill in Dashboard → Settings → Email:**
     - **Mailing address:** Footy Up's business address. It's required in every marketing email; it's a "[TEST]" placeholder now.
     - **Notifications address** (private training alerts): Footy Up's inbox. It's Reid's Gmail now.
-    - **Reply-to address**, if different.
+    - **Reply-to address:** a real inbox parents can reply to, e.g. `footyupp@outlook.com`. Required if the sender is on footyup.net (step 18).
     - **Logo URL**, when the logo is ready.
 
 ## Part 5: Go live (only after Ivy Devs signs off on staging)
