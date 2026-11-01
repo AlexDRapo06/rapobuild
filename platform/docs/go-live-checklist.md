@@ -14,8 +14,8 @@ person to do by hand. Do the parts in order; each step says who has the access.
 | ⬜ | Step 8: Miami access code (none entered yet) | Viraj or Alex |
 | ⬜ | Step 9: confirm the Miami settings and the open Miami decisions in **To do** | Reid with Alex |
 | ⬜ | Step 10: waiver wording (none published) | Footy Up |
-| ⬜ | Steps 11–13: Brevo TXT record at Wix, then a footyup.net sender | Wix login holder, then Reid |
-| ⬜ | Step 14: real mailing address, training-alert inbox, reply-to, logo | Reid with Alex |
+| ⬜ | Steps 11–13: Brevo TXT record at Wix, then the `no-reply@footyup.net` sender. Until then, emails go from Footy Up's verified sender (`FootyUP <alexdimitrirapo@gmail.com>`), and the new permanent Brevo key is in. | Wix login holder, then Reid |
+| ⬜ | Step 14: real mailing address, training-alert inbox, logo. Reply-to is set to `footyupp@outlook.com`. | Reid with Alex |
 | ✅ | Step 15: test data cleared | Done Nov 1 |
 | ✅ | Step 16: Stripe live secret key and live webhook are in. The dashboard confirms live mode. Check ACH is off. | Done Nov 1 |
 | ✅ | Step 17: test mode off; emails go to everyone | Done Nov 1 |
@@ -99,7 +99,7 @@ variable changes only take effect after a redeploy.
 14. **Fill in Dashboard → Settings → Email:**
     - **Mailing address:** Footy Up's business address. It's required in every marketing email; it's a "[TEST]" placeholder now.
     - **Notifications address** (private training alerts): Footy Up's inbox. It's Reid's Gmail now.
-    - **Reply-to address:** a real inbox parents can reply to, e.g. `footyupp@outlook.com`. Required if the sender is on footyup.net (step 12).
+    - ✅ **Reply-to address:** set to `footyupp@outlook.com` (Nov 1), the contact address used on the website.
     - **Logo URL**, when the logo is ready.
 
 ## Part 5: Go live and switch footyup.net (one sitting, only after Ivy Devs signs off)
