@@ -660,6 +660,19 @@ const COACHES = [
     chips: ["FURMAN FINAL FOUR", "GEORGE WASHINGTON", "HEAD OF MEDIA"],
     src: "public/uploads/images/Miguel Sosa.png",
   },
+  {
+    n: "15",
+    name: "BEN MARRO-DAGATTI",
+    first: "BEN",
+    last: "MARRO-DAGATTI",
+    title: "Coach",
+    school: "DUKE",
+    level: "NCAA D1 Commit",
+    role: "Coach · Duke Men's Soccer Commit",
+    bio: "Boston Bolts MLS Next goalkeeper committed to Duke University. Named to the 2026 National Academy Championships All-Star game and a TopDrawerSoccer Player to Watch, Ben brings the leadership and tactical understanding of a goalkeeper — organizing the back line, reading the game early, and playing with the ball at his feet.",
+    chips: ["MLS NEXT", "DUKE COMMIT", "GOALKEEPER"],
+    src: "public/uploads/images/Ben Marro-Dagatti.png",
+  },
 ];
 
 // URL-safe id for deep links, e.g. #coaches/josh-partal.
