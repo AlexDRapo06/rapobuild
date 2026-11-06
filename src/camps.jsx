@@ -12,7 +12,7 @@
 // this flag only controls whether the site links to / routes to them.
 const SHOW_MIAMI = false;
 
-// Camps with their own `page` (Winter, Veterans Day, Miami) need it added to
+// Camps with their own `page` (Winter, Miami) need it added to
 // VALID_PAGES in src/app.jsx.
 //
 // status: "open"     — registers and pays on this site
@@ -45,34 +45,6 @@ const CAMP_LIST = [
     details: "Drop your player off at 9 and pick them up at 1 — technical work, small-sided games, and coaching from college and pro-level players. Register online in under a minute; details for the day are sent after checkout.",
     sessions: [
       { value: "full", label: "Winter Camp — Dec 27–31 · 9 AM–1 PM · $315", price: 315, minAge: 6, maxAge: 17 },
-    ],
-  },
-  {
-    id: "veterans_canton_2026",
-    season: "fall",
-    status: "open",
-    page: "veteransDay",
-    tag: "Veterans Day Camp",
-    name: "Canton",
-    place: "CANTON",
-    region: "5 Carver Cir · Ages 6–17",
-    cardNote: "Wed Nov 11 · 9 AM–1 PM",
-    venue: "5 Carver Cir, Canton, MA 02021",
-    address: "5 Carver Cir, Canton, MA 02021",
-    schedule: "9:00 AM – 1:00 PM",
-    dates: "Wednesday, November 11, 2026",
-    ages: "Ages 6–17",
-    minAge: 6,
-    maxAge: 17,
-    priceLabel: "$120 per player",
-    price: 120,
-    accent: "#D2122E",
-    headline: ["VETERANS DAY CAMP.", "ONE DAY. FOUR HOURS."],
-    lead: "Spend Veterans Day on the ball with the FOOTYUP staff in Canton — four hours of real coaching from college and pro-level players. Spots are limited.",
-    detailsTitle: ["ONE FLAT PRICE.", "DROP OFF & TRAIN."],
-    details: "Drop your player off at 9 and pick them up at 1 — technical work, small-sided games, and coaching from college and pro-level players. Register online in under a minute; details for the day are sent after checkout.",
-    sessions: [
-      { value: "full", label: "Veterans Day Camp — Wed Nov 11 · 9 AM–1 PM · $120", price: 120, minAge: 6, maxAge: 17 },
     ],
   },
   {
@@ -344,7 +316,6 @@ const CAMP_LIST = [
 // Order of the Upcoming Camps cards on the home page.
 const HOME_CAMP_ORDER = [
   ...(SHOW_MIAMI ? ["miami_combine_2027"] : []),
-  "veterans_canton_2026",
   "rivier_2027",
   "arlington_catholic_2027",
   "watertown_2027",

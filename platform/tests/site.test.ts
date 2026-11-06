@@ -215,6 +215,7 @@ describe("site adapter: Miami", () => {
   });
 
   it("camp-access reports the gate and checks the code like the site's old endpoint", async () => {
+    await db`update public.miami_event set opens_at = now() + interval '1 day'`;
     const before = await (await siteCall(get("/api/site/camp-access?campId=miami_combine_2027"))).json();
     expect(before).toMatchObject({ open: false, closed: false });
 

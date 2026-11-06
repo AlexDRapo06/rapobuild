@@ -1,5 +1,4 @@
-// SINGLE-SESSION CAMP pages — Winter Camp (Walpole) and Veterans Day Camp
-// (Canton). Copy and figures come from the camp's entry in src/camps.jsx;
+// SINGLE-SESSION CAMP page — Winter Camp (Walpole). Copy and figures come from the camp's entry in src/camps.jsx;
 // registration goes through the shared camp form.
 const SingleCampPage = ({ camp }) => {
   const RegisterButton = ({ size = "lg", full = false, className = "" }) => (
@@ -85,6 +84,5 @@ const SingleCampPage = ({ camp }) => {
 };
 
 const WinterCamp = () => <SingleCampPage camp={campById("winter_walpole")} />;
-const VeteransDayCamp = () => <SingleCampPage camp={campById("veterans_canton_2026")} />;
 
-Object.assign(window, { WinterCamp, VeteransDayCamp });
+Object.assign(window, { WinterCamp });

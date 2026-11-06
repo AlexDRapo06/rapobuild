@@ -4,7 +4,7 @@
 // single camp, or #coaches/josh-partal to open the staff page at one coach.
 // Unknown pages (including the retired #basketball) fall back to home.
 const VALID_PAGES = [
-  "home", "summerCamp", "winterCamp", "veteransDay",
+  "home", "summerCamp", "winterCamp",
   ...(SHOW_MIAMI ? ["miami"] : []),
   "coaches", "media", "privateTraining",
 ];
@@ -13,7 +13,6 @@ const PAGE_TITLES = {
   home: "FOOTYUP — Boston Youth Soccer",
   summerCamp: "Summer Camps 2027 — FOOTYUP",
   winterCamp: "Winter Camp — FOOTYUP",
-  veteransDay: "Veterans Day Camp — FOOTYUP",
   miami: "Miami College Combine — FOOTYUP",
   coaches: "Coaches — FOOTYUP",
   media: "Media — FOOTYUP",
@@ -99,7 +98,6 @@ const App = () => {
   switch (route.page) {
     case "summerCamp": Page = window.SummerCamp; break;
     case "winterCamp": Page = window.WinterCamp; break;
-    case "veteransDay": Page = window.VeteransDayCamp; break;
     case "miami": Page = window.MiamiCombine; break;
     case "coaches": Page = window.Coaches; break;
     case "media": Page = window.Media; break;

@@ -686,14 +686,14 @@ const Home = ({ setPage }) => {
             <div className="inline-flex items-center gap-2.5 mb-5 px-4 py-2 rounded-full" style={{ background: "rgba(210,18,46,0.10)", border: "1px solid rgba(210,18,46,0.35)" }}>
               <span className="upcoming__pulse" aria-hidden="true" />
               <span className="font-cond font-bold uppercase tracking-[0.2em] text-[11px]" style={{ color: "#ff6072" }}>
-                Now booking — Veterans Day · Winter · Summer 2027{SHOW_MIAMI ? " · Miami" : ""}
+                Now booking — Winter · Summer 2027{SHOW_MIAMI ? " · Miami" : ""}
               </span>
             </div>
             <h2 className="font-display text-white" style={{ fontSize: "clamp(2.25rem, 5vw, 4.5rem)", lineHeight: 0.95, letterSpacing: "-0.01em" }}>
               UPCOMING <span className="upcoming__accent">CAMPS</span>.
             </h2>
             <p className="mt-6 text-[16px] lg:text-[17px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.72)" }}>
-              A Veterans Day Camp in Canton on November 11, Winter Camp in Walpole this December, summer camps at Arlington Catholic, Watertown and BB&amp;N{SHOW_MIAMI ? ", and the FOOTYUP College Combine in Miami" : ""}. Tap a camp for dates, details and registration.
+              Winter Camp in Walpole this December, summer camps at Arlington Catholic, Watertown and BB&amp;N{SHOW_MIAMI ? ", and the FOOTYUP College Combine in Miami" : ""}. Tap a camp for dates, details and registration.
             </p>
           </div>
 
