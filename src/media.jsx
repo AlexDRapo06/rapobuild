@@ -20,8 +20,8 @@ const MEDIA_TEAM = [
     url: FOOTYACCESS_URL,
   },
   {
-    key: "daniel-casper",
-    name: "DANIEL CASPER",
+    key: "daniel-kaspin",
+    name: "DANIEL KASPIN",
     role: "Founder",
     org: "US FOOTY",
     meta: "@usfooty · 14,400+ followers",
