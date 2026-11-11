@@ -36,7 +36,7 @@ const SEVERITY: Record<Severity, { label: string; icon: typeof InfoIcon; badge: 
 }
 
 const SECTION_LABELS: Record<string, string> = {
-  camps: "Camps & sessions", miami: "Miami combine", codes: "Access codes", discounts: "Discounts & promo codes",
+  camps: "Camps & sessions", miami: "College Combine", codes: "Access codes", discounts: "Discounts & promo codes",
   waivers: "Waivers", email: "Email", admins: "Admins", training: "Private training",
 }
 

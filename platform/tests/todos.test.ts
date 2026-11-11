@@ -34,11 +34,11 @@ beforeEach(async () => {
 describe("Settings → To do", () => {
   it("lists where the live site and the Kickoff Form disagree, with the site's values in use", async () => {
     const list = await todos()
-    for (const key of ["miami_opening", "miami_price", "miami_caps", "miami_venue", "watertown_price"]) {
-      expect(current(list.todos.find((t) => t.key === key)!)).toBe("site")
+    expect(current(list.todos.find((t) => t.key === "watertown_price")!)).toBe("site")
+    // The old Miami decisions would overwrite the Boston combine's settings.
+    for (const key of ["miami_opening", "miami_price", "miami_caps", "miami_reserved", "miami_venue", "miami_on_site"]) {
+      expect(list.todos.some((t) => t.key === key)).toBe(false)
     }
-    expect(current(list.todos.find((t) => t.key === "miami_reserved")!)).toBe("shared")
-    expect(list.blockers).toBeGreaterThan(0)
   })
 
   it("applying the Kickoff Form's answer changes what checkout charges, and confirming closes the item", async () => {
@@ -50,9 +50,7 @@ describe("Settings → To do", () => {
     const { url } = (await res.json()) as { url: string }
     expect(deps.payments.sessions.get(sessionIdFrom(url))!.amountTotal).toBe(85000)
 
-    await adminCall("todo-apply", { key: "miami_price", option: "kickoff" })
-    const [event] = await db`select price_tiers from public.miami_event`
-    expect(event!.price_tiers).toEqual([])
+    expect((await adminCall("todo-apply", { key: "miami_price", option: "kickoff" })).status).toBe(404)
 
     const before = (await todos()).open
     expect((await adminCall("todo-confirm", { key: "watertown_price" })).status).toBe(200)
@@ -63,6 +61,9 @@ describe("Settings → To do", () => {
   })
 
   it("setup checks clear themselves once fixed and can't just be ticked off", async () => {
+    // The combine opens to everyone at once, so no access code is needed.
+    expect((await todos()).todos.some((t) => t.key === "access_code")).toBe(false)
+    await db`update public.miami_event set public_opens_at = opens_at + interval '7 days'`
     expect((await item("access_code")).done).toBe(false)
     expect((await adminCall("todo-confirm", { key: "access_code" })).status).toBe(422)
     await addAccessCode(db, "TEST-CODE-123")

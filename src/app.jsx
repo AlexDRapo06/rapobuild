@@ -4,8 +4,7 @@
 // single camp, or #coaches/josh-partal to open the staff page at one coach.
 // Unknown pages (including the retired #basketball) fall back to home.
 const VALID_PAGES = [
-  "home", "summerCamp", "winterCamp",
-  ...(SHOW_MIAMI ? ["miami"] : []),
+  "home", "summerCamp", "winterCamp", "combine",
   "coaches", "media", "privateTraining",
 ];
 
@@ -13,7 +12,7 @@ const PAGE_TITLES = {
   home: "FOOTYUP — Boston Youth Soccer",
   summerCamp: "Summer Camps 2027 — FOOTYUP",
   winterCamp: "Winter Camp — FOOTYUP",
-  miami: "Miami College Combine — FOOTYUP",
+  combine: "Boston College Combine — FOOTYUP",
   coaches: "Coaches — FOOTYUP",
   media: "Media — FOOTYUP",
   privateTraining: "Private Training — FOOTYUP",
@@ -71,7 +70,7 @@ const App = () => {
         window.WAITLIST_OFFER = { ...offer, token };
         setPage(target[0], target[1] || "");
         setTimeout(() => {
-          const el = document.getElementById(camp.page === "miami" ? "miami-register" : "camp-register");
+          const el = document.getElementById(camp.page === "combine" ? "miami-register" : "camp-register");
           if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 400);
       })
@@ -98,7 +97,7 @@ const App = () => {
   switch (route.page) {
     case "summerCamp": Page = window.SummerCamp; break;
     case "winterCamp": Page = window.WinterCamp; break;
-    case "miami": Page = window.MiamiCombine; break;
+    case "combine": Page = window.MiamiCombine; break;
     case "coaches": Page = window.Coaches; break;
     case "media": Page = window.Media; break;
     case "privateTraining": Page = window.PrivateTraining; break;

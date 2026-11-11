@@ -71,8 +71,8 @@ Everything below is in the dashboard at `/admin` unless noted.
 | Task | Where |
 | --- | --- |
 | Add or edit a camp or session (dates, price, early-bird, spot limit, open/closed, reminders) | Settings → Camps & sessions |
-| Change Miami limits, prices, dates, reserved spots, opening/closing times, size lists | Settings → Miami combine |
-| Set, end-date or turn off the Miami access code | Settings → Access codes |
+| Change College Combine limits, prices, dates, reserved spots, opening/closing times, size lists | Settings → College Combine |
+| Set, end-date or turn off the College Combine access code | Settings → Access codes |
 | Create or disable a promo code; set the sibling discount; waitlist hold time | Settings → Discounts & promo codes |
 | Publish waiver wording and require it | Settings → Waivers |
 | Import contacts | Contacts → Import contacts |

@@ -18,9 +18,26 @@
       "host": "24 Industrial Road, Walpole, MA",
       "kind": "winter",
       "siteRoute": "winterCamp",
+      "active": false,
+      "_note": "Taken down Nov 10, 2026 (replaced by Sudbury). Kept so past registrations stay linked.",
       "sortOrder": 2,
       "sessions": [
         { "slug": "full", "name": "Dec 27–31 · 9 AM–1 PM", "startsOn": "2026-12-27", "endsOn": "2026-12-31", "startTime": "09:00", "location": "24 Industrial Road, Walpole, MA", "ageMin": 6, "ageMax": 17, "priceCents": 31500, "sortOrder": 1 }
+      ]
+    },
+    {
+      "slug": "winter_sudbury",
+      "name": "FOOTYUP Winter Soccer Camp — Sudbury Fieldhouse",
+      "host": "Sudbury Fieldhouse, Sudbury, MA",
+      "kind": "winter",
+      "siteRoute": "winterCamp",
+      "sortOrder": 2,
+      "sessions": [
+        { "slug": "full", "name": "Full Camp · Dec 28–31, 2026 · 9 AM–1 PM", "startsOn": "2026-12-28", "endsOn": "2026-12-31", "startTime": "09:00", "location": "Sudbury Fieldhouse, Sudbury, MA", "ageMin": 7, "ageMax": 16, "priceCents": 47500, "sortOrder": 1 },
+        { "slug": "dec28", "name": "Single Day · Mon Dec 28, 2026 · 9 AM–1 PM", "startsOn": "2026-12-28", "endsOn": "2026-12-28", "startTime": "09:00", "location": "Sudbury Fieldhouse, Sudbury, MA", "ageMin": 7, "ageMax": 16, "priceCents": 12500, "sortOrder": 2 },
+        { "slug": "dec29", "name": "Single Day · Tue Dec 29, 2026 · 9 AM–1 PM", "startsOn": "2026-12-29", "endsOn": "2026-12-29", "startTime": "09:00", "location": "Sudbury Fieldhouse, Sudbury, MA", "ageMin": 7, "ageMax": 16, "priceCents": 12500, "sortOrder": 3 },
+        { "slug": "dec30", "name": "Single Day · Wed Dec 30, 2026 · 9 AM–1 PM", "startsOn": "2026-12-30", "endsOn": "2026-12-30", "startTime": "09:00", "location": "Sudbury Fieldhouse, Sudbury, MA", "ageMin": 7, "ageMax": 16, "priceCents": 12500, "sortOrder": 4 },
+        { "slug": "dec31", "name": "Single Day · Thu Dec 31, 2026 · 9 AM–1 PM", "startsOn": "2026-12-31", "endsOn": "2026-12-31", "startTime": "09:00", "location": "Sudbury Fieldhouse, Sudbury, MA", "ageMin": 7, "ageMax": 16, "priceCents": 12500, "sortOrder": 5 }
       ]
     },
     {
@@ -32,6 +49,20 @@
       "sortOrder": 3,
       "sessions": [
         { "slug": "full", "name": "June 28–July 2, 2027 · 8:30 AM–1:30 PM", "startsOn": "2027-06-28", "endsOn": "2027-07-02", "startTime": "08:30", "location": "Rivier University, 420 S Main St, Nashua, NH 03060", "ageMin": 6, "ageMax": 17, "priceCents": 40000, "sortOrder": 1 }
+      ]
+    },
+    {
+      "slug": "brooks_2027",
+      "name": "FOOTYUP Summer Camp 2027 — Brooks School, North Andover, MA",
+      "host": "Brooks School, 1160 Great Pond Rd, North Andover, MA 01845",
+      "kind": "summer",
+      "siteRoute": "summerCamp/brooks",
+      "sortOrder": 3,
+      "sessions": [
+        { "slug": "week1", "name": "Week 1 · June 28–July 1, 2027 · 8:30 AM–3:30 PM", "startsOn": "2027-06-28", "endsOn": "2027-07-01", "startTime": "08:30", "location": "Brooks School, 1160 Great Pond Rd, North Andover, MA 01845", "ageMin": 7, "ageMax": 16, "priceCents": 75000, "sortOrder": 1 },
+        { "slug": "week2", "name": "Week 2 · July 6–9, 2027 · 8:30 AM–3:30 PM", "startsOn": "2027-07-06", "endsOn": "2027-07-09", "startTime": "08:30", "location": "Brooks School, 1160 Great Pond Rd, North Andover, MA 01845", "ageMin": 7, "ageMax": 16, "priceCents": 75000, "sortOrder": 2 },
+        { "slug": "week3", "name": "Week 3 · July 12–16, 2027 · 8:30 AM–3:30 PM", "startsOn": "2027-07-12", "endsOn": "2027-07-16", "startTime": "08:30", "location": "Brooks School, 1160 Great Pond Rd, North Andover, MA 01845", "ageMin": 7, "ageMax": 16, "priceCents": 75000, "sortOrder": 3 },
+        { "slug": "week4", "name": "Week 4 · July 26–30, 2027 · 8:30 AM–3:30 PM", "startsOn": "2027-07-26", "endsOn": "2027-07-30", "startTime": "08:30", "location": "Brooks School, 1160 Great Pond Rd, North Andover, MA 01845", "ageMin": 7, "ageMax": 16, "priceCents": 75000, "sortOrder": 4 }
       ]
     },
     {

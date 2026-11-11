@@ -1,18 +1,15 @@
 // CAMP DATA — one source of truth for every camp page, the summer hub, the
-// Miami combine, and the home page's Upcoming Camps cards.
+// Boston College Combine, and the home page's Upcoming Camps cards.
 //
 // Prices, ages and session labels here are display defaults. The admin
-// dashboard (Settings → Camps, Miami) holds what Stripe actually charges and
+// dashboard (Settings → Camps, Combine) holds what Stripe actually charges and
 // what the server accepts, keyed by the same `id` and session `value` strings
 // below; GET /api/site/catalog swaps the live prices in (applyCatalog).
 //
-// MIAMI COMBINE ON/OFF — flip SHOW_MIAMI to true to bring the whole Miami
-// College Combine back (page, nav, footer, home pill, home camp card and CTA).
-// The page (src/miami.jsx), camp data and API config are all still in place;
-// this flag only controls whether the site links to / routes to them.
-const SHOW_MIAMI = false;
+// The combine keeps its original id (`miami_combine_2027`) and the boys/girls
+// session values: the database, Stripe and the dashboard key on them.
 
-// Camps with their own `page` (Winter, Miami) need it added to
+// Camps with their own `page` (Winter, Combine) need it added to
 // VALID_PAGES in src/app.jsx.
 //
 // status: "open"     — registers and pays on this site
@@ -20,42 +17,37 @@ const SHOW_MIAMI = false;
 //         "soon"     — teaser card, no page yet
 const CAMP_LIST = [
   {
-    id: "winter_walpole",
+    id: "winter_sudbury",
     season: "winter",
     status: "open",
     page: "winterCamp",
     tag: "Winter Camp",
-    name: "Walpole",
-    place: "WALPOLE",
-    region: "Massachusetts",
-    cardNote: "Dec 27–31 · 9 AM–1 PM",
-    venue: "24 Industrial Road, Walpole, MA",
-    address: "24 Industrial Road, Walpole, MA",
+    name: "Sudbury",
+    place: "SUDBURY",
+    region: "Sudbury Fieldhouse",
+    cardNote: "Dec 28–31 · 9 AM–1 PM",
+    venue: "Sudbury Fieldhouse",
+    address: "Sudbury Fieldhouse, Sudbury, MA",
     schedule: "9:00 AM – 1:00 PM",
-    dates: "December 27 – 31",
-    ages: "Ages 6–17",
-    minAge: 6,
-    maxAge: 17,
-    priceLabel: "$315 per player",
-    price: 315,
+    dates: "December 28 – 31, 2026",
+    ages: "Ages 7–16",
+    minAge: 7,
+    maxAge: 16,
+    priceLabel: "$475 for 4 days · $125 per day",
+    price: 475,
     accent: "#D2122E",
-    headline: ["WINTER CAMP.", "TRAIN THROUGH THE COLD."],
-    lead: "A high-energy indoor session with the FOOTYUP staff — four hours of real coaching to keep your player sharp all winter. Spots are limited.",
-    detailsTitle: ["ONE FLAT PRICE.", "DROP OFF & TRAIN."],
-    details: "Drop your player off at 9 and pick them up at 1 — technical work, small-sided games, and coaching from college and pro-level players. Register online in under a minute; details for the day are sent after checkout.",
+    headline: ["WINTER SOCCER CAMP.", "TRAIN. COMPETE. IMPROVE."],
+    lead: "A 4-day indoor camp at Sudbury Fieldhouse with the FOOTYUP staff — high-level training in a competitive indoor environment to keep your player sharp all winter. Spots are limited.",
+    detailsTitle: ["4-DAY INDOOR CAMP.", "COME ALL FOUR, OR PICK YOUR DAYS."],
+    details: "Drop your player off at 9 and pick them up at 1, December 28–31 — technical work, small-sided games, and coaching from college and pro-level players. Book the full camp for $475, or single days at $125 each. Register online in under a minute; details for the week are sent after checkout.",
+    sessionsNote: "Coming for more than one day? The full camp is $475 for all four days.",
     sessions: [
-      { value: "full", label: "Winter Camp — Dec 27–31 · 9 AM–1 PM · $315", price: 315, minAge: 6, maxAge: 17 },
+      { value: "full", kicker: "Mon – Thu", title: "Full Camp", dates: "December 28 – 31, 2026", schedule: "9:00 AM – 1:00 PM", ages: "Ages 7–16", minAge: 7, maxAge: 16, price: 475, label: "Full Camp — Dec 28–31 · 9 AM–1 PM · $475" },
+      { value: "dec28", kicker: "Day 1", title: "Monday, Dec 28", dates: "December 28, 2026", schedule: "9:00 AM – 1:00 PM", ages: "Ages 7–16", minAge: 7, maxAge: 16, price: 125, label: "Single Day — Mon Dec 28 · 9 AM–1 PM · $125" },
+      { value: "dec29", kicker: "Day 2", title: "Tuesday, Dec 29", dates: "December 29, 2026", schedule: "9:00 AM – 1:00 PM", ages: "Ages 7–16", minAge: 7, maxAge: 16, price: 125, label: "Single Day — Tue Dec 29 · 9 AM–1 PM · $125" },
+      { value: "dec30", kicker: "Day 3", title: "Wednesday, Dec 30", dates: "December 30, 2026", schedule: "9:00 AM – 1:00 PM", ages: "Ages 7–16", minAge: 7, maxAge: 16, price: 125, label: "Single Day — Wed Dec 30 · 9 AM–1 PM · $125" },
+      { value: "dec31", kicker: "Day 4", title: "Thursday, Dec 31", dates: "December 31, 2026", schedule: "9:00 AM – 1:00 PM", ages: "Ages 7–16", minAge: 7, maxAge: 16, price: 125, label: "Single Day — Thu Dec 31 · 9 AM–1 PM · $125" },
     ],
-  },
-  {
-    id: "norfolk_clinic",
-    season: "winter",
-    status: "soon",
-    tag: "Winter Clinic",
-    place: "NORFOLK",
-    region: "8 Sharon Ave · Ages 12–17",
-    cardNote: "Dec 28–31 · 9 AM–12 PM",
-    accent: "#C9A24A",
   },
   {
     id: "rivier_2027",
@@ -83,6 +75,38 @@ const CAMP_LIST = [
     details: "Drop off at 8:30, pick up at 1:30, Monday through Friday. Players are grouped by age and ability so every camper is challenged. Register online in under a minute; details for the week are sent after checkout.",
     sessions: [
       { value: "full", kicker: "Monday – Friday", title: "Summer Camp", dates: "June 28 – July 2, 2027", schedule: "8:30 AM – 1:30 PM", ages: "Ages 6–17", minAge: 6, maxAge: 17, price: 400, label: "Rivier University — June 28 – July 2 · $400" },
+    ],
+  },
+  {
+    id: "brooks_2027",
+    season: "summer",
+    status: "open",
+    slug: "brooks",
+    tag: "Summer 2027",
+    name: "Brooks School",
+    place: "BROOKS",
+    region: "North Andover, MA",
+    cardNote: "June 28 – July 30 · 8:30 AM–3:30 PM",
+    venue: "Brooks School",
+    address: "1160 Great Pond Rd, North Andover, MA 01845",
+    schedule: "8:30 AM – 3:30 PM",
+    dates: "June 28 – July 30, 2027",
+    ages: "Ages 7–16",
+    minAge: 7,
+    maxAge: 16,
+    priceLabel: "$750 per week",
+    cta: "REGISTER NOW — $750/WEEK",
+    accent: "#D2122E",
+    headline: ["BROOKS SCHOOL.", "FOUR WEEKS. FULL DAYS."],
+    lead: "Four weeks of full-day camp on the Brooks School campus in North Andover, coached by college and pro-level players. Take one week or several — ages 7 to 16, every level welcome.",
+    detailsTitle: ["8:30 TO 3:30.", "THE FULL-DAY WEEK."],
+    details: "Drop off at 8:30, pick up at 3:30. Technical work, small-sided games and full scrimmages, grouped by age and ability so every player is challenged. Each week is booked on its own. Register online in under a minute; details for the week are sent after checkout.",
+    sessionsNote: "Coming for more than one week? Register each week separately.",
+    sessions: [
+      { value: "week1", kicker: "Week 01 · Mon – Thu", title: "Week 1", dates: "June 28 – July 1, 2027", schedule: "8:30 AM – 3:30 PM", ages: "Ages 7–16", minAge: 7, maxAge: 16, price: 750, label: "Week 1 — June 28 – July 1 · $750" },
+      { value: "week2", kicker: "Week 02 · Tue – Fri", title: "Week 2", dates: "July 6 – 9, 2027", schedule: "8:30 AM – 3:30 PM", ages: "Ages 7–16", minAge: 7, maxAge: 16, price: 750, label: "Week 2 — July 6–9 · $750" },
+      { value: "week3", kicker: "Week 03", title: "Week 3", dates: "July 12 – 16, 2027", schedule: "8:30 AM – 3:30 PM", ages: "Ages 7–16", minAge: 7, maxAge: 16, price: 750, label: "Week 3 — July 12–16 · $750" },
+      { value: "week4", kicker: "Week 04", title: "Week 4", dates: "July 26 – 30, 2027", schedule: "8:30 AM – 3:30 PM", ages: "Ages 7–16", minAge: 7, maxAge: 16, price: 750, label: "Week 4 — July 26–30 · $750" },
     ],
   },
   {
@@ -279,51 +303,50 @@ const CAMP_LIST = [
     id: "miami_combine_2027",
     season: "combine",
     status: "open",
-    page: "miami",
+    page: "combine",
     tag: "College Combine",
-    name: "Miami College Combine",
-    place: "MIAMI",
-    region: "Belen Jesuit Prep · Ages 14–18",
-    cardNote: "Boys May 21–23 · Girls May 24–26",
-    venue: "Belen Jesuit Preparatory School",
-    venueShort: "Belen Jesuit Prep",
-    address: "500 SW 127th Ave, Miami, FL",
-    dates: "May 21 – 26, 2027",
-    schedule: "4:30 – 8:30 PM",
+    name: "Boston College Combine",
+    place: "BOSTON",
+    region: "Middlesex School · Ages 14–18",
+    cardNote: "July 9–11 · 9 AM–1 PM · $800",
+    venue: "Middlesex School",
+    venueShort: "Middlesex School",
+    address: "Concord, MA",
+    dates: "July 9 – 11, 2027",
+    schedule: "9:00 AM – 1:00 PM",
     ages: "Ages 14–18",
     minAge: 14,
     maxAge: 18,
-    spotsPerSession: 225,
     accent: "#C9A24A",
-    // Display defaults only — the Miami page asks /api/site/camp-access for the
-    // live state, and the dashboard's Miami settings are what's enforced.
-    opensAt: "2026-11-01T00:00:00-04:00",
-    closesAt: "2027-03-02T00:00:00-05:00",
-    gated: true,
-    gatedUntil: "2026-12-01T00:00:00-05:00",
-    // Price by registration date (the dashboard's Miami price steps replace these).
+    // Display defaults only — the combine page asks /api/site/camp-access for
+    // the live state, and the dashboard's Combine settings are what's enforced.
+    opensAt: "2026-11-10T00:00:00-05:00",
+    closesAt: "2027-07-09T00:00:00-04:00",
+    gated: false,
+    // One flat price (the dashboard's Combine price steps replace it).
     priceTiers: [
-      { until: "2027-02-02T00:00:00-05:00", price: 1500, label: "Nov 1 – Feb 1" },
-      { price: 1650, label: "Feb 2 – Mar 1" },
+      { price: 800, label: "Through July 8" },
     ],
+    // One combine for everyone. Boys and girls still register into their own
+    // group (the database tracks spots per group), on the same dates.
     sessions: [
-      { value: "boys",  title: "Boys Combine",  short: "Boys",  dates: "May 21 – 23, 2027", ages: "Ages 14–18", minAge: 14, maxAge: 18 },
-      { value: "girls", title: "Girls Combine", short: "Girls", dates: "May 24 – 26, 2027", ages: "Ages 14–18", minAge: 14, maxAge: 18 },
+      { value: "boys",  title: "Boys",  short: "Boys",  dates: "July 9 – 11, 2027", ages: "Ages 14–18", minAge: 14, maxAge: 18 },
+      { value: "girls", title: "Girls", short: "Girls", dates: "July 9 – 11, 2027", ages: "Ages 14–18", minAge: 14, maxAge: 18 },
     ],
   },
 ];
 
 // Order of the Upcoming Camps cards on the home page.
 const HOME_CAMP_ORDER = [
-  ...(SHOW_MIAMI ? ["miami_combine_2027"] : []),
+  "miami_combine_2027",
   "rivier_2027",
+  "brooks_2027",
   "arlington_catholic_2027",
   "watertown_2027",
   "bbn_2027",
   "union_point_2027",
   "brandeis_2027",
-  "winter_walpole",
-  "norfolk_clinic",
+  "winter_sudbury",
   "dover",
 ];
 
@@ -414,7 +437,7 @@ const applyCatalog = (catalog) => {
 };
 
 Object.assign(window, {
-  SHOW_MIAMI, CAMP_LIST, HOME_CAMP_ORDER, SUMMER_CAMPS,
+  CAMP_LIST, HOME_CAMP_ORDER, SUMMER_CAMPS,
   campById, summerCampBySlug, campRoute,
   campRegistrationStatus, campRegistrationOpen, campPriceTier, campPrice, formatUSD, applyCatalog,
 });

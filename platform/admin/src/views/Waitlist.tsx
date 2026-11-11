@@ -94,7 +94,7 @@ export function Waitlist({ api, onExpired, refreshKey }: { api: Api; onExpired: 
       </div>
 
       {loading && !data ? <Card><TableSkeleton rows={4} /></Card> : error && !data ? <Card><ErrorState message={error} onRetry={reload} /></Card> : groups.length === 0 ? (
-        <Card><EmptyState icon={HourglassIcon} title={rows.length ? "Nobody matches your search" : "Nobody is waiting"}>When a session or Miami group fills, families can join the waitlist and appear here in order.</EmptyState></Card>
+        <Card><EmptyState icon={HourglassIcon} title={rows.length ? "Nobody matches your search" : "Nobody is waiting"}>When a session or Combine group fills, families can join the waitlist and appear here in order.</EmptyState></Card>
       ) : (
         groups.map(([program, entries]) => {
           const waiting = entries.filter((e) => e.status === "waiting")

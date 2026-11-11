@@ -67,7 +67,7 @@ export async function resolveAudience(db: Db, segment: Segment): Promise<Audienc
     with reg as (
       select lower(r.parent_email) as email, r.camp_id, r.session_id, r.miami_group, lower(btrim(r.parent_town)) as town,
              coalesce(nullif(btrim(r.player_first_name), ''), split_part(btrim(r.player_name), ' ', 1)) as kid,
-             case when r.miami_group is not null then 'Miami ' || initcap(r.miami_group) else c.name || ' – ' || coalesce(s.name, '') end as program
+             case when r.miami_group is not null then 'Combine ' || initcap(r.miami_group) else c.name || ' – ' || coalesce(s.name, '') end as program
         from public.registrations r
         join public.payments p on p.id = r.payment_id
         join public.camps c on c.id = r.camp_id

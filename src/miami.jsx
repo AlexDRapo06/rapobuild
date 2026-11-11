@@ -1,25 +1,27 @@
-// MIAMI COLLEGE COMBINE — event page + code-gated registration (#miami).
+// BOSTON COLLEGE COMBINE — event page + registration (#combine), hosted at
+// Middlesex School. (The file and component keep their old Miami names; the
+// database and dashboard key on them.)
 //
-// Registration state comes from /api/site/camp-access (the dashboard's Miami settings):
-// before `opensAt` the form is locked behind a countdown; while `gated` (the
-// private-school window, Nov 1–30) families unlock it with the access code;
-// after `closesAt` it shows as closed. /api/site/checkout re-checks all of it, and
+// Registration state comes from /api/site/camp-access (the dashboard's Combine settings):
+// before `opensAt` the form is locked behind a countdown; while `gated` (an
+// access-code window, if the dashboard turns codes on) families unlock it with
+// the code; after `closesAt` it shows as closed. /api/site/checkout re-checks all of it, and
 // charges today's price tier, so nothing here can be used to skip the gate.
 // If the API can't be reached (e.g. a static preview), the page falls back to
 // the defaults in src/camps.jsx.
 
-// Belen Jesuit campus aerial behind the hero. Set to null to fall back to the
-// designed stadium backdrop. The browser picks the smallest size that fills
-// the screen.
+// Middlesex School campus aerial behind the hero. Set to null to fall back to
+// the designed stadium backdrop. The browser picks the smallest size that
+// fills the screen.
 const MIAMI_HERO_IMAGE = {
-  src: "public/uploads/images/belen-jesuit-hero-1248.jpg",
+  src: "public/uploads/images/middlesex-hero-1280.jpg",
   srcSet: [
-    "public/uploads/images/belen-jesuit-hero-800.jpg 800w",
-    "public/uploads/images/belen-jesuit-hero-1248.jpg 1248w",
+    "public/uploads/images/middlesex-hero-800.jpg 800w",
+    "public/uploads/images/middlesex-hero-1280.jpg 1280w",
   ].join(", "),
 };
 
-// Fallback lists; the dashboard's Miami settings replace them (window.MIAMI_OPTIONS).
+// Fallback lists; the dashboard's Combine settings replace them (window.MIAMI_OPTIONS).
 const MIAMI_SIZES = ["Youth L", "Adult XS", "Adult S", "Adult M", "Adult L", "Adult XL", "Adult XXL"];
 const MIAMI_POSITIONS = [
   "Goalkeeper", "Center Back", "Outside Back", "Defensive Midfielder",
@@ -83,7 +85,7 @@ const MiamiCountdown = ({ opensAt, gatedUntil, now }) => {
         OPENS {formatOpensAt(opensAt).toUpperCase()}.
       </h3>
       <p className="mt-4 text-[15px] leading-[1.6] mx-auto" style={{ color: "rgba(255,255,255,0.72)", maxWidth: 520 }}>
-        Private school families register first with their school's access code{gatedUntil ? `, through ${formatLastDay(gatedUntil)}` : ""}. Public registration opens {gatedUntil ? formatOpensAt(gatedUntil) : "after that"} — spots are limited.
+        {gatedUntil ? `Families with an access code register first, through ${formatLastDay(gatedUntil)}. Public registration opens ${formatOpensAt(gatedUntil)}` : "Spots are limited"} — get notified so you don't miss it.
       </p>
       <div className="miami-countdown" role="timer" aria-label="Time until registration opens">
         {parts.map((p) => (
@@ -93,7 +95,7 @@ const MiamiCountdown = ({ opensAt, gatedUntil, now }) => {
           </div>
         ))}
       </div>
-      <a href="mailto:footyupp@outlook.com?subject=Miami%20College%20Combine" className="miami-gate__link">
+      <a href="mailto:footyupp@outlook.com?subject=Boston%20College%20Combine" className="miami-gate__link">
         Get notified — footyupp@outlook.com
       </a>
     </div>
@@ -133,12 +135,12 @@ const MiamiCodeGate = ({ camp, gatedUntil, onUnlock, initialError = "" }) => {
   return (
     <div className="miami-gate">
       <div className="miami-gate__icon"><IconLock size={22} /></div>
-      <div className="eyebrow mt-6" style={{ color: "#C9A24A" }}>Private School Registration</div>
+      <div className="eyebrow mt-6" style={{ color: "#C9A24A" }}>Early Registration</div>
       <h3 className="font-display text-white mt-2 leading-none" style={{ fontSize: "clamp(2rem, 4.5vw, 3.25rem)" }}>
         ENTER YOUR ACCESS CODE.
       </h3>
       <p className="mt-4 text-[15px] leading-[1.6] mx-auto" style={{ color: "rgba(255,255,255,0.72)", maxWidth: 520 }}>
-        Until {gatedUntil ? formatOpensAt(gatedUntil) : "public registration opens"}, registration is reserved for private school families with an access code from their school. Enter it below to unlock the registration form.
+        Until {gatedUntil ? formatOpensAt(gatedUntil) : "public registration opens"}, registration is reserved for families with an access code. Enter it below to unlock the registration form.
       </p>
       <form onSubmit={submit} className="miami-gate__form">
         <label htmlFor="miami-code" className="sr-only">Access code</label>
@@ -162,7 +164,7 @@ const MiamiCodeGate = ({ camp, gatedUntil, onUnlock, initialError = "" }) => {
         </button>
       </form>
       {error && <p id="miami-code-error" role="alert" className="mt-4 text-[14px]" style={{ color: "#ff6072" }}>{error}</p>}
-      <a href="mailto:footyupp@outlook.com?subject=Miami%20College%20Combine%20%E2%80%94%20public%20registration" className="miami-gate__link">
+      <a href="mailto:footyupp@outlook.com?subject=Boston%20College%20Combine%20%E2%80%94%20public%20registration" className="miami-gate__link">
         No code? Public registration opens {gatedUntil ? formatOpensAt(gatedUntil) : "soon"} — get notified
       </a>
     </div>
@@ -180,7 +182,7 @@ const MiamiClosed = ({ closesAt }) => (
     <p className="mt-4 text-[15px] leading-[1.6] mx-auto" style={{ color: "rgba(255,255,255,0.72)", maxWidth: 520 }}>
       {closesAt ? `Registration closed on ${formatLastDay(closesAt)}.` : "Registration has closed."} Questions about the combine? We're happy to help.
     </p>
-    <a href="mailto:footyupp@outlook.com?subject=Miami%20College%20Combine" className="miami-gate__link">
+    <a href="mailto:footyupp@outlook.com?subject=Boston%20College%20Combine" className="miami-gate__link">
       Email footyupp@outlook.com
     </a>
   </div>
@@ -224,7 +226,7 @@ const MiamiForm = ({ camp, price, accessCode, session, setSession, onCodeRejecte
     e.preventDefault();
     if (loading) return;
     if (!selected) {
-      setError("Please choose the Boys or Girls combine.");
+      setError("Please choose Boys or Girls.");
       scrollToId("miami-register");
       return;
     }
@@ -263,8 +265,8 @@ const MiamiForm = ({ camp, price, accessCode, session, setSession, onCodeRejecte
   return (
     <>
     <form onSubmit={onSubmit} className="flex flex-col gap-10">
-      <MiamiFieldset n="01" title="Choose Your Combine">
-        <div role="radiogroup" aria-label="Combine" className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <MiamiFieldset n="01" title="Boys or Girls" note={`One combine for everyone — ${camp.dates} · ${camp.schedule} · ${camp.ages}.`}>
+        <div role="radiogroup" aria-label="Boys or Girls" className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {camp.sessions.map((s) => {
             const on = session === s.value;
             return (
@@ -280,7 +282,7 @@ const MiamiForm = ({ camp, price, accessCode, session, setSession, onCodeRejecte
                 <span className="miami-choice__radio" aria-hidden="true" />
                 <span className="flex-1">
                   <span className="block font-display text-[26px] leading-none text-ink">{s.title}</span>
-                  <span className="block mt-1.5 font-cond font-semibold uppercase tracking-[0.12em] text-[13px] text-fog">{s.dates} · {camp.schedule} · {s.ages}</span>
+                  <span className="block mt-1.5 font-cond font-semibold uppercase tracking-[0.12em] text-[13px] text-fog">{s.ages}</span>
                 </span>
                 <span className="font-display text-[24px] text-ink">{s.full && !offer ? "FULL" : formatUSD(price)}</span>
               </label>
@@ -358,7 +360,7 @@ const MiamiForm = ({ camp, price, accessCode, session, setSession, onCodeRejecte
     </form>
     {isFull && (
       <div className="mt-6">
-        <WaitlistForm campId={camp.id} session={session} title={`THE ${selected.short.toUpperCase()} COMBINE IS FULL.`} />
+        <WaitlistForm campId={camp.id} session={session} title={`${selected.short.toUpperCase()} SPOTS ARE FULL.`} />
       </div>
     )}
     </>
@@ -425,19 +427,14 @@ const MiamiCombine = ({ setPage }) => {
     scrollToId("miami-register");
   };
 
-  const pickSession = (value) => {
-    setSession(value);
-    scrollToId("miami-register");
-  };
-
   const statusLine = !status
     ? "Checking registration…"
     : closed
       ? "Registration closed"
       : !open
-        ? `Registration opens ${formatOpensAt(status.opensAt)} · Private school access code required`
+        ? `Registration opens ${formatOpensAt(status.opensAt)}`
         : gated
-          ? `Private school registration open · Public opens ${formatOpensAt(status.gatedUntil)}`
+          ? `Access-code registration open · Public opens ${formatOpensAt(status.gatedUntil)}`
           : status.closesAt
             ? `Registration open through ${formatLastDay(status.closesAt)}`
             : "Registration open";
@@ -518,14 +515,12 @@ const MiamiCombine = ({ setPage }) => {
           </div>
           <h1 className="miami-hero__title font-display text-white">
             <span className="miami-hero__kicker">FOOTYUP COLLEGE COMBINE</span>
-            <span className="miami-hero__city">MIAMI</span>
-            <span className="miami-hero__host">Hosted at <span style={{ color: "#E8C877" }}>{camp.venue}</span></span>
+            <span className="miami-hero__city">BOSTON</span>
+            <span className="miami-hero__host">Hosted at <span style={{ color: "#E8C877" }}>{camp.venue}</span> · {camp.address}</span>
           </h1>
 
           <div className="mt-9 flex flex-wrap justify-center gap-2.5">
-            {camp.sessions.map((s) => (
-              <span key={s.value} className="miami-chip"><strong>{s.short}</strong> · {s.dates.replace(", 2027", "")}</span>
-            ))}
+            <span className="miami-chip"><strong>{camp.dates.replace(", 2027", "")}</strong></span>
             <span className="miami-chip">{camp.schedule}</span>
             <span className="miami-chip">{camp.ages}</span>
             <span className="miami-chip miami-chip--gold">{formatUSD(price)}</span>
@@ -559,13 +554,13 @@ const MiamiCombine = ({ setPage }) => {
               A PROFESSIONAL, COLLEGE-LEVEL EXPERIENCE FROM THE MOMENT THEY REGISTER.
             </h2>
             <p className="mt-6 text-fog text-[17px] leading-[1.6]" style={{ maxWidth: 560 }}>
-              The FOOTYUP Miami College Combine is designed to give every player a professional, college-level experience from the moment they register — three evenings of high-level training, competition and performance testing in front of college coaches, at {camp.venue} in Miami.
+              The FOOTYUP Boston College Combine is designed to give every player a professional, college-level experience from the moment they register — three mornings of high-level training, competition and performance testing in front of college coaches, at {camp.venue} in Concord, MA.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-px bg-ash border border-ash">
             {[
-              { n: "3", l: "Days per combine" },
-              { n: String(camp.spotsPerSession), l: "Players per combine" },
+              { n: "3", l: "Days · July 9–11" },
+              { n: "9–1", l: "Every morning" },
               { n: "VALD", l: "Performance testing" },
               { n: "1 KIT", l: "Shipped to your door" },
             ].map((s) => (
@@ -690,7 +685,7 @@ const MiamiCombine = ({ setPage }) => {
       <section className="miami-dark px-5 lg:px-10 py-20 lg:py-28">
         <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-10 lg:gap-16 items-center">
           <div className="miami-kit">
-            <img src="public/uploads/images/miami-kit-2027.jpg" alt="Custom FOOTYUP × GOINGFORGOAT Miami kits — jersey and shorts in black and in white, in boys' and girls' cuts" loading="lazy" />
+            <img src="assets/footyup-goat-kit.jpeg" alt="FOOTYUP × GOINGFORGOAT combine kit — black and gold jersey, socks, water bottle and towel" loading="lazy" />
           </div>
           <div>
             <div className="eyebrow mb-4" style={{ color: "#C9A24A" }}>Shipped To Your Door</div>
@@ -722,57 +717,30 @@ const MiamiCombine = ({ setPage }) => {
           <div className="text-center">
             <div className="eyebrow mb-4">Dates &amp; Pricing · {camp.venue}, {camp.address} · {camp.schedule}</div>
             <h2 className="font-display text-ink" style={{ fontSize: "clamp(2.25rem, 5vw, 4rem)", lineHeight: 0.95 }}>
-              PICK YOUR COMBINE.
+              ONE COMBINE. ONE PRICE.
             </h2>
           </div>
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
-            {camp.sessions.map((s) => (
-              <button
-                key={s.value}
-                type="button"
-                onClick={() => pickSession(s.value)}
-                className={`miami-price ${session === s.value ? "miami-price--on" : ""}`}
-                aria-pressed={session === s.value}
-              >
-                <span className="font-cond font-bold uppercase tracking-[0.18em] text-[11px]" style={{ color: "#D2122E" }}>{s.ages}</span>
-                <span className="block font-display text-ink leading-none mt-3" style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)" }}>{s.title.toUpperCase()}</span>
-                <span className="block font-display text-fog text-[24px] mt-2">{s.dates}</span>
-                <span className="block font-cond font-semibold uppercase tracking-[0.12em] text-[13px] text-fog mt-1">{camp.schedule} · {camp.spotsPerSession} spots</span>
-                <span className="miami-price__foot">
-                  <span className="font-display text-ink text-[40px] leading-none">{formatUSD(price)}</span>
-                  <span className="miami-price__cta">
-                    {session === s.value ? "Selected" : "Select"} <IconArrowRight size={16} />
-                  </span>
+          <div className="mt-10">
+            <button
+              type="button"
+              onClick={() => scrollToId("miami-register")}
+              className="miami-price miami-price--on"
+            >
+              <span className="font-cond font-bold uppercase tracking-[0.18em] text-[11px]" style={{ color: "#D2122E" }}>{camp.ages} · Boys &amp; Girls</span>
+              <span className="block font-display text-ink leading-none mt-3" style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)" }}>BOSTON COLLEGE COMBINE</span>
+              <span className="block font-display text-fog text-[24px] mt-2">{camp.dates}</span>
+              <span className="block font-cond font-semibold uppercase tracking-[0.12em] text-[13px] text-fog mt-1">{camp.schedule} · {camp.venue}, {camp.address}</span>
+              <span className="miami-price__foot">
+                <span className="font-display text-ink text-[40px] leading-none">{formatUSD(price)}</span>
+                <span className="miami-price__cta">
+                  Sign up <IconArrowRight size={16} />
                 </span>
-              </button>
-            ))}
+              </span>
+            </button>
           </div>
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
-            <div className="miami-timeline">
-              <div className="eyebrow mb-3">Registration</div>
-              <div className="miami-timeline__row">
-                <span>Nov 1 – Nov 30</span>
-                <span>Private school families · access code</span>
-              </div>
-              <div className="miami-timeline__row">
-                <span>Dec 1 – Mar 1</span>
-                <span>Open to the public</span>
-              </div>
-              <p className="mt-3 text-[13px] text-fog">March 1 is the last day to register.</p>
-            </div>
-            <div className="miami-timeline">
-              <div className="eyebrow mb-3">Price</div>
-              {camp.priceTiers.map((t) => (
-                <div key={t.label} className={`miami-timeline__row ${t === tier ? "miami-timeline__row--on" : ""}`}>
-                  <span>{t.label}</span>
-                  <span>{formatUSD(t.price)}{t === tier ? " · Current" : ""}</span>
-                </div>
-              ))}
-              {nextTier && (
-                <p className="mt-3 text-[13px] text-fog">Register by {formatLastDay(tier.until)} to lock in {formatUSD(price)}.</p>
-              )}
-            </div>
-          </div>
+          {nextTier && (
+            <p className="mt-4 text-center text-[13px] text-fog">Register by {formatLastDay(tier.until)} to lock in {formatUSD(price)}.</p>
+          )}
           <p className="mt-5 text-center text-[14px] text-fog">
             One price, everything included — training, VALD testing, player profile and your custom kit.
           </p>
@@ -788,7 +756,7 @@ const MiamiCombine = ({ setPage }) => {
               SECURE YOUR SPOT.
             </h2>
             <p className="mt-4 text-[15px] text-fog leading-[1.55]">
-              {camp.venue} · Boys May 21–23 · Girls May 24–26 · {camp.schedule} · {camp.ages} · {formatUSD(price)}
+              {camp.venue}, {camp.address} · {camp.dates} · {camp.schedule} · {camp.ages} · {formatUSD(price)}
             </p>
           </div>
 
@@ -812,7 +780,7 @@ const MiamiCombine = ({ setPage }) => {
                 ) : gated && (
                   <div className="miami-unlocked" role="status">
                     <IconCheck size={14} strokeWidth={3} />
-                    Access code accepted — private school registration unlocked
+                    Access code accepted — registration unlocked
                   </div>
                 )}
                 <MiamiForm camp={camp} price={price} accessCode={accessCode} session={session} setSession={setSession} onCodeRejected={gated && !offer ? relock : undefined} />
@@ -834,7 +802,7 @@ const MiamiCombine = ({ setPage }) => {
           </div>
           <div className="mt-8 font-cond uppercase tracking-[0.14em] text-[12px]" style={{ color: "rgba(255,255,255,0.55)" }}>
             Questions? Email{" "}
-            <a href="mailto:footyupp@outlook.com?subject=Miami%20College%20Combine" className="underline hover:text-white">footyupp@outlook.com</a>
+            <a href="mailto:footyupp@outlook.com?subject=Boston%20College%20Combine" className="underline hover:text-white">footyupp@outlook.com</a>
           </div>
         </div>
       </section>
@@ -862,8 +830,8 @@ const MiamiCombine = ({ setPage }) => {
           filter: saturate(0.9) contrast(1.05);
           animation: miami-photo-in 1.4s ease-out both, miami-photo-drift 28s ease-in-out 1.4s infinite alternate;
         }
-        /* On phones, keep the field and main building in frame */
-        @media (max-width: 767px) { .miami-hero__photo { object-position: 45% 60%; } }
+        /* On phones, keep the main brick buildings in frame */
+        @media (max-width: 767px) { .miami-hero__photo { object-position: 58% 60%; } }
         @keyframes miami-photo-in { from { opacity: 0; transform: scale(1.08); } to { opacity: 1; transform: scale(1.04); } }
         @keyframes miami-photo-drift { from { transform: scale(1.04); } to { transform: scale(1.09) translate3d(-1%, -0.6%, 0); } }
         .miami-hero__bg {

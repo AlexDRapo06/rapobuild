@@ -57,66 +57,13 @@ interface GroupRow {
 const iso = (d: Date | null) => (d ? d.getTime() : null);
 const at = (s: string) => Date.parse(s);
 
-const SITE_TIERS = [
-  { until: "2027-02-02T00:00:00-05:00", cents: 150000 },
-  { until: null, cents: 165000 },
-];
-const BELEN = "Belen Jesuit Preparatory School, 500 SW 127th Ave, Miami, FL";
-const GULLIVER = "Gulliver Preparatory School, Miami, FL";
-
 /** Decisions: how to apply each option. Everything runs in one transaction. */
 const DECISIONS: Record<string, Record<string, (tx: Db) => Promise<void>>> = {
-  miami_opening: {
-    site: async (tx) => {
-      await tx`update public.miami_event set opens_at = '2026-11-01T00:00:00-04:00', public_opens_at = '2026-12-01T00:00:00-05:00'`;
-    },
-    kickoff: async (tx) => {
-      await tx`update public.miami_event set opens_at = '2026-11-01T10:00:00-05:00', public_opens_at = '2026-11-01T10:00:00-05:00'`;
-    },
-  },
-  miami_price: {
-    site: async (tx) => {
-      await tx`update public.miami_event set price_tiers = ${tx.json(SITE_TIERS)}`;
-    },
-    kickoff: async (tx) => {
-      await tx`update public.miami_event set price_tiers = '[]'::jsonb`;
-      await tx`update public.miami_groups set price_public_cents = 150000, price_code_holder_cents = 150000`;
-    },
-  },
-  miami_caps: {
-    site: (tx) => setCaps(tx, 225),
-    kickoff: (tx) => setCaps(tx, 250),
-  },
-  miami_reserved: {
-    shared: async (tx) => {
-      await tx`update public.miami_event set reserved_total = 200`;
-      await tx`update public.miami_groups set reserved_for_code_holders = 0`;
-    },
-    split: async (tx) => {
-      await tx`update public.miami_event set reserved_total = 0`;
-      await tx`update public.miami_groups set reserved_for_code_holders = 100`;
-    },
-  },
-  miami_venue: {
-    site: async (tx) => {
-      await tx`update public.miami_event set location = ${BELEN}`;
-    },
-    brief: async (tx) => {
-      await tx`update public.miami_event set location = ${GULLIVER}`;
-    },
-  },
   watertown_price: {
     site: (tx) => setWatertown(tx, 41500),
     kickoff: (tx) => setWatertown(tx, 42500),
   },
 };
-
-async function setCaps(tx: Db, cap: number) {
-  const usage = await tx<{ grp: string; taken: number }[]>`select grp, (code_taken + public_taken)::int as taken from public.miami_availability()`;
-  const over = usage.find((u) => u.taken > cap);
-  if (over) throw new ApiError(422, "validation_failed", `${over.taken} ${over.grp} spots are already taken, more than ${cap}.`);
-  await tx`update public.miami_groups set cap = ${cap}`;
-}
 
 async function setWatertown(tx: Db, cents: number) {
   await tx`
@@ -177,70 +124,14 @@ export async function listTodos(db: Db, env: Env): Promise<Todo[]> {
   const items: Omit<Todo, "confirmed">[] = [];
   const opt = (id: string, label: string, detail: string, source: string, current: boolean): TodoOption => ({ id, label, detail, source, current });
 
+  // The Miami decisions (opening, price, caps, reserved spots, venue) were
+  // retired when the combine moved to Middlesex School (Boston College Combine).
   if (event) {
-    const siteOpening = iso(event.opens_at) === at("2026-11-01T00:00:00-04:00") && iso(event.public_opens_at) === at("2026-12-01T00:00:00-05:00");
-    const kickoffOpening = iso(event.opens_at) === at("2026-11-01T10:00:00-05:00") && iso(event.public_opens_at) === at("2026-11-01T10:00:00-05:00");
-    items.push({
-      key: "miami_opening", kind: "decision", severity: "blocker", section: "miami", done: false, confirmable: true,
-      title: "When Miami registration opens",
-      detail: `The live site and the Kickoff Form disagree. Now set: opens ${et(event.opens_at)}, everyone from ${et(event.public_opens_at)} (Eastern).`,
-      options: [
-        opt("site", "Code holders Nov 1, everyone Dec 1", "Nov 1 at midnight for families with the access code; public from Dec 1.", "Live site", siteOpening),
-        opt("kickoff", "Everyone Nov 1 at 10 AM", "No early window; host-school families use the reserved spots.", "Kickoff Form", kickoffOpening),
-      ],
-    });
-
-    const tiers = JSON.stringify((event.price_tiers ?? []).map((t) => ({ until: t.until ? at(t.until) : null, cents: t.cents })));
-    const siteTiers = tiers === JSON.stringify(SITE_TIERS.map((t) => ({ until: t.until ? at(t.until) : null, cents: t.cents })));
-    const flat = (event.price_tiers ?? []).length === 0 && groups.every((g) => g.price_public_cents === 150000 && g.price_code_holder_cents === 150000);
-    items.push({
-      key: "miami_price", kind: "decision", severity: "blocker", section: "miami", done: false, confirmable: true,
-      title: "Miami price after Feb 1",
-      detail: "The site raises the price to $1,650 from Feb 2. The Kickoff Form says $1,500 for everyone.",
-      options: [
-        opt("site", "$1,500, then $1,650 from Feb 2", "Two price steps, for everyone.", "Live site", siteTiers),
-        opt("kickoff", "$1,500 the whole time", "Public and host-school families.", "Kickoff Form", flat),
-      ],
-    });
-
-    const caps = groups.map((g) => g.cap);
-    items.push({
-      key: "miami_caps", kind: "decision", severity: "warning", section: "miami", done: false, confirmable: true,
-      title: "Miami spot limits",
-      detail: `The Kickoff Form offers "250 boys and 250 girls" but neither box is ticked, and says "out of all 450". Now set: ${groups.map((g) => `${g.cap} ${g.grp}`).join(", ")}.`,
-      options: [
-        opt("site", "225 boys / 225 girls", "450 in total, as the site shows.", "Live site", caps.every((n) => n === 225)),
-        opt("kickoff", "250 boys / 250 girls", "The limit printed on the Kickoff Form.", "Kickoff Form", caps.every((n) => n === 250)),
-      ],
-    });
-
-    const shared = event.reserved_total === 200 && groups.every((g) => g.reserved_for_code_holders === 0);
-    const split = event.reserved_total === 0 && groups.every((g) => g.reserved_for_code_holders === 100);
-    items.push({
-      key: "miami_reserved", kind: "decision", severity: "warning", section: "miami", done: false, confirmable: true,
-      title: "Host-school reserved spots (200)",
-      detail: "The Kickoff Form reserves 200 spots for private-school families but doesn't say whether that's across both combines or split. The live site has no reserved spots.",
-      options: [
-        opt("shared", "200 shared across boys and girls", "First come, first served between the two combines.", "Kickoff Form (as built)", shared),
-        opt("split", "100 boys + 100 girls", "Each combine keeps 100.", "Alternative", split),
-      ],
-    });
-
-    items.push({
-      key: "miami_venue", kind: "decision", severity: "warning", section: "miami", done: false, confirmable: true,
-      title: "Miami venue",
-      detail: `The site says Belen Jesuit; the Developer Brief said Gulliver Prep; the Kickoff Form leaves it blank. Now set: ${event.location ?? "nothing"}.`,
-      options: [
-        opt("site", "Belen Jesuit Preparatory School", BELEN, "Live site", event.location === BELEN),
-        opt("brief", "Gulliver Prep", GULLIVER, "Developer Brief", event.location === GULLIVER),
-      ],
-    });
-
     const gated = event.opens_at && event.public_opens_at && event.public_opens_at.getTime() > event.opens_at.getTime();
     if (gated) {
       items.push({
         key: "access_code", kind: "check", severity: "blocker", section: "codes", done: c.codes > 0, confirmable: false,
-        title: "Add the private-school access code",
+        title: "Add the combine access code",
         detail: `Until ${et(event.public_opens_at)} only families with the code can register. With no active code, nobody can register before then.`,
       });
     }
@@ -259,11 +150,6 @@ export async function listTodos(db: Db, env: Env): Promise<Todo[]> {
   }
 
   items.push(
-    {
-      key: "miami_on_site", kind: "check", severity: "blocker", done: false, confirmable: true,
-      title: "Show Miami on footyup.net",
-      detail: "The site hides the Miami page (SHOW_MIAMI = false in src/camps.jsx). Ivy Devs flips it to true when registration should be visible. Mark done once it's live.",
-    },
     {
       key: "promo_codes", kind: "check", severity: "info", section: "discounts", done: false, confirmable: true,
       title: "Promo codes: which ones to use",

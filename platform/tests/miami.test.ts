@@ -139,7 +139,7 @@ describe("registration phases from the Kickoff Form", () => {
     expect(await (await boy({ accessCode: "host-code" })).json()).toMatchObject({ error: "registration_not_open" });
     await db`update public.miami_event set opens_at = null, closes_at = now() - interval '1 minute'`;
     const closed = await boy({ accessCode: "host-code" });
-    expect(await closed.json()).toMatchObject({ error: "registration_not_open", message: "Miami registration has closed." });
+    expect(await closed.json()).toMatchObject({ error: "registration_not_open", message: "Combine registration has closed." });
     expect((await status()).event.open).toBe(false);
   });
 });

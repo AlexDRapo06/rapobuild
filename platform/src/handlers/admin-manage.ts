@@ -447,7 +447,7 @@ const analytics: Handler = async (req, deps) => {
         params,
       )
       const byProgram = await tx.unsafe(
-        `select case when r.miami_group is not null then 'Miami – ' || initcap(r.miami_group) else c.name || ' – ' || coalesce(s.name, '') end as program,
+        `select case when r.miami_group is not null then 'Combine – ' || initcap(r.miami_group) else c.name || ' – ' || coalesce(s.name, '') end as program,
                 r.session_id, r.miami_group, count(*)::int as registrations
            from public.registrations r join public.payments p on p.id = r.payment_id join public.camps c on c.id = r.camp_id
            left join public.sessions s on s.id = r.session_id
@@ -494,7 +494,7 @@ const revenue: Handler = async (req, deps) => {
           from alloc join public.payments p on p.id = alloc.payment_id`
       const byProgram = await tx.unsafe(
         `with l as (${lines})
-         select case when l.miami_group is not null then 'Miami – ' || initcap(l.miami_group) else c.name || ' – ' || coalesce(s.name, '') end as program,
+         select case when l.miami_group is not null then 'Combine – ' || initcap(l.miami_group) else c.name || ' – ' || coalesce(s.name, '') end as program,
                 l.session_id, l.miami_group, count(*)::int as registrations,
                 sum(l.net + l.discount)::int as gross_cents, sum(l.discount)::int as discount_cents,
                 sum(l.refund)::int as refund_cents, sum(l.net - l.refund)::int as net_cents
@@ -515,7 +515,7 @@ const revenue: Handler = async (req, deps) => {
                 p.sibling_discount_cents, p.promo_discount_cents, p.promo_code, p.refunded_cents, p.stripe_payment_intent_id,
                 p.stripe_checkout_session_id, p.intent_id is null as legacy,
                 coalesce((select json_agg(json_build_object('player', r.player_name, 'program',
-                   case when r.miami_group is not null then 'Miami – ' || initcap(r.miami_group) else c.name || ' – ' || coalesce(s.name, '') end,
+                   case when r.miami_group is not null then 'Combine – ' || initcap(r.miami_group) else c.name || ' – ' || coalesce(s.name, '') end,
                    'price_cents', r.price_cents, 'discount_cents', r.discount_cents, 'status', r.status) order by r.line_no)
                    from public.registrations r join public.camps c on c.id = r.camp_id left join public.sessions s on s.id = r.session_id
                   where r.payment_id = p.id), '[]') as registrations,
@@ -537,7 +537,7 @@ const revenue: Handler = async (req, deps) => {
       )
       const cancellations = await tx.unsafe(
         `select r.id, r.cancelled_at, r.cancel_reason, r.player_name, r.parent_name, r.parent_email,
-                case when r.miami_group is not null then 'Miami – ' || initcap(r.miami_group) else c.name || ' – ' || coalesce(s.name, '') end as program,
+                case when r.miami_group is not null then 'Combine – ' || initcap(r.miami_group) else c.name || ' – ' || coalesce(s.name, '') end as program,
                 p.status as payment_status, p.refunded_cents
            from public.registrations r join public.payments p on p.id = r.payment_id join public.camps c on c.id = r.camp_id
            left join public.sessions s on s.id = r.session_id
@@ -587,7 +587,7 @@ const roster: Handler = async (req, deps) => {
   const url = new URL(req.url)
   const sessionId = url.searchParams.get("session")
   const group = url.searchParams.get("group")
-  if (!sessionId && group !== "boys" && group !== "girls") throw new ApiError(400, "validation_failed", "Choose a session or Miami group.")
+  if (!sessionId && group !== "boys" && group !== "girls") throw new ApiError(400, "validation_failed", "Choose a session or Combine group.")
   if (sessionId && !/^[0-9a-f-]{36}$/.test(sessionId)) throw new ApiError(400, "validation_failed", "Invalid session.")
   return json(
     await asAdmin(deps, user, async (tx) => {
@@ -634,7 +634,7 @@ const waitlistNotify: Handler = async (req, deps) => {
   await requireAdmin(req, deps)
   const body = parse(z.object({ sessionId: z.uuid().optional(), miamiGroup: z.enum(["boys", "girls"]).optional() }), await readJson(req))
   const target = body.sessionId ? { sessionId: body.sessionId } : body.miamiGroup ? { miamiGroup: body.miamiGroup } : null
-  if (!target) throw new ApiError(400, "validation_failed", "Choose a session or Miami group.")
+  if (!target) throw new ApiError(400, "validation_failed", "Choose a session or Combine group.")
   const offer = await offerNext(deps, target)
   if (!offer) {
     throw new ApiError(409, "session_full", "No spot is free for the next family yet. Raise the limit or wait for a cancellation, and they'll be emailed automatically.")

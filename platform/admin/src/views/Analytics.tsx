@@ -107,12 +107,12 @@ export function Analytics({ api, onExpired, refreshKey, navigate }: { api: Api; 
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Miami combine: how full each group is</CardTitle>
+              <CardTitle className="text-base">College Combine: how full each group is</CardTitle>
               <CardDescription>Paid registrations against the spot limit (all time)</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-6 sm:grid-cols-2">
               {data.miami.map((g) => (
-                <button key={g.grp} onClick={() => navigate("registrations", { program: `Miami – ${g.label}` })} className="hover:bg-muted/40 rounded-lg p-3 text-left transition-colors">
+                <button key={g.grp} onClick={() => navigate("registrations", { program: `Combine – ${g.label}` })} className="hover:bg-muted/40 rounded-lg p-3 text-left transition-colors">
                   <div className="mb-2 flex items-baseline justify-between text-sm">
                     <span className="font-medium">{g.label}</span>
                     <span className="tabular-nums"><span className="font-semibold">{g.paid}</span> <span className="text-muted-foreground">/ {g.cap} · {g.cap ? Math.round((g.paid / g.cap) * 100) : 0}%</span></span>

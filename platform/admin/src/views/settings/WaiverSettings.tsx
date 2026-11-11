@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { NativeSelect } from "@/components/ui/native-select"
 import type { SettingsData } from "./types"
 
-const FLOW: Record<string, string> = { camp: "Summer & winter camps", miami: "Miami combine", all: "Everything (fallback)" }
+const FLOW: Record<string, string> = { camp: "Summer & winter camps", miami: "College Combine", all: "Everything (fallback)" }
 
 export function WaiverSettings({ api, data, reload }: { api: Api; data: SettingsData; reload: () => void }) {
   const [required, setRequired] = useState({ camp: data.pricing.camp_waiver_required, miami: data.miami?.event.waiver_required ?? false })

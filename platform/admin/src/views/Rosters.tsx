@@ -198,7 +198,7 @@ function RosterSheet({ api, onExpired, target, onBack }: { api: Api; onExpired: 
 }
 
 function SessionCard({ r, onOpen }: { r: RosterSummary; onOpen: () => void }) {
-  const program = r.grp ? `Miami – ${r.session}` : `${r.camp} – ${r.session}`
+  const program = r.grp ? `Combine – ${r.session}` : `${r.camp} – ${r.session}`
   const pct = r.capacity ? Math.min(100, Math.round((r.players / r.capacity) * 100)) : null
   return (
     <button onClick={onOpen} className={cn("bg-card hover:border-foreground/20 flex flex-col gap-3 rounded-xl border p-5 text-left shadow-xs transition-all hover:shadow-md", r.players === 0 && "opacity-75")}>
@@ -257,7 +257,7 @@ export function Rosters({ api, onExpired, refreshKey }: { api: Api; onExpired: (
   const total = [...(data?.groups ?? []), ...(data?.sessions ?? [])]
   return (
     <div className="space-y-6">
-      <PageHeader title="Rosters" description="One check-in sheet per session and Miami group. Open one to see every player, print it for coaches, or download it as a spreadsheet." />
+      <PageHeader title="Rosters" description="One check-in sheet per session and Combine group. Open one to see every player, print it for coaches, or download it as a spreadsheet." />
       {loading && !data ? (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">{Array.from({ length: 6 }, (_, i) => <Skeleton key={i} className="h-44 rounded-xl" />)}</div>
       ) : error && !data ? <Card><ErrorState message={error} onRetry={reload} /></Card> : total.length === 0 ? (

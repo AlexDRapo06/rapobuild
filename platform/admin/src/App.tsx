@@ -140,7 +140,7 @@ function Login({ config, onSignedIn, initialError }: { config: AuthConfig; onSig
     <AuthLayout>
       <AuthCard
         title={resetMode ? "Reset your password" : "Welcome back"}
-        description={resetMode ? "We'll email you a link to choose a new password." : "Sign in to see registrations, Miami spots and training requests."}
+        description={resetMode ? "We'll email you a link to choose a new password." : "Sign in to see registrations, College Combine spots and training requests."}
       >
         <form onSubmit={submit} className="space-y-4">
           {dev && <Notice tone="dev">Local test mode: sign in with an admin email. No password needed.</Notice>}

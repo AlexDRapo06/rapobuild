@@ -20,7 +20,7 @@ const Home = ({ setPage }) => {
 
   const railCoaches = homeRailCoaches();
   const homeCamps = HOME_CAMP_ORDER.map(campById).filter(Boolean);
-  const miami = SHOW_MIAMI ? campById("miami_combine_2027") : null;
+  const miami = campById("miami_combine_2027");
   const miamiStatus = miami ? campRegistrationStatus(miami) : null;
 
   const goCamp = (c) => {
@@ -84,16 +84,14 @@ const Home = ({ setPage }) => {
         <div className="hero-content-wrap relative z-10 w-full px-6 sm:px-10 lg:px-20 py-20 lg:py-28">
           <div className="hero-content max-w-[640px]">
             <div className="hero-content__top">
-              {SHOW_MIAMI && (
-                <button type="button" onClick={() => setPage("miami")} className="hero-pill mb-6">
-                  <span className="hero-pill__tag">New</span>
-                  <span>Miami College Combine · May 2027</span>
-                  <IconArrowRight size={14} className="hero-pill__arrow" />
-                </button>
-              )}
+              <button type="button" onClick={() => setPage("combine")} className="hero-pill mb-6">
+                <span className="hero-pill__tag">New</span>
+                <span>Boston College Combine · July 2027</span>
+                <IconArrowRight size={14} className="hero-pill__arrow" />
+              </button>
               <div className="eyebrow mb-6" style={{ color: "rgba(255,255,255,0.7)" }}>
                 <span className="inline-block w-2 h-2 rounded-full mr-2.5 align-middle" style={{ background: "#D2122E", boxShadow: "0 0 0 4px rgba(210,18,46,0.25)" }} />
-                {SHOW_MIAMI ? "Boston · Miami · Est. 2024" : "Boston · Est. 2024"}
+                Boston · Est. 2024
               </div>
               <h1
                 className="font-display text-white"
@@ -215,7 +213,7 @@ const Home = ({ setPage }) => {
             color: #111111 !important;
             border-color: #ffffff !important;
           }
-          /* "New: Miami" pill above the eyebrow */
+          /* "New: Combine" pill above the eyebrow */
           .hero-pill {
             display: inline-flex; align-items: center; gap: 10px;
             padding: 5px 14px 5px 5px;
@@ -686,14 +684,14 @@ const Home = ({ setPage }) => {
             <div className="inline-flex items-center gap-2.5 mb-5 px-4 py-2 rounded-full" style={{ background: "rgba(210,18,46,0.10)", border: "1px solid rgba(210,18,46,0.35)" }}>
               <span className="upcoming__pulse" aria-hidden="true" />
               <span className="font-cond font-bold uppercase tracking-[0.2em] text-[11px]" style={{ color: "#ff6072" }}>
-                Now booking — Winter · Summer 2027{SHOW_MIAMI ? " · Miami" : ""}
+                Now booking — Winter · Summer 2027 · College Combine
               </span>
             </div>
             <h2 className="font-display text-white" style={{ fontSize: "clamp(2.25rem, 5vw, 4.5rem)", lineHeight: 0.95, letterSpacing: "-0.01em" }}>
               UPCOMING <span className="upcoming__accent">CAMPS</span>.
             </h2>
             <p className="mt-6 text-[16px] lg:text-[17px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.72)" }}>
-              Winter Camp in Walpole this December, summer camps at Arlington Catholic, Watertown and BB&amp;N{SHOW_MIAMI ? ", and the FOOTYUP College Combine in Miami" : ""}. Tap a camp for dates, details and registration.
+              Winter Camp at Sudbury Fieldhouse this December, summer camps at Brooks School, Arlington Catholic, Watertown and BB&amp;N, and the FOOTYUP College Combine at Middlesex School in Concord. Tap a camp for dates, details and registration.
             </p>
           </div>
 
@@ -704,7 +702,7 @@ const Home = ({ setPage }) => {
               const Card = route ? "button" : "div";
               const featured = !!miami && c.id === miami.id;
               const cta = featured
-                ? (miamiStatus.closed ? "Registration closed" : miamiStatus.open ? "Register now" : "Registration opens Nov 1")
+                ? (miamiStatus.closed ? "Registration closed" : "Register now")
                 : c.status === "external" ? "Camp info" : "Register now";
               // The featured card fills a row, so an odd number of others would
               // leave the last one alone on two-column screens — stretch it.
@@ -725,16 +723,15 @@ const Home = ({ setPage }) => {
                   <div className="mt-2 font-cond uppercase tracking-[0.14em] text-[12px]" style={{ color: "rgba(255,255,255,0.6)" }}>{c.region}</div>
                   {featured && (
                     <div className="mt-5 flex flex-wrap gap-2">
-                      {c.sessions.map((s) => (
-                        <span key={s.value} className="upcoming__chip">{s.short} · {s.dates.replace(", 2027", "")}</span>
-                      ))}
+                      <span className="upcoming__chip">{c.dates.replace(", 2027", "")}</span>
                       <span className="upcoming__chip">{c.schedule}</span>
+                      <span className="upcoming__chip">{c.ages}</span>
                       <span className="upcoming__chip upcoming__chip--price">{formatUSD(campPrice(c))}</span>
                     </div>
                   )}
                   {featured && (
                     <p className="mt-4 text-[14px] leading-[1.55]" style={{ color: "rgba(255,255,255,0.68)", maxWidth: 460 }}>
-                      Now hosted at {c.venue}. College coaches in attendance, VALD performance testing, FootyAccess media coverage and a custom FOOTYUP × GOINGFORGOAT kit shipped home.
+                      Hosted at {c.venue} in Concord, MA. College coaches in attendance, VALD performance testing, FootyAccess media coverage and a custom FOOTYUP × GOINGFORGOAT kit shipped home.
                     </p>
                   )}
                   <div className="flex-1" aria-hidden="true" />
@@ -754,17 +751,15 @@ const Home = ({ setPage }) => {
           {/* Camp CTAs */}
           <div className="mt-12 flex flex-col sm:flex-row sm:flex-wrap justify-center items-center gap-4">
             <RedButton onClick={() => setPage("summerCamp")}>BOOK SUMMER CAMP</RedButton>
-            <RedButton onClick={() => setPage("winterCamp")}>BOOK WINTER CAMP — $315</RedButton>
-            {SHOW_MIAMI && (
-              <button
-                type="button"
-                onClick={() => setPage("miami")}
-                className="upcoming__gold-btn btn-arrow font-display tracking-wide px-5 py-3 text-[16px]"
-              >
-                <span>MIAMI COLLEGE COMBINE</span>
-                <IconArrowRight size={18} className="arrow" />
-              </button>
-            )}
+            <RedButton onClick={() => setPage("winterCamp")}>BOOK WINTER CAMP — {formatUSD(campById("winter_sudbury").price)}</RedButton>
+            <button
+              type="button"
+              onClick={() => setPage("combine")}
+              className="upcoming__gold-btn btn-arrow font-display tracking-wide px-5 py-3 text-[16px]"
+            >
+              <span>BOSTON COLLEGE COMBINE</span>
+              <IconArrowRight size={18} className="arrow" />
+            </button>
           </div>
 
           {/* Notify */}
@@ -845,7 +840,7 @@ const Home = ({ setPage }) => {
           @media (prefers-reduced-motion: reduce) {
             .upcoming__card, .upcoming__pulse { transition: none !important; animation: none !important; }
           }
-          /* Featured card (Miami combine) spans two columns */
+          /* Featured card (College Combine) spans two columns */
           .upcoming__card--featured {
             background:
               radial-gradient(500px 260px at 100% 0%, rgba(201,162,74,0.22), transparent 70%),

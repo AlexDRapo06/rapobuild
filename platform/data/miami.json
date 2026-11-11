@@ -1,26 +1,25 @@
 {
-  "_note": "Mirrors the live site (rapobuild api/_camps.js, Oct 29, 2026): Belen Jesuit Prep, 225 boys / 225 girls, ages 14-18, private-school code window Nov 1-30, public from Dec 1, $1,500 through Feb 1 then $1,650, closes end of Mar 1. 200 reserved spots from the Kickoff Form. The access code is set in Dashboard -> Settings -> Access codes, never here.",
+  "_note": "Boston College Combine at Middlesex School, Concord, MA (replaces the Miami combine; the file, slug and 'miami' tables keep their old names). July 9-11, 2027, 9 AM-1 PM, ages 14-18, $800 flat. One combine for everyone: boys and girls register into their own group on the same dates. Open to the public now (publicOpensAt = opensAt, so no access-code window); closes when the combine starts. Edit everything in Dashboard -> Settings -> College Combine.",
   "camp": {
     "slug": "miami_combine_2027",
-    "name": "FOOTYUP Miami College Combine 2027 — Belen Jesuit Preparatory School",
-    "host": "Belen Jesuit Preparatory School",
-    "siteRoute": "miami"
+    "name": "FOOTYUP Boston College Combine 2027 — Middlesex School",
+    "host": "Middlesex School, Concord, MA",
+    "siteRoute": "combine"
   },
   "event": {
-    "name": "FOOTYUP x GOINGFORGOAT College Combine",
-    "location": "Belen Jesuit Preparatory School, 500 SW 127th Ave, Miami, FL",
-    "infoText": "Players will participate in an elite three-day college soccer combine designed to provide exposure to college coaches, professional athletic performance testing, and high-level competition.\n\nThe combine will feature approximately 20–30 college programs attending each of the boys' and girls' events.\n\nEvery registered player will receive an exclusive GOINGFORGOAT x FOOTYUP package, shipped directly to their home before the combine, including combine kits and additional player gear.\n\nAthletes take part in competitive training sessions, small-sided games, full-field matches, and advanced athletic performance testing using VALD technology.",
-    "opensAt": "2026-11-01T00:00:00-04:00",
-    "publicOpensAt": "2026-12-01T00:00:00-05:00",
-    "closesAt": "2027-03-02T00:00:00-05:00",
+    "name": "FOOTYUP x GOINGFORGOAT Boston College Combine",
+    "location": "Middlesex School, Concord, MA",
+    "infoText": "Players will participate in an elite three-day college soccer combine at Middlesex School in Concord, MA, designed to provide exposure to college coaches, professional athletic performance testing, and high-level competition.\n\nEvery registered player will receive an exclusive GOINGFORGOAT x FOOTYUP package, shipped directly to their home before the combine, including combine kits and additional player gear.\n\nAthletes take part in competitive training sessions, small-sided games, full-field matches, and advanced athletic performance testing using VALD technology.",
+    "opensAt": "2026-11-10T00:00:00-05:00",
+    "publicOpensAt": "2026-11-10T00:00:00-05:00",
+    "closesAt": "2027-07-09T00:00:00-04:00",
     "checkoutOpen": true,
     "holdMinutes": 35,
     "waiverRequired": false,
-    "reservedTotal": 200,
+    "reservedTotal": 0,
     "reservedUntil": null,
     "priceTiers": [
-      { "until": "2027-02-02T00:00:00-05:00", "cents": 150000 },
-      { "until": null, "cents": 165000 }
+      { "until": null, "cents": 80000 }
     ],
     "positions": ["Goalkeeper", "Center Back", "Outside Back", "Defensive Midfielder", "Central Midfielder", "Attacking Midfielder", "Winger", "Striker"],
     "shirtSizes": ["Youth L", "Adult XS", "Adult S", "Adult M", "Adult L", "Adult XL", "Adult XXL"],
@@ -34,13 +33,13 @@
       "cap": 225,
       "ageMin": 14,
       "ageMax": 18,
-      "startsOn": "2027-05-21",
-      "endsOn": "2027-05-23",
-      "dailyStartTime": "16:30",
-      "dailyEndTime": "20:30",
+      "startsOn": "2027-07-09",
+      "endsOn": "2027-07-11",
+      "dailyStartTime": "09:00",
+      "dailyEndTime": "13:00",
       "reservedForCodeHolders": 0,
-      "priceCodeHolderCents": 150000,
-      "pricePublicCents": 150000,
+      "priceCodeHolderCents": 80000,
+      "pricePublicCents": 80000,
       "open": true
     },
     {
@@ -49,13 +48,13 @@
       "cap": 225,
       "ageMin": 14,
       "ageMax": 18,
-      "startsOn": "2027-05-24",
-      "endsOn": "2027-05-26",
-      "dailyStartTime": "16:30",
-      "dailyEndTime": "20:30",
+      "startsOn": "2027-07-09",
+      "endsOn": "2027-07-11",
+      "dailyStartTime": "09:00",
+      "dailyEndTime": "13:00",
       "reservedForCodeHolders": 0,
-      "priceCodeHolderCents": 150000,
-      "pricePublicCents": 150000,
+      "priceCodeHolderCents": 80000,
+      "pricePublicCents": 80000,
       "open": true
     }
   ]

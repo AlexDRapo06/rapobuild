@@ -58,7 +58,7 @@ export async function loadEvent(db: Db): Promise<EventRow> {
     select camp_id, name, location, info_text, opens_at, public_opens_at, closes_at,
            checkout_open, hold_minutes, waiver_required, positions, shirt_sizes, short_sizes, price_tiers, grad_years
       from public.miami_event`;
-  if (!event) throw new ApiError(409, "registration_not_open", "Miami registration is not open yet.");
+  if (!event) throw new ApiError(409, "registration_not_open", "Combine registration is not open yet.");
   return event;
 }
 
@@ -197,7 +197,7 @@ export async function runMiamiCheckout(deps: Deps, body: MiamiCheckoutInput, ext
     throw new ApiError(
       409,
       "registration_not_open",
-      closed ? "Miami registration has closed." : "Miami registration is not open yet.",
+      closed ? "Combine registration has closed." : "Combine registration is not open yet.",
       { opensAt: event.opens_at?.toISOString() ?? null, closesAt: event.closes_at?.toISOString() ?? null },
     );
   }
@@ -224,7 +224,7 @@ export async function runMiamiCheckout(deps: Deps, body: MiamiCheckoutInput, ext
   } else if (codeRequired) {
     throw new ApiError(403, "access_code_required", "An access code is required to register right now.");
   } else if (!publicOpen) {
-    throw new ApiError(409, "registration_not_open", "Miami registration is not open yet.", {
+    throw new ApiError(409, "registration_not_open", "Combine registration is not open yet.", {
       opensAt: event.public_opens_at?.toISOString() ?? null,
     });
   }
@@ -246,7 +246,7 @@ export async function runMiamiCheckout(deps: Deps, body: MiamiCheckoutInput, ext
     const row = availability.get(p.group);
     const price = row ? priceFor(row, viaCode, event) : null;
     if (!row || price === null) {
-      throw new ApiError(503, "pricing_not_configured", "Miami pricing hasn't been published yet. Please check back soon.", { group: p.group });
+      throw new ApiError(503, "pricing_not_configured", "Combine pricing hasn't been published yet. Please check back soon.", { group: p.group });
     }
     priceInput.push({ lineNo: i + 1, playerIndex: i, unitCents: price, campId: event.camp_id, sessionId: null, miami: true, label: `${event.name} – ${row.label}` });
   }

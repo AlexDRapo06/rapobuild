@@ -21,7 +21,7 @@ type Section = "todo" | "camps" | "miami" | "codes" | "discounts" | "training" |
 const SECTIONS: { value: Section; label: string }[] = [
   { value: "todo", label: "To do" },
   { value: "camps", label: "Camps & sessions" },
-  { value: "miami", label: "Miami combine" },
+  { value: "miami", label: "College Combine" },
   { value: "codes", label: "Access codes" },
   { value: "discounts", label: "Discounts & promo codes" },
   { value: "training", label: "Private training" },
@@ -53,7 +53,7 @@ export function Settings({ api, onExpired, refreshKey, params }: { api: Api; onE
       ) : data ? (
         <>
           {section === "camps" && <CampsSettings api={api} camps={data.camps} reload={reload} />}
-          {section === "miami" && (data.miami ? <MiamiSettings key={JSON.stringify(data.miami.groups.map((g) => g.taken))} api={api} miami={data.miami} reload={reload} /> : <Card><ErrorState message="Miami isn't set up yet. Run `pnpm miami config` once." /></Card>)}
+          {section === "miami" && (data.miami ? <MiamiSettings key={JSON.stringify(data.miami.groups.map((g) => g.taken))} api={api} miami={data.miami} reload={reload} /> : <Card><ErrorState message="The combine isn't set up yet. Run `pnpm miami config` once." /></Card>)}
           {section === "codes" && <AccessCodes api={api} codes={data.codes} reload={reload} />}
           {section === "discounts" && <DiscountSettings api={api} data={data} reload={reload} />}
           {section === "training" && <TrainingSettings api={api} packages={data.trainingPackages} reload={reload} />}

@@ -50,7 +50,7 @@ export function MiamiSettings({ api, miami, reload }: { api: Api; miami: NonNull
           priceCodeHolderCents: g.price_code_holder_cents, pricePublicCents: g.price_public_cents, ageMin: g.age_min, ageMax: g.age_max, open: g.open,
         })),
       })
-      setStatus({ tone: "success", text: "Saved. The Miami page and checkout use these settings right away." })
+      setStatus({ tone: "success", text: "Saved. The combine page and checkout use these settings right away." })
       reload()
     } catch (err) {
       setStatus({ tone: "error", text: (err as Error).message })
@@ -67,7 +67,7 @@ export function MiamiSettings({ api, miami, reload }: { api: Api; miami: NonNull
           <Field label="Checkout opens" hint="When anyone (code holders included) can start registering."><EtDateTimeInput value={event.opens_at} onChange={(v) => setEvent({ ...event, opens_at: v })} /></Field>
           <Field label="Opens to everyone" hint="Before this, only families with the access code can register."><EtDateTimeInput value={event.public_opens_at} onChange={(v) => setEvent({ ...event, public_opens_at: v })} /></Field>
           <Field label="Registration closes"><EtDateTimeInput value={event.closes_at} onChange={(v) => setEvent({ ...event, closes_at: v })} /></Field>
-          <label className="flex items-center justify-between gap-3 rounded-lg border p-3 md:col-span-3"><span className="text-sm"><span className="font-medium">Checkout switched on</span><span className="text-muted-foreground block text-xs">Turn off to pause Miami registration immediately (e.g. an emergency).</span></span><Switch checked={event.checkout_open} onCheckedChange={(v) => setEvent({ ...event, checkout_open: v })} /></label>
+          <label className="flex items-center justify-between gap-3 rounded-lg border p-3 md:col-span-3"><span className="text-sm"><span className="font-medium">Checkout switched on</span><span className="text-muted-foreground block text-xs">Turn off to pause combine registration immediately (e.g. an emergency).</span></span><Switch checked={event.checkout_open} onCheckedChange={(v) => setEvent({ ...event, checkout_open: v })} /></label>
         </CardContent>
       </Card>
 
@@ -100,7 +100,7 @@ export function MiamiSettings({ api, miami, reload }: { api: Api; miami: NonNull
         <CardHeader>
           <CardTitle className="text-base">Price schedule</CardTitle>
           <CardDescription>
-            {tiers.length ? "Everyone pays the price of the current step, boys and girls alike. The site's Miami page and Stripe both follow it." : "No schedule: each group uses its own prices above. Add a step to price by date (e.g. $1,500 until Feb 1, then $1,650)."}
+            {tiers.length ? "Everyone pays the price of the current step, boys and girls alike. The site's combine page and Stripe both follow it." : "No schedule: each group uses its own prices above. Add a step to price by date (e.g. $800 until a date, then a higher price)."}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -137,13 +137,13 @@ export function MiamiSettings({ api, miami, reload }: { api: Api; miami: NonNull
           <Field label="Shirt sizes"><Input value={lists.shirt} onChange={(e) => setLists({ ...lists, shirt: e.target.value })} placeholder="YM, YL, S, M, L, XL" /></Field>
           <Field label="Short sizes"><Input value={lists.short} onChange={(e) => setLists({ ...lists, short: e.target.value })} placeholder="YM, YL, S, M, L, XL" /></Field>
           <Field label="Graduation years"><Input value={lists.grad} onChange={(e) => setLists({ ...lists, grad: e.target.value })} placeholder="2027, 2028, 2029, 2030" /></Field>
-          <label className="flex items-center justify-between gap-3 rounded-lg border p-3"><span className="text-sm"><span className="font-medium">Waiver required</span><span className="text-muted-foreground block text-xs">Needs a published Miami waiver (Waivers tab).</span></span><Switch checked={event.waiver_required} onCheckedChange={(v) => setEvent({ ...event, waiver_required: v })} /></label>
+          <label className="flex items-center justify-between gap-3 rounded-lg border p-3"><span className="text-sm"><span className="font-medium">Waiver required</span><span className="text-muted-foreground block text-xs">Needs a published College Combine waiver (Waivers tab).</span></span><Switch checked={event.waiver_required} onCheckedChange={(v) => setEvent({ ...event, waiver_required: v })} /></label>
         </CardContent>
       </Card>
 
       <div className="bg-background/85 sticky bottom-0 z-10 -mx-1 flex flex-wrap items-center justify-end gap-3 border-t px-1 py-3 backdrop-blur">
         {status && <span className={status.tone === "success" ? "text-sm text-emerald-700" : "text-destructive text-sm"}>{status.text}</span>}
-        <Button onClick={save} disabled={busy || Boolean(tierProblem)}><SaveIcon /> {busy ? "Saving…" : "Save Miami settings"}</Button>
+        <Button onClick={save} disabled={busy || Boolean(tierProblem)}><SaveIcon /> {busy ? "Saving…" : "Save combine settings"}</Button>
       </div>
     </div>
   )
@@ -180,7 +180,7 @@ export function AccessCodes({ api, codes, reload }: { api: Api; codes: SettingsD
   return (
     <div className="space-y-6">
       <Notice tone={live.length ? "info" : "success"} icon={live.length ? LockIcon : CheckCircle2Icon} title={live.length ? `${live.length} active code${live.length > 1 ? "s" : ""}` : "No active codes"}>
-        {live.length ? "Host-school families use the code for the reserved spots (and to register before the public opening time). Turning every code off opens Miami to everyone." : "Miami registration is open to everyone (subject to the schedule in the Miami tab)."}
+        {live.length ? "Host-school families use the code for the reserved spots (and to register before the public opening time). Turning every code off opens the combine to everyone." : "Combine registration is open to everyone (subject to the schedule in the College Combine tab)."}
       </Notice>
       <Card>
         <CardHeader><CardTitle className="text-base">Add an access code</CardTitle><CardDescription>Codes are scrambled (hashed) as soon as they're saved. Nobody, including you, can read them back, so keep a copy somewhere safe.</CardDescription></CardHeader>

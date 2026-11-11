@@ -84,7 +84,7 @@ const SiteCamp = z.object({
 
 const SiteMiami = z.object({
   campId: z.string(),
-  session: z.enum(["boys", "girls"], { error: "Please choose the Boys or Girls combine." }),
+  session: z.enum(["boys", "girls"], { error: "Please choose Boys or Girls." }),
   accessCode: s(64).optional(),
   // The form sends first and last names; older pages send one full name.
   playerName: s(120).optional(),
@@ -313,7 +313,7 @@ async function waitlist(req: Request, deps: Deps): Promise<Response> {
   if (!camp || camp.info_only) return json({ error: "Please choose a camp session." }, 400)
   const entry = { parentName: f.parentName, email: f.email, phone: f.phone, town: f.town, spots: f.spots }
   if (camp.kind === "miami") {
-    if (f.session !== "boys" && f.session !== "girls") return json({ error: "Please choose the Boys or Girls combine." }, 400)
+    if (f.session !== "boys" && f.session !== "girls") return json({ error: "Please choose Boys or Girls." }, 400)
     await saveWaitlistEntries(deps.db, camp.id, [null], { ...entry, miamiGroup: f.session })
     return json({ success: true })
   }

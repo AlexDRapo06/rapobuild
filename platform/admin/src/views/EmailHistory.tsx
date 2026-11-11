@@ -28,8 +28,8 @@ function describeSegment(s: CampaignLog["segment"], options: EmailOptions | null
     names.set(`camp:${c.id}`, c.name)
     for (const x of c.sessions) names.set(`session:${x.id}`, `${c.name} – ${x.name}`)
   }
-  names.set("miami:boys", "Miami – Boys")
-  names.set("miami:girls", "Miami – Girls")
+  names.set("miami:boys", "Combine – Boys")
+  names.set("miami:girls", "Combine – Girls")
   const parts = [
     s.programs.length ? s.programs.map((p) => names.get(p) ?? "A removed session").join(" or ") : null,
     s.towns.length ? `in ${s.towns.join(" or ")}` : null,

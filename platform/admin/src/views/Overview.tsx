@@ -175,7 +175,7 @@ export function Overview({ api, onExpired, refreshKey, navigate }: { api: Api; o
             </CardHeader>
             <CardContent className="grid gap-4 lg:grid-cols-2">
               {data.miami.map((g) => (
-                <button key={g.grp} className="text-left transition-transform hover:-translate-y-0.5" onClick={() => navigate("registrations", { program: `Miami – ${g.label}` })}>
+                <button key={g.grp} className="text-left transition-transform hover:-translate-y-0.5" onClick={() => navigate("registrations", { program: `Combine – ${g.label}` })}>
                   <GroupPanel g={g} codesActive={data.codes.active} />
                 </button>
               ))}
@@ -189,7 +189,7 @@ export function Overview({ api, onExpired, refreshKey, navigate }: { api: Api; o
           <Card className="min-w-0 lg:col-span-3">
             <CardHeader>
               <CardTitle className="text-base">Registrations by program</CardTitle>
-              <CardDescription>Paid registrations per session and Miami group</CardDescription>
+              <CardDescription>Paid registrations per session and Combine group</CardDescription>
             </CardHeader>
             <CardContent>
               {data.byCamp.length === 0 ? (
@@ -199,14 +199,14 @@ export function Overview({ api, onExpired, refreshKey, navigate }: { api: Api; o
               ) : (
                 <ul className="space-y-4">
                   {data.byCamp.map((row) => {
-                    const program = row.kind === "miami" ? `Miami – ${row.session}` : `${row.camp} – ${row.session}`
+                    const program = row.kind === "miami" ? `Combine – ${row.session}` : `${row.camp} – ${row.session}`
                     return (
                       <li key={`${row.camp}-${row.session}`} className="hover:bg-muted/40 -mx-2 cursor-pointer space-y-1.5 rounded-md px-2 py-1" onClick={() => navigate("registrations", { program })}>
                         <div className="flex items-center justify-between gap-3 text-sm">
                           <span className="flex min-w-0 items-center gap-2">
                             <ProgramDot program={program} />
                             <span className="truncate">
-                              <span className="font-medium">{row.kind === "miami" ? "Miami combine" : row.camp}</span>
+                              <span className="font-medium">{row.kind === "miami" ? "College Combine" : row.camp}</span>
                               <span className="text-muted-foreground"> · {row.session}</span>
                             </span>
                           </span>

@@ -1,4 +1,4 @@
-// SINGLE-SESSION CAMP page — Winter Camp (Walpole). Copy and figures come from the camp's entry in src/camps.jsx;
+// SINGLE-SESSION CAMP page — Winter Camp (Sudbury). Copy and figures come from the camp's entry in src/camps.jsx;
 // registration goes through the shared camp form.
 const SingleCampPage = ({ camp }) => {
   const RegisterButton = ({ size = "lg", full = false, className = "" }) => (
@@ -83,6 +83,6 @@ const SingleCampPage = ({ camp }) => {
   );
 };
 
-const WinterCamp = () => <SingleCampPage camp={campById("winter_walpole")} />;
+const WinterCamp = () => <SingleCampPage camp={campById("winter_sudbury")} />;
 
 Object.assign(window, { WinterCamp });

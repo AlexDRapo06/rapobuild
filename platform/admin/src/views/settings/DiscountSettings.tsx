@@ -59,7 +59,7 @@ function PromoSheet({ api, promo, camps, onClose, onSaved }: { api: Api; promo: 
             </Field>
           </div>
           <Field label="Applies to">
-            <NativeSelect value={form.scope} onChange={(e) => set({ scope: e.target.value as PromoRow["scope"] })}><option value="all">Everything</option><option value="miami">Miami combine only</option><option value="camp">One camp</option><option value="session">One session</option></NativeSelect>
+            <NativeSelect value={form.scope} onChange={(e) => set({ scope: e.target.value as PromoRow["scope"] })}><option value="all">Everything</option><option value="miami">College Combine only</option><option value="camp">One camp</option><option value="session">One session</option></NativeSelect>
           </Field>
           {form.scope === "camp" && <Field label="Camp"><NativeSelect value={form.campId} onChange={(e) => set({ campId: e.target.value })}><option value="">Choose…</option>{camps.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</NativeSelect></Field>}
           {form.scope === "session" && <Field label="Session"><NativeSelect value={form.sessionId} onChange={(e) => set({ sessionId: e.target.value })}><option value="">Choose…</option>{sessions.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}</NativeSelect></Field>}
@@ -108,7 +108,7 @@ export function DiscountSettings({ api, data, reload }: { api: Api; data: Settin
                 {sibling.kind === "percent" ? <Input type="number" min={1} max={100} value={sibling.amount} onChange={(e) => setSibling({ ...sibling, amount: Number(e.target.value) })} /> : <MoneyInput cents={sibling.amount} onChange={(c) => setSibling({ ...sibling, amount: c ?? 0 })} />}
               </Field>
             )}
-            {sibling.kind !== "none" && <Field label="Applies to" className="col-span-2"><NativeSelect value={sibling.applies} onChange={(e) => setSibling({ ...sibling, applies: e.target.value as typeof sibling.applies })}><option value="camps">Summer and winter camps</option><option value="miami">Miami combine</option><option value="all">Everything</option></NativeSelect></Field>}
+            {sibling.kind !== "none" && <Field label="Applies to" className="col-span-2"><NativeSelect value={sibling.applies} onChange={(e) => setSibling({ ...sibling, applies: e.target.value as typeof sibling.applies })}><option value="camps">Summer and winter camps</option><option value="miami">College Combine</option><option value="all">Everything</option></NativeSelect></Field>}
           </CardContent>
         </Card>
         <Card>
@@ -133,7 +133,7 @@ export function DiscountSettings({ api, data, reload }: { api: Api; data: Settin
               {data.promos.map((p) => {
                 const expired = p.ends_at && new Date(p.ends_at).getTime() <= now
                 const usedUp = p.max_uses !== null && p.uses >= p.max_uses
-                const scope = p.scope === "all" ? "Everything" : p.scope === "miami" ? "Miami" : p.scope === "camp" ? data.camps.find((c) => c.id === p.camp_id)?.name ?? "A camp" : data.camps.flatMap((c) => c.sessions.map((s) => ({ ...s, camp: c.name }))).find((s) => s.id === p.session_id)?.name ?? "A session"
+                const scope = p.scope === "all" ? "Everything" : p.scope === "miami" ? "College Combine" : p.scope === "camp" ? data.camps.find((c) => c.id === p.camp_id)?.name ?? "A camp" : data.camps.flatMap((c) => c.sessions.map((s) => ({ ...s, camp: c.name }))).find((s) => s.id === p.session_id)?.name ?? "A session"
                 return (
                   <TableRow key={p.id} className="cursor-pointer" onClick={() => setEdit(p)}>
                     <TableCell><code className="bg-muted rounded px-1.5 py-0.5 text-xs font-semibold">{p.code}</code>{p.description && <p className="text-muted-foreground mt-1 text-xs">{p.description}</p>}</TableCell>

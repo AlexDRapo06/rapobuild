@@ -57,7 +57,7 @@ export function Revenue({ api, onExpired, refreshKey, params }: { api: Api; onEx
   const t = data?.totals
   return (
     <div className="space-y-6">
-      <PageHeader title="Revenue" description="Payment status and revenue by camp, session and Miami group. Amounts are before Stripe fees." actions={<DateRange from={range.from} to={range.to} onChange={setRange} />} />
+      <PageHeader title="Revenue" description="Payment status and revenue by camp, session and Combine group. Amounts are before Stripe fees." actions={<DateRange from={range.from} to={range.to} onChange={setRange} />} />
 
       {loading && !data ? (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{Array.from({ length: 4 }, (_, i) => <div key={i} className="bg-muted h-32 animate-pulse rounded-xl" />)}</div>
@@ -74,7 +74,7 @@ export function Revenue({ api, onExpired, refreshKey, params }: { api: Api; onEx
 
           <Card className="gap-0 overflow-hidden py-0">
             <CardHeader className="border-b py-5">
-              <CardTitle className="text-base">By camp, session and Miami group</CardTitle>
+              <CardTitle className="text-base">By camp, session and Combine group</CardTitle>
               <CardDescription>Click a row to see its payments below. Refunds are split across a payment's registrations by price.</CardDescription>
               <CardAction>
                 <Button variant="outline" size="sm" onClick={() => downloadCsv(`footyup-revenue-${stamp()}.csv`, [

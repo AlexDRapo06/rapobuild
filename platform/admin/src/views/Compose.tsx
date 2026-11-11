@@ -41,7 +41,7 @@ const orList = (items: string[]) => (items.length <= 1 ? items[0] ?? "" : `${ite
 /** Human name for a "camp:<id>" / "session:<id>" / "miami:<grp>" choice. */
 function programName(p: string, options: EmailOptions | null) {
   const [kind, id] = p.split(":") as [string, string]
-  if (kind === "miami") return `Miami ${options?.miami?.groups.find((g) => g.grp === id)?.label ?? id}`
+  if (kind === "miami") return `Combine ${options?.miami?.groups.find((g) => g.grp === id)?.label ?? id}`
   for (const c of options?.camps ?? []) {
     if (kind === "camp" && c.id === id) return `${c.name} (whole camp)`
     const s = c.sessions.find((x) => x.id === id)
@@ -88,7 +88,7 @@ function ProgramPicker({ options, segment, setSegment }: { options: EmailOptions
   const pickCamp = (campId: string, sessionIds: string[]) =>
     setSegment({ ...segment, programs: segment.programs.includes(`camp:${campId}`) ? segment.programs.filter((p) => p !== `camp:${campId}`) : [...segment.programs.filter((p) => !sessionIds.includes(p.slice(8))), `camp:${campId}`] })
   const camps = options.camps.filter((c) => !q || c.name.toLowerCase().includes(q) || c.sessions.some((s) => s.name.toLowerCase().includes(q)))
-  const showMiami = options.miami && (!q || "miami combine".includes(q) || options.miami.name.toLowerCase().includes(q))
+  const showMiami = options.miami && (!q || ("college combine".includes(q) || "boston".includes(q)) || options.miami.name.toLowerCase().includes(q))
 
   return (
     <div className="space-y-3">
@@ -114,7 +114,7 @@ function ProgramPicker({ options, segment, setSegment }: { options: EmailOptions
           <div className="space-y-2">
             <p className="text-sm font-semibold">{options.miami.name}</p>
             {options.miami.groups.map((g) => (
-              <Tile key={g.grp} checked={segment.programs.includes(`miami:${g.grp}`)} onClick={() => pick(`miami:${g.grp}`)} title={`Miami – ${g.label}`} detail={dateRange(g.starts_on, g.ends_on)} count={g.families} />
+              <Tile key={g.grp} checked={segment.programs.includes(`miami:${g.grp}`)} onClick={() => pick(`miami:${g.grp}`)} title={`Combine – ${g.label}`} detail={dateRange(g.starts_on, g.ends_on)} count={g.families} />
             ))}
           </div>
         )}

@@ -7,7 +7,7 @@ const NAV_ITEMS = [
   { key: "home", label: "Home", desktop: false },
   { key: "summerCamp", label: "Summer Camps" },
   { key: "winterCamp", label: "Winter Camp" },
-  ...(SHOW_MIAMI ? [{ key: "miami", label: "Miami Combine" }] : []),
+  { key: "combine", label: "College Combine" },
   { key: "coaches", label: "Coaches" },
   { key: "media", label: "Media" },
   { key: "privateTraining", label: "Private Training", desktop: false },
@@ -318,8 +318,8 @@ const Footer = ({ setPage }) => {
           {SUMMER_CAMPS.filter((c) => c.slug).map((c) => (
             <li key={c.id}><NavBtn to="summerCamp" sub={c.slug}>Summer Camp — {c.name}</NavBtn></li>
           ))}
-          <li><NavBtn to="winterCamp">Winter Camp — Walpole</NavBtn></li>
-          {SHOW_MIAMI && <li><NavBtn to="miami">College Combine — Miami</NavBtn></li>}
+          <li><NavBtn to="winterCamp">Winter Camp — Sudbury</NavBtn></li>
+          <li><NavBtn to="combine">College Combine — Boston</NavBtn></li>
           <li><NavBtn to="privateTraining">Private Training</NavBtn></li>
         </Col>
       </div>
@@ -378,7 +378,7 @@ const LabelRow = ({ label, value, dark = false, last = false }) => (
 );
 
 // ---- FORM PRIMITIVES ------------------------------------------------------
-// Shared by the camp forms, the Miami combine form and the Private Training inquiry.
+// Shared by the camp forms, the College Combine form and the Private Training inquiry.
 const FieldLabel = ({ id, label, required, optional }) => (
   <label htmlFor={id} className="font-cond font-bold uppercase tracking-[0.1em] text-[12px] text-ink">
     {label}{required && " *"}
@@ -497,7 +497,7 @@ const WaiverAcceptance = ({ id, waiver, required, checked, onChange }) => (
   </div>
 );
 
-// Sign-up for a full session or Miami group. Saved in order; when a spot opens,
+// Sign-up for a full session or College Combine group. Saved in order; when a spot opens,
 // the family is emailed a link that holds it for them.
 const WaitlistForm = ({ campId, session, title }) => {
   const [form, setForm] = React.useState({ parentName: "", email: "", phone: "", town: "", spots: "1", website: "" });

@@ -133,7 +133,7 @@ export interface WaitlistEntry {
 }
 
 export const programOf = (r: { camp_kind?: string; camp: string; session: string | null; miami_group: string | null }) =>
-  r.miami_group ? `Miami – ${r.miami_group === "boys" ? "Boys" : "Girls"}` : `${r.camp} – ${r.session ?? ""}`;
+  r.miami_group ? `Combine – ${r.miami_group === "boys" ? "Boys" : "Girls"}` : `${r.camp} – ${r.session ?? ""}`;
 
 export interface Contact {
   id: string

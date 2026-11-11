@@ -190,8 +190,8 @@ describe("site adapter: Miami", () => {
     expect(res.status).toBe(200);
     const { url } = (await res.json()) as { url: string };
     const mock = deps.payments.sessions.get(sessionIdFrom(url))!;
-    expect(mock.amountTotal).toBe(150000);
-    expect(mock.input.cancelUrl).toBe("https://footyupp.test/cancel?camp=miami");
+    expect(mock.amountTotal).toBe(80000);
+    expect(mock.input.cancelUrl).toBe("https://footyupp.test/cancel?camp=combine");
     expect(mock.input.customFields!.map((f) => f.key)).toEqual(["emergency_phone", "short_size"]);
 
     await pay(url);
@@ -336,8 +336,8 @@ describe("site adapter: catalog", () => {
     const body = (await (await siteCall(get("/api/site/catalog"))).json()) as any;
     expect(body.camps.arlington_catholic_2027.sessions.summer).toMatchObject({ price: 525, spotsLeft: 30, minAge: 6, maxAge: 13, open: true });
     expect(body.camps.watertown_2027.sessions.both).toMatchObject({ price: 830 });
-    expect(body.miami).toMatchObject({ id: "miami_combine_2027", price: 1500 });
-    expect(body.miami.priceTiers).toHaveLength(2);
+    expect(body.miami).toMatchObject({ id: "miami_combine_2027", price: 800, gated: false });
+    expect(body.miami.priceTiers).toHaveLength(1);
     expect(body.miami.options.positions).toContain("Winger");
     expect(body.trainingPackages.group2_7).toMatchObject({ price: 1000 });
   });

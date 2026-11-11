@@ -197,7 +197,7 @@ export function AppSidebar({
 
         {miami && (
           <div className="mx-2 mt-auto mb-2 rounded-lg border bg-card p-3 shadow-xs group-data-[collapsible=icon]:hidden">
-            <p className="text-muted-foreground text-[11px] font-medium tracking-wide uppercase">Miami combine</p>
+            <p className="text-muted-foreground text-[11px] font-medium tracking-wide uppercase">College Combine</p>
             <p className="mt-1 flex items-center gap-1.5 text-sm font-medium">
               <span className="relative flex size-2">
                 {miami.tone === "open" && <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60" />}

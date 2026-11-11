@@ -22,13 +22,13 @@ const GUIDES: Record<string, Guide> = {
     watch: "A camp or session the website sells must use the same id as the website's code (shown on each camp and session).",
   },
   miami: {
-    what: "The Miami College Combine: when registration opens, spot limits for boys and girls, prices by date, ages, dates, and the form's size and position lists.",
+    what: "The Boston College Combine (Middlesex School): when registration opens, spot limits for boys and girls, prices by date, ages, dates, and the form's size and position lists.",
     how: [
-      "Edit any field, then press “Save Miami settings” at the bottom. Nothing changes until you save.",
+      "Edit any field, then press “Save combine settings” at the bottom. Nothing changes until you save.",
       "Before “Opens to everyone”, only families with the access code can register.",
       "Price schedule: each step's price applies until its date, then the next step takes over.",
     ],
-    when: "Immediately for the Miami page and checkout.",
+    when: "Immediately for the combine page and checkout.",
     watch: "A spot limit can't be set below the number already taken (paid or in checkout).",
   },
   codes: {
@@ -36,7 +36,7 @@ const GUIDES: Record<string, Guide> = {
     how: [
       "Type the code and press Save code. It's scrambled right away and can't be shown again, so keep your own copy.",
       "Set “Stops working at” to end the early window, or switch the code off.",
-      "With no active code, Miami follows its public schedule for everyone.",
+      "With no active code, the combine follows its public schedule for everyone.",
     ],
     when: "Immediately.",
     watch: "Never send the code in a group email; share it only with host-school families.",
@@ -61,7 +61,7 @@ const GUIDES: Record<string, Guide> = {
     what: "The waiver wording parents accept at checkout, and whether accepting it is required.",
     how: [
       "Write or paste the wording and publish it. Each publish is a new version.",
-      "Turn on “Waiver required” for camps here; for Miami it's in the Miami combine tab.",
+      "Turn on “Waiver required” for camps here; for the combine it's in the College Combine tab.",
     ],
     when: "Immediately. Every registration keeps the exact version its parent accepted.",
     watch: "Until a waiver is published and required, registrations show “Waiver not collected”.",
