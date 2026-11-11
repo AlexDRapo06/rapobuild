@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "cd platform && tsx --env-file-if-exists=.env scripts/dev-server.ts",
-    "build": "cd platform && ADMIN_OUT_DIR=../dist/admin tsx scripts/build-admin.ts && tsx scripts/build-site.ts",
+    "build": "cd platform && ADMIN_OUT_DIR=../dist/admin tsx scripts/build-admin.ts && tsx scripts/build-site.ts && tsx scripts/load-season-data.ts",
     "admin:build": "cd platform && tsx scripts/build-admin.ts",
     "admin:watch": "cd platform && tsx scripts/build-admin.ts --watch",
     "db:migrate": "cd platform && tsx --env-file-if-exists=.env scripts/migrate.ts",
