@@ -86,7 +86,7 @@ const Home = ({ setPage }) => {
             <div className="hero-content__top">
               <button type="button" onClick={() => setPage("combine")} className="hero-pill mb-6">
                 <span className="hero-pill__tag">New</span>
-                <span>Boston College Combine · July 2027</span>
+                <span>Boston College Combine · June 2027</span>
                 <IconArrowRight size={14} className="hero-pill__arrow" />
               </button>
               <div className="eyebrow mb-6" style={{ color: "rgba(255,255,255,0.7)" }}>

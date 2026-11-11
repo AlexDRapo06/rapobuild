@@ -18,6 +18,7 @@ import { CampsFile, MiamiFile, upsertCamps, upsertMiami } from "../src/admin/con
 import { createSql } from "../src/lib/db.js";
 
 const MARKER = "data_load:2026-11-10-boston-combine";
+const DATES_MARKER = "data_load:2026-11-11-combine-june-dates";
 // Only the camps that changed, so dashboard edits to the others are kept.
 const CHANGED_CAMPS = ["winter_walpole", "winter_sudbury", "brooks_2027"];
 
@@ -63,6 +64,23 @@ try {
       await tx`insert into public.settings (key, value) values (${MARKER}, ${tx.json({ loadedAt: new Date().toISOString() })})`;
     });
     console.log("[season data] Done.");
+  }
+
+  // Nov 11, 2026: the combine is June 9–11, not July 9–11. Only the dates and
+  // the closing time change, so any dashboard edits to the combine are kept.
+  const [datesDone] = await sql<{ value: unknown }[]>`select value from public.settings where key = ${DATES_MARKER}`;
+  if (datesDone) {
+    console.log(`[season data] Combine dates already moved to June (${JSON.stringify(datesDone.value)}).`);
+  } else {
+    await sql.begin(async (tx) => {
+      for (const g of miami.groups) {
+        await tx`update public.miami_groups set starts_on = ${g.startsOn ?? null}, ends_on = ${g.endsOn ?? null} where grp = ${g.grp}`;
+      }
+      const days = miami.groups.flatMap((g) => [g.startsOn, g.endsOn]).filter((d): d is string => Boolean(d)).sort();
+      await tx`update public.miami_event set starts_on = ${days[0] ?? null}, ends_on = ${days.at(-1) ?? null}, closes_at = ${miami.event.closesAt ?? null}`;
+      await tx`insert into public.settings (key, value) values (${DATES_MARKER}, ${tx.json({ loadedAt: new Date().toISOString() })})`;
+    });
+    console.log(`[season data] Combine dates set to ${miami.groups[0]?.startsOn} – ${miami.groups[0]?.endsOn}, registration closes ${miami.event.closesAt}.`);
   }
 } finally {
   await sql.end();
