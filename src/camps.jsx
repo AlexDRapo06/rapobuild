@@ -308,11 +308,11 @@ const CAMP_LIST = [
     name: "Boston College Combine",
     place: "BOSTON",
     region: "Middlesex School · Ages 14–18",
-    cardNote: "June 9–11 · 9 AM–1 PM · $800",
+    cardNote: "July 9–11 · 9 AM–1 PM · $800",
     venue: "Middlesex School",
     venueShort: "Middlesex School",
     address: "Concord, MA",
-    dates: "June 9 – 11, 2027",
+    dates: "July 9 – 11, 2027",
     schedule: "9:00 AM – 1:00 PM",
     ages: "Ages 14–18",
     minAge: 14,
@@ -321,17 +321,17 @@ const CAMP_LIST = [
     // Display defaults only — the combine page asks /api/site/camp-access for
     // the live state, and the dashboard's Combine settings are what's enforced.
     opensAt: "2026-11-10T00:00:00-05:00",
-    closesAt: "2027-06-09T00:00:00-04:00",
+    closesAt: "2027-07-09T00:00:00-04:00",
     gated: false,
     // One flat price (the dashboard's Combine price steps replace it).
     priceTiers: [
-      { price: 800, label: "Through June 8" },
+      { price: 800, label: "Through July 8" },
     ],
     // One combine for everyone. Boys and girls still register into their own
     // group (the database tracks spots per group), on the same dates.
     sessions: [
-      { value: "boys",  title: "Boys",  short: "Boys",  dates: "June 9 – 11, 2027", ages: "Ages 14–18", minAge: 14, maxAge: 18 },
-      { value: "girls", title: "Girls", short: "Girls", dates: "June 9 – 11, 2027", ages: "Ages 14–18", minAge: 14, maxAge: 18 },
+      { value: "boys",  title: "Boys",  short: "Boys",  dates: "July 9 – 11, 2027", ages: "Ages 14–18", minAge: 14, maxAge: 18 },
+      { value: "girls", title: "Girls", short: "Girls", dates: "July 9 – 11, 2027", ages: "Ages 14–18", minAge: 14, maxAge: 18 },
     ],
   },
 ];

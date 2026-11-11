@@ -18,7 +18,7 @@ import { CampsFile, MiamiFile, upsertCamps, upsertMiami } from "../src/admin/con
 import { createSql } from "../src/lib/db.js";
 
 const MARKER = "data_load:2026-11-10-boston-combine";
-const DATES_MARKER = "data_load:2026-11-11-combine-june-dates";
+const DATES_MARKER = "data_load:2026-11-11-combine-back-to-july";
 // Only the camps that changed, so dashboard edits to the others are kept.
 const CHANGED_CAMPS = ["winter_walpole", "winter_sudbury", "brooks_2027"];
 
@@ -66,11 +66,12 @@ try {
     console.log("[season data] Done.");
   }
 
-  // Nov 11, 2026: the combine is June 9–11, not July 9–11. Only the dates and
+  // Nov 11, 2026: the combine briefly went live as June 9–11 by mistake; this
+  // puts the dates from data/miami.json (July 9–11) back. Only the dates and
   // the closing time change, so any dashboard edits to the combine are kept.
   const [datesDone] = await sql<{ value: unknown }[]>`select value from public.settings where key = ${DATES_MARKER}`;
   if (datesDone) {
-    console.log(`[season data] Combine dates already moved to June (${JSON.stringify(datesDone.value)}).`);
+    console.log(`[season data] Combine dates already set back to July (${JSON.stringify(datesDone.value)}).`);
   } else {
     await sql.begin(async (tx) => {
       for (const g of miami.groups) {

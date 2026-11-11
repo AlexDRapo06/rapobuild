@@ -559,7 +559,7 @@ const MiamiCombine = ({ setPage }) => {
           </div>
           <div className="grid grid-cols-2 gap-px bg-ash border border-ash">
             {[
-              { n: "3", l: "Days · June 9–11" },
+              { n: "3", l: "Days · July 9–11" },
               { n: "9–1", l: "Every morning" },
               { n: "VALD", l: "Performance testing" },
               { n: "1 KIT", l: "Shipped to your door" },
