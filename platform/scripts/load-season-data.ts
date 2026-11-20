@@ -19,6 +19,7 @@ import { createSql } from "../src/lib/db.js";
 
 const MARKER = "data_load:2026-11-10-boston-combine";
 const DATES_MARKER = "data_load:2026-11-11-combine-back-to-july";
+const MIDDLESEX_MARKER = "data_load:2026-11-19-middlesex-summer";
 // Only the camps that changed, so dashboard edits to the others are kept.
 const CHANGED_CAMPS = ["winter_walpole", "winter_sudbury", "brooks_2027"];
 
@@ -37,6 +38,11 @@ const allCamps = CampsFile.parse(JSON.parse(await readFile("data/camps.json", "u
 const camps = { camps: allCamps.camps.filter((c) => CHANGED_CAMPS.includes(c.slug)) };
 if (camps.camps.length !== CHANGED_CAMPS.length) {
   console.error("[season data] data/camps.json is missing one of: " + CHANGED_CAMPS.join(", "));
+  process.exit(1);
+}
+const middlesex = { camps: allCamps.camps.filter((c) => c.slug === "middlesex_2027") };
+if (middlesex.camps.length !== 1) {
+  console.error("[season data] data/camps.json is missing middlesex_2027");
   process.exit(1);
 }
 const miami = MiamiFile.parse(JSON.parse(await readFile("data/miami.json", "utf8")));
@@ -82,6 +88,18 @@ try {
       await tx`insert into public.settings (key, value) values (${DATES_MARKER}, ${tx.json({ loadedAt: new Date().toISOString() })})`;
     });
     console.log(`[season data] Combine dates set to ${miami.groups[0]?.startsOn} – ${miami.groups[0]?.endsOn}, registration closes ${miami.event.closesAt}.`);
+  }
+
+  // Nov 19, 2026: add the Middlesex School summer camp (five weeks). Only this
+  // camp is written, so dashboard edits to every other camp are kept.
+  const [middlesexDone] = await sql<{ value: unknown }[]>`select value from public.settings where key = ${MIDDLESEX_MARKER}`;
+  if (middlesexDone) {
+    console.log(`[season data] Middlesex summer camp already loaded (${JSON.stringify(middlesexDone.value)}).`);
+  } else {
+    await sql.begin(async (tx) => {
+      for (const line of await upsertCamps(tx, middlesex)) console.log(`[season data] Saved ${line}`);
+      await tx`insert into public.settings (key, value) values (${MIDDLESEX_MARKER}, ${tx.json({ loadedAt: new Date().toISOString() })})`;
+    });
   }
 } finally {
   await sql.end();

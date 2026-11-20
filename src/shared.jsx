@@ -329,6 +329,8 @@ const Footer = ({ setPage }) => {
         <div>Built in collaboration with GOAT</div>
       </div>
 
+      <IvyDevsCredit background="#111111" color="#fff" className="footer-ivy" />
+
       <style>{`
         .footer-col__list {
           display: flex;
@@ -351,6 +353,11 @@ const Footer = ({ setPage }) => {
             font-size: 11px;
             gap: 7px;
           }
+        }
+        /* Inset the Ivy Devs rule by the footer's own gutters (px-5 / lg:px-10). */
+        .ivy-credit.footer-ivy { --ivy-gutter: 20px; }
+        @media (min-width: 1024px) {
+          .ivy-credit.footer-ivy { --ivy-gutter: 40px; }
         }
       `}</style>
     </footer>

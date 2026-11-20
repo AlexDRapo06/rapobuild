@@ -66,6 +66,21 @@
       ]
     },
     {
+      "slug": "middlesex_2027",
+      "name": "FOOTYUP Summer Camp 2027 — Middlesex School, Concord, MA",
+      "host": "Middlesex School, 1400 Lowell Rd, Concord, MA 01742",
+      "kind": "summer",
+      "siteRoute": "summerCamp/middlesex",
+      "sortOrder": 3,
+      "sessions": [
+        { "slug": "week1", "name": "Week 1 · June 21–25, 2027 · 8:30 AM–2:00 PM", "startsOn": "2027-06-21", "endsOn": "2027-06-25", "startTime": "08:30", "location": "Middlesex School, 1400 Lowell Rd, Concord, MA 01742", "ageMin": 7, "ageMax": 16, "priceCents": 55000, "sortOrder": 1 },
+        { "slug": "week2", "name": "Week 2 · July 5–8, 2027 · 8:30 AM–2:00 PM", "startsOn": "2027-07-05", "endsOn": "2027-07-08", "startTime": "08:30", "location": "Middlesex School, 1400 Lowell Rd, Concord, MA 01742", "ageMin": 7, "ageMax": 16, "priceCents": 55000, "sortOrder": 2 },
+        { "slug": "week3", "name": "Week 3 · July 12–16, 2027 · 8:30 AM–2:00 PM", "startsOn": "2027-07-12", "endsOn": "2027-07-16", "startTime": "08:30", "location": "Middlesex School, 1400 Lowell Rd, Concord, MA 01742", "ageMin": 7, "ageMax": 16, "priceCents": 55000, "sortOrder": 3 },
+        { "slug": "week4", "name": "Week 4 · July 19–23, 2027 · 8:30 AM–2:00 PM", "startsOn": "2027-07-19", "endsOn": "2027-07-23", "startTime": "08:30", "location": "Middlesex School, 1400 Lowell Rd, Concord, MA 01742", "ageMin": 7, "ageMax": 16, "priceCents": 55000, "sortOrder": 4 },
+        { "slug": "week5", "name": "Week 5 · July 26–30, 2027 · 8:30 AM–2:00 PM", "startsOn": "2027-07-26", "endsOn": "2027-07-30", "startTime": "08:30", "location": "Middlesex School, 1400 Lowell Rd, Concord, MA 01742", "ageMin": 7, "ageMax": 16, "priceCents": 55000, "sortOrder": 5 }
+      ]
+    },
+    {
       "slug": "arlington_catholic_2027",
       "name": "FOOTYUP Summer Camp 2027 — Arlington Catholic High School",
       "host": "Arlington Catholic High School, 16 Medford St, Arlington, MA",
