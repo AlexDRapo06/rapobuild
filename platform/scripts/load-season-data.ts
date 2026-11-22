@@ -20,6 +20,7 @@ import { createSql } from "../src/lib/db.js";
 const MARKER = "data_load:2026-11-10-boston-combine";
 const DATES_MARKER = "data_load:2026-11-11-combine-back-to-july";
 const MIDDLESEX_MARKER = "data_load:2026-11-19-middlesex-summer";
+const TABOR_MARKER = "data_load:2026-11-22-tabor-summer";
 // Only the camps that changed, so dashboard edits to the others are kept.
 const CHANGED_CAMPS = ["winter_walpole", "winter_sudbury", "brooks_2027"];
 
@@ -43,6 +44,11 @@ if (camps.camps.length !== CHANGED_CAMPS.length) {
 const middlesex = { camps: allCamps.camps.filter((c) => c.slug === "middlesex_2027") };
 if (middlesex.camps.length !== 1) {
   console.error("[season data] data/camps.json is missing middlesex_2027");
+  process.exit(1);
+}
+const tabor = { camps: allCamps.camps.filter((c) => c.slug === "tabor_2027") };
+if (tabor.camps.length !== 1) {
+  console.error("[season data] data/camps.json is missing tabor_2027");
   process.exit(1);
 }
 const miami = MiamiFile.parse(JSON.parse(await readFile("data/miami.json", "utf8")));
@@ -99,6 +105,18 @@ try {
     await sql.begin(async (tx) => {
       for (const line of await upsertCamps(tx, middlesex)) console.log(`[season data] Saved ${line}`);
       await tx`insert into public.settings (key, value) values (${MIDDLESEX_MARKER}, ${tx.json({ loadedAt: new Date().toISOString() })})`;
+    });
+  }
+
+  // Nov 22, 2026: add the Tabor Academy summer camp (Aug 9–12). Only this camp
+  // is written, so dashboard edits to every other camp are kept.
+  const [taborDone] = await sql<{ value: unknown }[]>`select value from public.settings where key = ${TABOR_MARKER}`;
+  if (taborDone) {
+    console.log(`[season data] Tabor summer camp already loaded (${JSON.stringify(taborDone.value)}).`);
+  } else {
+    await sql.begin(async (tx) => {
+      for (const line of await upsertCamps(tx, tabor)) console.log(`[season data] Saved ${line}`);
+      await tx`insert into public.settings (key, value) values (${TABOR_MARKER}, ${tx.json({ loadedAt: new Date().toISOString() })})`;
     });
   }
 } finally {

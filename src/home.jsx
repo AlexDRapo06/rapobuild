@@ -691,7 +691,7 @@ const Home = ({ setPage }) => {
               UPCOMING <span className="upcoming__accent">CAMPS</span>.
             </h2>
             <p className="mt-6 text-[16px] lg:text-[17px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.72)" }}>
-              Winter Camp at Sudbury Fieldhouse this December, summer camps at Brooks School, Middlesex School, Arlington Catholic, Watertown and BB&amp;N, and the FOOTYUP College Combine at Middlesex School in Concord. Tap a camp for dates, details and registration.
+              Winter Camp at Sudbury Fieldhouse this December, summer camps at Brooks School, Middlesex School, Tabor Academy, Arlington Catholic, Watertown and BB&amp;N, and the FOOTYUP College Combine at Middlesex School in Concord. Tap a camp for dates, details and registration.
             </p>
           </div>
 
